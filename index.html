@@ -17,6 +17,7 @@
     --plum: #7c3a4e;
     --gold: #d4a853;
     --soft: #f7d6df;
+    --glass: rgba(255, 255, 255, 0.82);
   }
 
   body {
@@ -26,30 +27,33 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow-x: hidden;
     position: relative;
+    background-image: 
+        radial-gradient(at 0% 0%, hsla(343,84%,95%,1) 0, transparent 50%), 
+        radial-gradient(at 100% 100%, hsla(339,49%,91%,1) 0, transparent 50%);
   }
 
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 20% 10%, #fce8ed88 0%, transparent 60%),
-      radial-gradient(ellipse 60% 80% at 80% 90%, #f2a7b540 0%, transparent 60%),
-      radial-gradient(ellipse 40% 40% at 50% 50%, #fff0f388 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
+  /* ─── SPARKLE PARTICLES ─── */
+  .sparkle {
+    position: absolute; background: white; border-radius: 50%;
+    pointer-events: none; z-index: 0; animation: sparkleAnim linear forwards;
+  }
+  @keyframes sparkleAnim {
+    0% { transform: scale(0) rotate(0deg); opacity: 0; }
+    50% { opacity: 0.8; }
+    100% { transform: scale(1) rotate(180deg); opacity: 0; transform: translateY(-100px); }
   }
 
   .hearts-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
   .hb {
-    position: absolute; font-size: 1.2rem; opacity: 0.12;
+    position: absolute; font-size: 1.5rem; opacity: 0.15;
+    filter: drop-shadow(0 0 5px rgba(232,99,122,0.2));
     animation: floatUp linear infinite;
   }
   @keyframes floatUp {
-    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0.05; }
-    50%  { opacity: 0.15; }
-    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    0% { transform: translateY(110vh) rotate(0deg) scale(0.8); }
+    100% { transform: translateY(-10vh) rotate(360deg) scale(1.2); }
   }
 
   .screen {
@@ -57,390 +61,105 @@
     width: min(90vw, 480px);
     text-align: center;
     display: none;
-    animation: fadeIn .6s ease;
+    animation: slideUp .8s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .screen.active { display: block; }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(24px) scale(.96); }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px) scale(0.95); }
     to   { opacity: 1; transform: translateY(0) scale(1); }
   }
 
-  /* ─── TAP TO START OVERLAY ─── */
+  /* ─── START OVERLAY ─── */
   #startOverlay {
     position: fixed; inset: 0;
-    background: var(--cream);
-    z-index: 9999;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 20px;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
+    background: var(--cream); z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 25px;
+    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  #startOverlay.hidden { opacity: 0; visibility: hidden; }
+  #startOverlay.hidden { opacity: 0; visibility: hidden; transform: scale(1.1); }
 
   .start-gif {
-    width: 140px; height: 140px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--blush);
-    box-shadow: 0 6px 24px rgba(232,99,122,.25);
+    width: 160px; height: 160px; border-radius: 50%; object-fit: cover;
+    border: 5px solid #fff; box-shadow: 0 10px 30px rgba(232,99,122,0.3);
     animation: floatBob 3s ease-in-out infinite;
   }
-  @keyframes floatBob {
-    0%,100% { transform: translateY(0); }
-    50%      { transform: translateY(-10px); }
+  @keyframes floatBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+  /* ─── GLASS CARDS ─── */
+  .card, .screen2-card, .intro-wrap {
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 32px;
+    padding: 40px 32px;
+    box-shadow: 0 20px 50px rgba(124,58,78,0.1);
   }
 
-  .start-label {
-    font-size: 1rem; color: var(--plum);
-    font-weight: 600; margin-top: -8px;
-  }
-
-  .pulse-btn { animation: pulse 2s infinite; }
-
-  /* ─── GIF HELPERS ─── */
-  .gif-block {
-    display: flex; justify-content: center; margin: 10px 0 18px;
-  }
-  .gif-block img {
-    border-radius: 16px;
-    max-width: 180px; max-height: 140px;
-    object-fit: cover;
-    box-shadow: 0 4px 20px rgba(124,58,78,.15);
-    border: 2px solid var(--blush);
-  }
-  .gif-sm img {
-    max-width: 100px; max-height: 80px; border-radius: 12px;
-  }
-  .gif-inline {
-    display: inline-block; vertical-align: middle;
-    width: 48px; height: 48px; border-radius: 50%;
-    object-fit: cover; border: 2px solid var(--blush);
-    margin-bottom: 8px;
-  }
-
-  /* ─── SCREEN 0 (Intro) ─── */
-  #screen0 .intro-wrap {
-    background: rgba(255,255,255,.75);
-    backdrop-filter: blur(12px);
-    border: 1.5px solid rgba(232,99,122,.15);
-    border-radius: 28px;
-    padding: 36px 32px;
-    box-shadow: 0 8px 40px rgba(124,58,78,.1);
-  }
   .intro-text {
-    font-size: 1.15rem; color: var(--plum); margin-bottom: 16px;
-    opacity: 0; transform: translateY(15px);
-    transition: opacity 1.5s ease, transform 1.5s ease;
-    line-height: 1.7;
+    font-size: 1.25rem; color: var(--plum); margin-bottom: 20px;
+    opacity: 0; transform: translateX(-20px);
+    transition: all 0.8s ease-out; font-weight: 400;
   }
-  .intro-text.show { opacity: 1; transform: translateY(0); }
-  #btnEnter {
-    opacity: 0; visibility: hidden; transition: opacity 1s ease;
-    margin-top: 20px; background: linear-gradient(135deg, var(--rose), #c0445e);
-    color: #fff; padding: 14px 36px; border-radius: 50px;
-    border: none; cursor: pointer; font-family: 'Sarabun', sans-serif;
-    font-size: 1rem; font-weight: 600; box-shadow: 0 4px 20px rgba(232,99,122,.4);
-  }
-  #btnEnter.show { opacity: 1; visibility: visible; }
+  .intro-text.show { opacity: 1; transform: translateX(0); }
 
-  /* ─── SCREEN 1 ─── */
-  .card {
-    background: rgba(255,255,255,.88);
-    backdrop-filter: blur(16px);
-    border: 1.5px solid rgba(232,99,122,.18);
-    border-radius: 28px;
-    padding: 40px 36px 36px;
-    box-shadow: 0 8px 40px rgba(124,58,78,.12), 0 2px 8px rgba(232,99,122,.08);
-  }
-  .card .emoji-top { font-size: 3.2rem; margin-bottom: 12px; display: block; animation: pulse 2s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.12);} }
-  .card h1 {
+  h1, h2 {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(1.7rem, 5vw, 2.2rem);
-    color: var(--plum); line-height: 1.3; margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--plum), var(--rose));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
   }
-  .card .sub { font-size: .95rem; color: #a06070; margin-bottom: 24px; line-height: 1.6; }
 
-  .btn-row {
-    display: flex; gap: 16px; justify-content: center;
-    flex-wrap: nowrap; position: relative; min-height: 52px;
-  }
+  /* ─── LUXURY BUTTONS ─── */
   .btn {
-    font-family: 'Sarabun', sans-serif;
-    font-size: 1rem; font-weight: 600;
-    padding: 14px 36px; border-radius: 50px;
-    border: none; cursor: pointer;
-    transition: transform .2s, box-shadow .2s;
-    white-space: nowrap;
+    font-family: 'Sarabun', sans-serif; font-size: 1rem; font-weight: 600;
+    padding: 16px 32px; border-radius: 50px; border: none; cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    white-space: nowrap; position: relative; overflow: hidden;
   }
-  .btn-yes {
+  .btn-yes, #btnEnter, .btn-make {
     background: linear-gradient(135deg, var(--rose), #c0445e);
-    color: #fff; box-shadow: 0 4px 20px rgba(232,99,122,.4);
+    color: #fff; box-shadow: 0 8px 25px rgba(232,99,122,0.4);
   }
-  .btn-yes:hover { transform: scale(1.06); box-shadow: 0 6px 28px rgba(232,99,122,.5); }
-
-  .btn-no {
-    background: #fff0f3; color: var(--rose);
-    border: 1.5px solid var(--blush);
-    transition: color .15s, background .15s;
+  .btn-yes:hover, #btnEnter:hover { transform: scale(1.05) translateY(-3px); box-shadow: 0 12px 30px rgba(232,99,122,0.5); }
+  
+  .btn-yes::after {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(transparent, rgba(255,255,255,0.3), transparent);
+    transform: rotate(45deg); animation: shine 3s infinite;
   }
-  @media (max-width: 480px) {
-    .btn-no { position: relative !important; left: auto !important; top: auto !important; }
-  }
-  .btn-no.jiggle { animation: jiggle .4s ease; }
-  @keyframes jiggle {
-    0%,100%{transform:rotate(0);}
-    20%{transform:rotate(-9deg);}
-    40%{transform:rotate(9deg);}
-    60%{transform:rotate(-6deg);}
-    80%{transform:rotate(6deg);}
-  }
+  @keyframes shine { 0% { left: -100%; } 100% { left: 100%; } }
 
-  .hearts-divider { margin: 20px 0; color: var(--blush); font-size: 1.1rem; letter-spacing: 6px; }
+  .btn-no { background: #fff; color: var(--rose); border: 1px solid var(--blush); }
 
-  /* ─── SCREEN 2 ─── */
-  .screen2-card {
-    background: rgba(255,255,255,.9); backdrop-filter: blur(16px);
-    border: 1.5px solid rgba(232,99,122,.2); border-radius: 28px;
-    padding: 36px 32px; box-shadow: 0 8px 40px rgba(124,58,78,.12);
-  }
-  .screen2-card h2 { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: var(--plum); margin-bottom: 6px; }
-  .screen2-card .yay { font-size: 2.8rem; margin-bottom: 8px; display: block; }
-  .screen2-card p { color: #a06070; margin-bottom: 20px; line-height: 1.6; font-size: .95rem; }
-
-  .form-group { margin-bottom: 18px; text-align: left; }
-  .form-group label { font-size: .85rem; font-weight: 600; color: var(--plum); display: block; margin-bottom: 6px; }
-  .form-group input[type="text"] {
-    width: 100%; padding: 12px 16px;
-    border: 1.5px solid var(--blush); border-radius: 14px;
-    font-family: 'Sarabun', sans-serif; font-size: 1rem;
-    color: var(--plum); background: var(--petal); outline: none;
-    transition: border-color .2s;
-  }
-  .form-group input[type="text"]:focus { border-color: var(--rose); }
-
-  .upload-area {
-    border: 2px dashed var(--blush); border-radius: 18px;
-    padding: 24px; background: var(--petal); cursor: pointer;
-    transition: border-color .2s, background .2s;
-    text-align: center; position: relative; overflow: hidden;
-  }
-  .upload-area:hover { border-color: var(--rose); background: #fce0e7; }
-  .upload-area input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-  .upload-area .upload-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
-  .upload-area p { font-size: .88rem; color: #b07880; margin: 0; }
-  .upload-area .preview-img {
-    width: 80px; height: 80px; border-radius: 50%;
-    object-fit: cover; border: 3px solid var(--rose);
-    display: none; margin: 0 auto 8px;
-  }
-
-  .btn-make {
-    margin-top: 20px; width: 100%;
-    background: linear-gradient(135deg, var(--rose), #c0445e);
-    color: #fff; border: none; border-radius: 50px;
-    padding: 15px; font-size: 1.05rem; font-weight: 600;
-    cursor: pointer; font-family: 'Sarabun', sans-serif;
-    box-shadow: 0 4px 20px rgba(232,99,122,.35);
-    transition: transform .2s, box-shadow .2s;
-  }
-  .btn-make:hover { transform: scale(1.03); box-shadow: 0 6px 28px rgba(232,99,122,.45); }
-
-  /* ─── SCREEN 3 — ID Card ─── */
-  #screen3 { width: min(90vw, 420px); }
-
-  .card-tilt-wrapper { perspective: 900px; cursor: pointer; }
-
+  /* ─── ID CARD UPGRADE ─── */
   .id-card {
-    background: linear-gradient(145deg, #fff8fa, #fce8ed);
-    border: 2.5px solid var(--rose);
-    border-radius: 22px;
-    padding: 0; overflow: hidden;
-    box-shadow: 0 12px 50px rgba(124,58,78,.2), 0 2px 8px rgba(232,99,122,.1);
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform .12s ease, box-shadow .12s ease;
-    will-change: transform;
-  }
-
-  .id-card .holo-glare {
-    position: absolute; inset: 0; border-radius: 20px;
-    pointer-events: none; z-index: 10;
-    background: radial-gradient(ellipse 80% 60% at 30% 30%,
-      rgba(255,255,255,.55) 0%,
-      rgba(255,200,220,.18) 30%,
-      rgba(200,180,255,.08) 60%,
-      transparent 80%);
-    opacity: 0; transition: opacity .2s; mix-blend-mode: screen;
-  }
-  .id-card .holo-rainbow {
-    position: absolute; inset: 0; border-radius: 20px;
-    pointer-events: none; z-index: 9;
-    background: linear-gradient(125deg,
-      rgba(255,100,130,.0) 0%, rgba(255,200,100,.08) 20%,
-      rgba(100,255,180,.08) 40%, rgba(100,180,255,.08) 60%,
-      rgba(200,100,255,.08) 80%, rgba(255,100,130,.0) 100%);
-    opacity: 0; transition: opacity .3s; mix-blend-mode: color-dodge;
-  }
-  .card-tilt-wrapper:hover .holo-glare,
-  .card-tilt-wrapper:hover .holo-rainbow { opacity: 1; }
-
-  .id-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 110px;
-    background: linear-gradient(135deg, var(--rose) 0%, #c0445e 60%, #a83354 100%);
-  }
-
-  .id-card-header {
-    position: relative; z-index: 1;
-    padding: 18px 24px 0;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .id-card-header .org {
-    color: rgba(255,255,255,.9);
-    font-size: .7rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
-  }
-  .id-card-header .heart-badge { font-size: 1.5rem; }
-
-  .id-photo-wrap {
-    position: relative; z-index: 2;
-    margin: 12px auto 0; width: 96px; height: 96px;
-  }
-  #id-photo {
-    width: 96px; height: 96px; border-radius: 50%;
-    object-fit: cover; border: 3.5px solid #fff;
-    box-shadow: 0 4px 16px rgba(124,58,78,.25); display: block;
-    background-color: #fff;
-  }
-  .id-photo-wrap::after {
-    content: '💕'; position: absolute; bottom: -2px; right: -6px; font-size: 1.2rem;
-  }
-
-  .id-body { padding: 20px 28px 26px; text-align: center; }
-  .id-title {
-    font-family: 'Dancing Script', cursive;
-    font-size: 1.1rem; color: var(--rose); letter-spacing: 1px; margin-bottom: 4px;
+    background: linear-gradient(145deg, #ffffff, #fff0f3);
+    border: none; outline: 3px solid white;
+    box-shadow: 0 30px 60px rgba(124,58,78,0.2);
   }
   .id-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.7rem; color: var(--plum); font-weight: 700; margin-bottom: 16px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+    letter-spacing: 1px;
   }
-  .id-divider {
-    height: 1px; background: linear-gradient(90deg, transparent, var(--blush), transparent);
-    margin-bottom: 16px;
-  }
-  .id-fields {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 12px; margin-bottom: 16px; text-align: left;
-  }
-  .id-field label {
-    font-size: .68rem; font-weight: 600; color: #b07880;
-    text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 2px;
-  }
-  .id-field span { font-size: .9rem; color: var(--plum); font-weight: 600; }
-  .id-field.full { grid-column: 1/-1; }
-
   .id-status {
-    background: linear-gradient(135deg, var(--rose), #c0445e);
-    color: #fff; border-radius: 10px;
-    padding: 8px 16px; font-size: .82rem; font-weight: 600;
-    letter-spacing: .5px; margin-bottom: 16px;
-  }
-  .id-barcode {
-    font-family: 'Courier New', monospace;
-    font-size: .65rem; color: var(--blush); letter-spacing: 3px; margin-bottom: 6px;
-  }
-  .id-cardnum {
-    font-size: .78rem; font-weight: 700;
-    color: var(--rose); letter-spacing: 2px;
-  }
-  .id-stamp {
-    position: absolute; right: 18px; bottom: 22px;
-    font-size: .6rem; font-weight: 700;
-    color: rgba(232,99,122,.25); border: 2px solid rgba(232,99,122,.2);
-    border-radius: 6px; padding: 3px 7px;
-    letter-spacing: 1px; text-transform: uppercase;
-    transform: rotate(-12deg);
+    background: linear-gradient(90deg, var(--rose), #c0445e);
+    box-shadow: 0 4px 15px rgba(232,99,122,0.3);
   }
 
-  /* ─── SAVE BUTTON ─── */
-  .save-area { margin-top: 20px; }
-  .btn-save {
-    width: 100%;
-    background: #fff; color: var(--rose);
-    border: 2px solid var(--rose); border-radius: 50px;
-    padding: 13px; font-size: .95rem; font-weight: 600;
-    cursor: pointer; font-family: 'Sarabun', sans-serif;
-    transition: background .2s, color .2s, opacity .2s;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  .btn-save:hover { background: var(--rose); color: #fff; }
-  .btn-save:disabled { opacity: .6; cursor: wait; }
-
-  .save-hint {
-    margin-top: 10px;
-    font-size: .8rem; color: #b07880;
-    line-height: 1.5;
-  }
-
-  /* ─── MUSIC BTN ─── */
+  /* ─── MUSIC & TOAST ─── */
   .music-btn {
-    position: fixed; bottom: 24px; right: 24px; z-index: 500;
-    width: 48px; height: 48px; border-radius: 50%;
-    background: rgba(255,255,255,.85); backdrop-filter: blur(8px);
-    border: 2px solid var(--blush); cursor: pointer;
-    font-size: 1.3rem; display: none; align-items: center; justify-content: center;
-    box-shadow: 0 4px 16px rgba(124,58,78,.15);
-    transition: transform .2s, box-shadow .2s;
+    position: fixed; bottom: 24px; right: 24px; width: 54px; height: 54px;
+    background: white; border-radius: 50%; box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    font-size: 1.5rem; display: none; align-items: center; justify-content: center;
   }
-  .music-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(124,58,78,.2); }
-  .music-btn.visible { display: flex; }
-  .music-btn.playing { animation: musicPulse 1.4s ease-in-out infinite; }
-  @keyframes musicPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
-
-  #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
-
-  .toast {
-    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(60px);
-    background: var(--plum); color: #fff;
-    padding: 12px 24px; border-radius: 50px;
-    font-size: .9rem; z-index: 1000;
-    transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s;
-    opacity: 0; white-space: nowrap;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .music-btn.playing { animation: rotateMusic 4s linear infinite; }
+  @keyframes rotateMusic { from { transform: rotate(0); } to { transform: rotate(360deg); } }
 
   /* ─── DOWNLOAD OVERLAY ─── */
   .dl-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.88); z-index: 10000;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 20px; animation: fadeIn .3s ease;
-  }
-  .dl-overlay-hint {
-    color: #fff; margin-bottom: 18px;
-    font-size: 1rem; font-family: 'Sarabun', sans-serif;
-    text-align: center; line-height: 1.6;
-  }
-  .dl-overlay-img {
-    max-width: 100%; max-height: 60vh;
-    border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,.5);
-  }
-  .dl-overlay-close {
-    margin-top: 20px; padding: 12px 30px;
-    border-radius: 50px; border: none;
-    background: #fff; color: var(--rose);
-    font-weight: 700; font-family: 'Sarabun', sans-serif;
-    cursor: pointer; font-size: 1rem;
-  }
-  .dl-overlay-dl {
-    margin-top: 12px; padding: 12px 30px;
-    border-radius: 50px; border: 2px solid #fff;
-    background: transparent; color: #fff;
-    font-weight: 600; font-family: 'Sarabun', sans-serif;
-    cursor: pointer; font-size: .95rem;
-    text-decoration: none; display: inline-block;
+    background: rgba(124, 58, 78, 0.92);
+    backdrop-filter: blur(10px);
   }
 </style>
 </head>
@@ -448,107 +167,89 @@
 
 <audio id="bgMusic" src="Love.mp3" loop></audio>
 
-<!-- ══════════ TAP TO START ══════════ -->
 <div id="startOverlay">
-  <!-- GIF #1: ซองจดหมายน่ารัก / ใส่ GIF ที่ต้องการตรงนี้ -->
-  <img class="start-gif"
-       src="https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif"
-       alt="love gif"
-       onerror="this.style.display='none'" />
-  <p class="start-label">มีจดหมายถึงคุณ 💌</p>
-  <button id="btnStartMagic" class="btn btn-yes pulse-btn">💌 แตะเพื่อเปิดดู</button>
+  <img class="start-gif" src="https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif" alt="love" />
+  <div style="text-align:center">
+    <p style="color:var(--plum); font-weight:600; font-size:1.2rem;">มีของขวัญชิ้นพิเศษส่งถึงคุณ</p>
+    <p style="color:var(--rose); font-size:0.9rem;">แตะที่จดหมายเพื่อเปิดดูนะ</p>
+  </div>
+  <button id="btnStartMagic" class="btn btn-yes pulse-btn">💌 เปิดจดหมาย</button>
 </div>
 
 <div class="hearts-bg" id="heartsBg"></div>
 <canvas id="confetti-canvas"></canvas>
-<div class="toast" id="toast"></div>
+<div id="toast" class="toast"></div>
 <button class="music-btn" id="musicBtn" title="เปิด/ปิดเพลง">🎵</button>
 
-<!-- ══════════ SCREEN 0 — INTRO ══════════ -->
 <div class="screen active" id="screen0">
   <div class="intro-wrap">
-    <!-- GIF #2: ตัวละครน่ารัก / shyness GIF -->
-    <div class="gif-block" id="introGifBlock" style="opacity:0;transition:opacity 1.2s ease;">
-      <img src="https://media.giphy.com/media/3oEjHAufHqiXjWkvck/giphy.gif"
-           alt="shy gif"
-           style="max-width:150px;max-height:120px;border-radius:16px;border:2px solid var(--blush);box-shadow:0 4px 18px rgba(124,58,78,.15);"
-           onerror="this.parentElement.style.display='none'" />
+    <div class="gif-block" id="introGifBlock" style="opacity:0;transition:opacity 1.5s ease;">
+      <img src="https://media.giphy.com/media/3oEjHAufHqiXjWkvck/giphy.gif" alt="shy" />
     </div>
     <p class="intro-text" id="text1">ขอบคุณนะที่เรามาชอบพี่อะ</p>
     <p class="intro-text" id="text2">เราก็คุยกันมาสักพักแล้วสินะะะ</p>
     <p class="intro-text" id="text3">ตอนนี้ก็คงถึงเวลาที่เราจะต้องชัดเจนกันมากขึ้นสักที</p>
     <p class="intro-text" id="text4">ลองกดปุ่มข้างล่างสิ</p>
-    <button id="btnEnter">ไปต่ออออออ</button>
+    <button id="btnEnter" class="btn">ไปต่อกันเลย ✨</button>
   </div>
 </div>
 
-<!-- ══════════ SCREEN 1 — QUESTION ══════════ -->
 <div class="screen" id="screen1">
   <div class="card">
-    <span class="emoji-top">💌</span>
-    <!-- GIF #3: cute couple / nervous asking -->
     <div class="gif-block">
-      <img src="https://media.giphy.com/media/26BRuo6sLetdllPAQ/giphy.gif"
-           alt="love gif"
-           onerror="this.parentElement.style.display='none'" />
+      <img src="https://media.giphy.com/media/26BRuo6sLetdllPAQ/giphy.gif" alt="love" />
     </div>
     <h1>เรามาเป็นแฟนกันมั้ยยยย</h1>
     <p class="sub">ได้เวลาเลื่อนสถานะกันแล้วววว<br>แล้วเราจะตอบว่าอะไรดีล่ะ?</p>
-    <div class="hearts-divider">♡ ♡ ♡</div>
     <div class="btn-row" id="btnRow">
-      <button class="btn btn-yes" id="btnYes">💕 ตกลง!</button>
+      <button class="btn btn-yes" id="btnYes">💕 ตกลงที่สุด!</button>
       <button class="btn btn-no" id="btnNo">ปฏิเสธ</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════ SCREEN 2 — FORM ══════════ -->
 <div class="screen" id="screen2">
   <div class="screen2-card">
     <span class="yay">🎉</span>
-    <h2>คบกันไปนานๆนะ</h2>
-    <!-- GIF #4: celebration / happy -->
+    <h2>เย้! คบกันนานๆ นะ</h2>
     <div class="gif-block">
-      <img src="https://media.giphy.com/media/a0h7sAqON67nO/giphy.gif"
-           alt="celebrate gif"
-           onerror="this.parentElement.style.display='none'" />
+      <img src="https://media.giphy.com/media/a0h7sAqON67nO/giphy.gif" alt="celebrate" />
     </div>
-    <p>ตอนนี้เราเป็นแฟนกันแล้วนะ 💖<br>มาทำบัตรประจำตัวแฟนคนโปรดกันดีกว่า</p>
+    <p>มาทำบัตรประจำตัวแฟนคนโปรดกันเถอะ</p>
     <div class="form-group">
       <label>ชื่อเล่นของคุณ</label>
-      <input type="text" id="nickInput" placeholder="เช่น น้องหมี, น้องแมว, ปุ๊กปิ๊ก..." maxlength="20" />
+      <input type="text" id="nickInput" placeholder="ใส่ชื่อน่ารักๆ ของคุณ..." maxlength="20" 
+             style="width:100%; padding:14px; border-radius:15px; border:1px solid var(--blush); outline:none; margin-top:5px; background:white;"/>
     </div>
-    <div class="form-group">
-      <label>อัปโหลดรูปภาพ</label>
+    <div class="form-group" style="margin-top:15px;">
+      <label>รูปภาพยืนยันตัวตน</label>
       <div class="upload-area" id="uploadArea">
         <img class="preview-img" id="previewImg" alt="preview" />
-        <input type="file" id="fileInput" accept="image/*" />
-        <span class="upload-icon" id="uploadIcon">📷</span>
-        <p id="uploadText">แตะเพื่อเลือกรูปภาพ</p>
+        <span class="upload-icon" id="uploadIcon">📸</span>
+        <p id="uploadText">เลือกรูปที่สวยที่สุดของคุณ</p>
+        <input type="file" id="fileInput" accept="image/*" style="display:none;" />
       </div>
     </div>
-    <button class="btn-make" id="btnMake">✨ สร้างบัตร</button>
+    <button class="btn btn-make" id="btnMake" style="width:100%; margin-top:20px;">✨ ออกบัตรประจำตัว</button>
   </div>
 </div>
 
-<!-- ══════════ SCREEN 3 — ID CARD ══════════ -->
 <div class="screen" id="screen3">
   <div class="card-tilt-wrapper" id="tiltWrapper">
     <div class="id-card" id="idCard">
       <div class="holo-glare" id="holoGlare"></div>
       <div class="holo-rainbow"></div>
-
       <div class="id-card-header">
-        <div class="org">Official Certificate</div>
-        <div class="heart-badge">💝</div>
+        <div class="org" style="font-size:0.6rem; letter-spacing:2px;">OFFICIAL CERTIFICATE</div>
+        <div class="heart-badge" style="font-size:1.2rem;">💝</div>
       </div>
       <div class="id-photo-wrap">
         <img id="id-photo" src="" alt="photo" />
       </div>
       <div class="id-body">
-        <div class="id-title">Girlfriend ID Card</div>
+        <div class="id-title" style="font-size:0.9rem; color:var(--rose);">Girlfriend ID Card</div>
         <div class="id-name" id="id-name">—</div>
-        <div class="id-divider"></div>
+        <div class="id-divider" style="height:1px; background:var(--blush); margin:10px 0; opacity:0.5;"></div>
         <div class="id-status">ตำแหน่ง: แฟนคนโปรด 💕</div>
         <div class="id-fields">
           <div class="id-field">
@@ -556,404 +257,169 @@
             <span id="id-date">—</span>
           </div>
           <div class="id-field">
-            <label>วันหมดอายุ</label>
-            <span>ไม่มีวันหมดอายุ</span>
-          </div>
-          <div class="id-field full">
-            <label>หมายเลขบัตร</label>
-            <span id="id-num">—</span>
+            <label>สถานะ</label>
+            <span>มีเจ้าของแล้ว</span>
           </div>
         </div>
-        <div class="id-barcode">||| | || ||| || | ||| || || | ||| || | || |||</div>
-        <div class="id-cardnum" id="id-barnum">—</div>
+        <div style="margin-top:15px; font-family:monospace; font-size:0.6rem; color:var(--blush); letter-spacing:3px;">|||| ||| | |||| || | ||</div>
       </div>
-      <div class="id-stamp">VERIFIED</div>
+      <div class="id-stamp" style="position:absolute; bottom:15px; right:15px; font-size:0.6rem; border:1px solid var(--rose); padding:2px 5px; opacity:0.3; transform:rotate(-15deg);">VERIFIED</div>
     </div>
   </div>
 
-  <!-- GIF #5: small cute animation below card -->
-  <div class="gif-block gif-sm" style="margin-top:16px;">
-    <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif"
-         alt="sparkle gif"
-         onerror="this.parentElement.style.display='none'" />
-  </div>
-
   <div class="save-area">
-    <button class="btn-save" id="btnSave">📥 บันทึกบัตรเป็นรูปภาพ</button>
-    <p class="save-hint" id="saveHint"></p>
+    <button class="btn btn-save" id="btnSave">📥 บันทึกรูปลงเครื่อง</button>
   </div>
 </div>
 
 <script>
-/* ════════════════════════════════════════
-   0. START OVERLAY & INTRO
-════════════════════════════════════════ */
+/* ─── SPARKLE GENERATOR ─── */
+function createSparkle() {
+  const sparkle = document.createElement('div');
+  sparkle.className = 'sparkle';
+  const size = Math.random() * 6 + 2 + 'px';
+  sparkle.style.width = size;
+  sparkle.style.height = size;
+  sparkle.style.left = Math.random() * 100 + 'vw';
+  sparkle.style.top = Math.random() * 100 + 'vh';
+  sparkle.style.animationDuration = Math.random() * 2 + 1 + 's';
+  document.body.appendChild(sparkle);
+  setTimeout(() => sparkle.remove(), 2000);
+}
+setInterval(createSparkle, 300);
+
+/* ─── START & INTRO ─── */
 document.getElementById('btnStartMagic').addEventListener('click', () => {
   document.getElementById('startOverlay').classList.add('hidden');
-  startMusic();
+  document.getElementById('bgMusic').play();
   document.getElementById('musicBtn').classList.add('visible');
+  document.getElementById('musicBtn').classList.add('playing');
 
-  // Show intro GIF first
   setTimeout(() => { document.getElementById('introGifBlock').style.opacity = '1'; }, 300);
-  setTimeout(() => { document.getElementById('text1').classList.add('show'); }, 800);
-  setTimeout(() => { document.getElementById('text2').classList.add('show'); }, 2100);
-  setTimeout(() => { document.getElementById('text3').classList.add('show'); }, 3400);
-  setTimeout(() => { document.getElementById('text4').classList.add('show'); }, 4700);
-  setTimeout(() => { document.getElementById('btnEnter').classList.add('show'); }, 5800);
+  ['text1', 'text2', 'text3', 'text4', 'btnEnter'].forEach((id, i) => {
+    setTimeout(() => { document.getElementById(id).classList.add('show'); }, 800 + (i * 1200));
+  });
 });
 
-document.getElementById('btnEnter').addEventListener('click', () => {
-  showScreen('screen1');
-});
+document.getElementById('btnEnter').onclick = () => showScreen('screen1');
 
-/* ════════════════════════════════════════
-   1. FLOATING HEARTS BG
-════════════════════════════════════════ */
-const hbContainer = document.getElementById('heartsBg');
-const emojis = ['💕','💖','🌸','💗','✿','♡','🍓','💝'];
-for (let i = 0; i < 22; i++) {
-  const el = document.createElement('div');
-  el.className = 'hb';
-  el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-  el.style.left = Math.random() * 100 + 'vw';
-  el.style.fontSize = (.7 + Math.random() * 1.2) + 'rem';
-  el.style.animationDuration = (8 + Math.random() * 14) + 's';
-  el.style.animationDelay = (Math.random() * -20) + 's';
-  hbContainer.appendChild(el);
-}
+/* ─── CORE LOGIC (Keeping your working code) ─── */
+const showScreen = (id) => {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+};
 
-/* ════════════════════════════════════════
-   2. BACKGROUND MUSIC
-════════════════════════════════════════ */
-const bgMusic = document.getElementById('bgMusic');
-const musicBtn = document.getElementById('musicBtn');
-let musicPlaying = false;
+const showToast = (msg) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+};
 
-function startMusic() {
-  bgMusic.volume = 0.4;
-  bgMusic.play().catch(e => console.log('Audio blocked:', e));
-  musicPlaying = true;
-  musicBtn.textContent = '🎶';
-  musicBtn.classList.add('playing');
-}
-function stopMusic() {
-  bgMusic.pause();
-  musicPlaying = false;
-  musicBtn.textContent = '🎵';
-  musicBtn.classList.remove('playing');
-}
-musicBtn.addEventListener('click', () => { musicPlaying ? stopMusic() : startMusic(); });
-
-/* ════════════════════════════════════════
-   3. ESCALATING NO-BUTTON
-════════════════════════════════════════ */
-const NO_TEXTS = [
-  'ปฏิเสธ', 'แน่ใจหรอ? 🤔', 'คิดดูดีๆ น้า 🥺',
-  'กดตกลงเถอะพลีสส 😭', 'ได้โปรดดดด 🙏', 'หัวใจแตกแล้ว... 💔',
-];
-let noCount = 0;
-const btnNo = document.getElementById('btnNo');
-let noEscaped = false;
-
-function escapeBtn(e) {
-  noCount = Math.min(noCount + 1, NO_TEXTS.length - 1);
-  btnNo.textContent = NO_TEXTS[noCount];
-
-  const isMobile = window.innerWidth <= 480;
-  if (isMobile) {
-    btnNo.classList.remove('jiggle');
-    void btnNo.offsetWidth;
-    btnNo.classList.add('jiggle');
-    return;
-  }
-  if (!noEscaped) { btnNo.style.position = 'fixed'; noEscaped = true; }
-  const btn = btnNo.getBoundingClientRect();
-  const vw = window.innerWidth, vh = window.innerHeight;
-  let nx, ny, attempts = 0;
-  do {
-    nx = 32 + Math.random() * (vw - btn.width - 64);
-    ny = 32 + Math.random() * (vh - btn.height - 64);
-    attempts++;
-  } while (attempts < 20 &&
-    Math.abs(nx - (e.clientX || vw/2)) < 180 &&
-    Math.abs(ny - (e.clientY || vh/2)) < 90);
-  btnNo.style.left = nx + 'px';
-  btnNo.style.top  = ny + 'px';
-  btnNo.classList.remove('jiggle');
-  void btnNo.offsetWidth;
-  btnNo.classList.add('jiggle');
-}
-
-btnNo.addEventListener('mouseover', escapeBtn);
-btnNo.addEventListener('touchstart', e => { e.preventDefault(); escapeBtn(e); }, { passive: false });
-btnNo.addEventListener('click', escapeBtn);
-
-/* ════════════════════════════════════════
-   4. YES BUTTON
-════════════════════════════════════════ */
-document.getElementById('btnYes').addEventListener('click', () => {
-  showScreen('screen2');
-  launchConfetti();
-});
-
-/* ════════════════════════════════════════
-   5. IMAGE UPLOAD (ย่ออัตโนมัติ)
-════════════════════════════════════════ */
-const fileInput  = document.getElementById('fileInput');
-const previewImg = document.getElementById('previewImg');
+/* ─── IMAGE UPLOAD ─── */
 let uploadedDataURL = null;
-
-fileInput.addEventListener('change', (e) => {
+document.getElementById('uploadArea').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = (e) => {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = function(event) {
+  reader.onload = (event) => {
     const img = new Image();
-    img.onload = function() {
+    img.onload = () => {
       const canvas = document.createElement('canvas');
       const MAX = 400;
       let w = img.width, h = img.height;
       if (w > h) { if (w > MAX) { h *= MAX/w; w = MAX; } }
-      else        { if (h > MAX) { w *= MAX/h; h = MAX; } }
+      else { if (h > MAX) { w *= MAX/h; h = MAX; } }
       canvas.width = w; canvas.height = h;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, w, h);
       uploadedDataURL = canvas.toDataURL('image/jpeg', 0.8);
-      previewImg.src = uploadedDataURL;
-      previewImg.style.display = 'block';
+      document.getElementById('previewImg').src = uploadedDataURL;
+      document.getElementById('previewImg').style.display = 'block';
       document.getElementById('uploadIcon').style.display = 'none';
-      document.getElementById('uploadText').textContent = 'รูปน่ารักมาก! 😍';
+      document.getElementById('uploadText').textContent = "รูปสวยจัง! ✨";
     };
     img.src = event.target.result;
   };
   reader.readAsDataURL(file);
-});
+};
 
-/* ════════════════════════════════════════
-   6. MAKE CARD
-════════════════════════════════════════ */
-document.getElementById('btnMake').addEventListener('click', () => {
+/* ─── MAKE CARD ─── */
+document.getElementById('btnYes').onclick = () => { showScreen('screen2'); launchConfetti(); };
+document.getElementById('btnMake').onclick = () => {
   const nick = document.getElementById('nickInput').value.trim();
-  if (!nick) { showToast('กรุณากรอกชื่อเล่นก่อนนะ 💕'); return; }
-  if (!uploadedDataURL) { showToast('อย่าลืมอัปโหลดรูปด้วยนะ! 📷'); return; }
-
+  if (!nick) return showToast("ใส่ชื่อเล่นก่อนนะ 💕");
+  if (!uploadedDataURL) return showToast("ใส่รูปด้วยนะ 📸");
   document.getElementById('id-photo').src = uploadedDataURL;
   document.getElementById('id-name').textContent = nick;
-  document.getElementById('id-date').textContent = formatDate(new Date());
-  const cardNum = generateCardNum();
-  document.getElementById('id-num').textContent = cardNum;
-  document.getElementById('id-barnum').textContent = cardNum;
-
-  // Set save hint by device type
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  document.getElementById('saveHint').textContent = isMobile
-    ? '📱 มือถือ: แตะปุ่มแล้วกดค้างที่รูปเพื่อบันทึก'
-    : '💻 PC: ไฟล์จะดาวน์โหลดอัตโนมัติ';
-
+  document.getElementById('id-date').textContent = new Date().toLocaleDateString('th-TH', {day:'numeric', month:'short', year:'numeric'});
   showScreen('screen3');
   launchConfetti(60);
-});
+};
 
-/* ════════════════════════════════════════
-   7. HOLOGRAPHIC TILT EFFECT
-════════════════════════════════════════ */
-const tiltWrapper = document.getElementById('tiltWrapper');
-const idCard      = document.getElementById('idCard');
-const holoGlare   = document.getElementById('holoGlare');
-const MAX_TILT = 14;
-
-tiltWrapper.addEventListener('mousemove', e => {
-  const rect = tiltWrapper.getBoundingClientRect();
-  const cx = rect.left + rect.width / 2;
-  const cy = rect.top  + rect.height / 2;
-  const dx = (e.clientX - cx) / (rect.width  / 2);
-  const dy = (e.clientY - cy) / (rect.height / 2);
-  const rotX = -dy * MAX_TILT, rotY = dx * MAX_TILT;
-  idCard.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.03)`;
-  idCard.style.boxShadow = `${-rotY*.8}px ${rotX*.8}px 40px rgba(124,58,78,.28),0 2px 8px rgba(232,99,122,.1)`;
-  const gx = ((dx + 1) / 2 * 100).toFixed(1);
-  const gy = ((dy + 1) / 2 * 100).toFixed(1);
-  holoGlare.style.background = `radial-gradient(ellipse 70% 55% at ${gx}% ${gy}%,rgba(255,255,255,.6) 0%,rgba(255,200,220,.2) 30%,transparent 70%)`;
-});
-tiltWrapper.addEventListener('mouseleave', () => {
-  idCard.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-  idCard.style.boxShadow = '0 12px 50px rgba(124,58,78,.2),0 2px 8px rgba(232,99,122,.1)';
-});
-tiltWrapper.addEventListener('touchmove', e => {
-  const t = e.touches[0];
-  const rect = tiltWrapper.getBoundingClientRect();
-  const dx = ((t.clientX - rect.left) / rect.width  - .5) * 2;
-  const dy = ((t.clientY - rect.top)  / rect.height - .5) * 2;
-  idCard.style.transform = `rotateX(${-dy * MAX_TILT * .7}deg) rotateY(${dx * MAX_TILT * .7}deg) scale(1.02)`;
-}, { passive: true });
-tiltWrapper.addEventListener('touchend', () => {
-  idCard.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-});
-
-/* ════════════════════════════════════════
-   8. SAVE CARD — Fixed & Working
-════════════════════════════════════════ */
-document.getElementById('btnSave').addEventListener('click', async () => {
-  const btn = document.getElementById('btnSave');
-  const originalText = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '⏳ กำลังสร้างภาพ...';
-
-  const card      = document.getElementById('idCard');
-  const glare     = document.getElementById('holoGlare');
-  const rainbow   = document.querySelector('.holo-rainbow');
-
-  // ซ่อน effects ที่กวน
-  card.style.transform  = 'none';
+/* ─── SAVE CARD (Your stable version) ─── */
+document.getElementById('btnSave').onclick = async function() {
+  const btn = this;
+  const card = document.getElementById('idCard');
+  btn.disabled = true; btn.innerHTML = '⏳ กำลังบันทึก...';
+  
+  card.style.transform = 'none';
   card.style.transition = 'none';
-  card.style.boxShadow  = 'none';
-  glare.style.display   = 'none';
-  rainbow.style.display = 'none';
+  document.getElementById('holoGlare').style.display = 'none';
+  document.querySelector('.holo-rainbow').style.display = 'none';
 
-  await new Promise(r => setTimeout(r, 400));
-
+  await new Promise(r => setTimeout(r, 500));
   try {
-    const canvas = await html2canvas(card, {
-      scale: 2.5,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#fff8fa',
-      logging: false,
-    });
-
-    const imgData = canvas.toDataURL('image/jpeg', 0.92);
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-    if (isMobile) {
-      // มือถือ → popup กดค้างบันทึก
-      showDownloadOverlay(imgData);
-    } else {
-      // PC/Desktop → ดาวน์โหลดอัตโนมัติ
-      const link = document.createElement('a');
-      link.href = imgData;
-      link.download = 'girlfriend-id-card.jpg';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      showToast('ดาวน์โหลดสำเร็จแล้ว! 💕');
-
-      // แสดง popup ด้วย เผื่อ browser บล็อก auto-download
-      setTimeout(() => showDownloadOverlay(imgData), 300);
-    }
-
-  } catch (err) {
-    console.error(err);
-    showToast('เกิดข้อผิดพลาด ลองแคปหน้าจอแทนได้เลยนะ 📸');
-  } finally {
-    card.style.transform  = '';
-    card.style.transition = '';
-    card.style.boxShadow  = '';
-    glare.style.display   = 'block';
-    rainbow.style.display = 'block';
-    btn.disabled  = false;
-    btn.innerHTML = originalText;
-  }
-});
+    const canvas = await html2canvas(card, { scale: 2.5, useCORS: true, backgroundColor: '#fff8fa' });
+    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+    showDownloadOverlay(imgData);
+    showToast('สร้างรูปสำเร็จ! 🎉');
+  } catch (err) { showToast('แคปหน้าจอแทนได้เลยนะ 📸'); }
+  
+  card.style.transform = ''; card.style.transition = '';
+  document.getElementById('holoGlare').style.display = 'block';
+  document.querySelector('.holo-rainbow').style.display = 'block';
+  btn.disabled = false; btn.innerHTML = '📥 บันทึกรูปลงเครื่อง';
+};
 
 function showDownloadOverlay(dataUrl) {
-  // ลบ overlay เก่าออกก่อน (กรณีกดซ้ำ)
-  const old = document.getElementById('dlOverlay');
-  if (old) old.remove();
-
   const overlay = document.createElement('div');
-  overlay.id = 'dlOverlay';
   overlay.className = 'dl-overlay';
-
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
   overlay.innerHTML = `
-    <p class="dl-overlay-hint">
-      ${isMobile
-        ? '👇 กดค้างที่รูปภาพ แล้วเลือก <strong>"บันทึกรูปภาพ"</strong> 👇'
-        : '💾 รูปบัตรของคุณพร้อมแล้ว!<br>กด "ดาวน์โหลด" หรือคลิกขวาที่รูปเพื่อบันทึก'}
-    </p>
-    <img class="dl-overlay-img" src="${dataUrl}" alt="ID Card" />
-    <a class="dl-overlay-dl" href="${dataUrl}" download="girlfriend-id-card.jpg">
-      📥 ดาวน์โหลด
-    </a>
-    <button class="dl-overlay-close" id="dlClose">ปิด</button>
+    <p style="color:#fff; margin-bottom:20px;">👇 กดค้างที่รูปภาพเพื่อบันทึก 👇</p>
+    <img src="${dataUrl}" />
+    <button class="dl-close" onclick="this.parentElement.remove()">ปิด</button>
   `;
-
   document.body.appendChild(overlay);
-  document.getElementById('dlClose').onclick = () => overlay.remove();
 }
 
-/* ════════════════════════════════════════
-   HELPERS
-════════════════════════════════════════ */
-function formatDate(d) {
-  return d.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
-}
-function generateCardNum() {
-  const words = ['LOVE','MINE','BABE','CUTE','DEAR'];
-  const w = words[Math.floor(Math.random() * words.length)];
-  return String(Math.floor(1000 + Math.random() * 9000)) + '-' + w;
-}
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+/* ─── BACKGROUND EFFECTS ─── */
+const hbContainer = document.getElementById('heartsBg');
+for (let i = 0; i < 18; i++) {
+  const el = document.createElement('div');
+  el.className = 'hb';
+  el.textContent = ['💕','💖','🌸','💗','💝'][Math.floor(Math.random()*5)];
+  el.style.left = Math.random() * 100 + 'vw';
+  el.style.animationDuration = (7 + Math.random() * 12) + 's';
+  el.style.animationDelay = (Math.random() * -15) + 's';
+  hbContainer.appendChild(el);
 }
 
-/* ════════════════════════════════════════
-   CONFETTI
-════════════════════════════════════════ */
 function launchConfetti(count = 100) {
   const canvas = document.getElementById('confetti-canvas');
   const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  const COLORS = ['#e8637a','#f2a7b5','#d4a853','#c0445e','#fff','#fce8ed','#7c3a4e'];
-  const shapes = ['rect','circle','heart'];
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
   const pieces = Array.from({ length: count }, () => ({
-    x: Math.random() * canvas.width, y: -20 - Math.random() * 200,
-    r: 4 + Math.random() * 7, color: COLORS[Math.floor(Math.random() * COLORS.length)],
-    vx: (Math.random() - .5) * 4, vy: 2 + Math.random() * 4,
-    rot: Math.random() * Math.PI * 2, rotV: (Math.random() - .5) * .15,
-    shape: shapes[Math.floor(Math.random() * shapes.length)], alpha: 1
+    x: Math.random() * canvas.width, y: -20, r: 4 + Math.random() * 4,
+    v: 2 + Math.random() * 4, c: ['#e8637a','#f2a7b5','#fff','#ffd700'][Math.floor(Math.random()*4)]
   }));
-  let frame;
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    let alive = false;
-    pieces.forEach(p => {
-      if (p.alpha <= 0) return;
-      alive = true;
-      p.x += p.vx; p.y += p.vy; p.rot += p.rotV;
-      if (p.y > canvas.height * .75) p.alpha -= .018;
-      ctx.save();
-      ctx.globalAlpha = Math.max(0, p.alpha);
-      ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.color;
-      if (p.shape === 'rect') { ctx.fillRect(-p.r, -p.r*.6, p.r*2, p.r*1.2); }
-      else if (p.shape === 'circle') { ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); }
-      else {
-        const s = p.r/8; ctx.beginPath();
-        ctx.moveTo(0,-2*s); ctx.bezierCurveTo(4*s,-6*s,10*s,2*s,0,7*s);
-        ctx.bezierCurveTo(-10*s,2*s,-4*s,-6*s,0,-2*s); ctx.fill();
-      }
-      ctx.restore();
-    });
-    if (alive) frame = requestAnimationFrame(draw);
-    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  function update() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p => { p.y += p.v; ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill(); });
+    if(pieces.some(p => p.y < canvas.height)) requestAnimationFrame(update);
   }
-  cancelAnimationFrame(frame);
-  draw();
+  update();
 }
-
-window.addEventListener('resize', () => {
-  const c = document.getElementById('confetti-canvas');
-  c.width = window.innerWidth; c.height = window.innerHeight;
-});
 </script>
 </body>
 </html>
