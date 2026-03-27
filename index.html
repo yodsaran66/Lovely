@@ -72,21 +72,66 @@
     z-index: 9999;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
+    gap: 20px;
     transition: opacity 0.8s ease, visibility 0.8s ease;
   }
-  #startOverlay.hidden {
-    opacity: 0; visibility: hidden;
+  #startOverlay.hidden { opacity: 0; visibility: hidden; }
+
+  .start-gif {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--blush);
+    box-shadow: 0 6px 24px rgba(232,99,122,.25);
+    animation: floatBob 3s ease-in-out infinite;
   }
-  .pulse-btn {
-    animation: pulse 2s infinite;
+  @keyframes floatBob {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+
+  .start-label {
+    font-size: 1rem; color: var(--plum);
+    font-weight: 600; margin-top: -8px;
+  }
+
+  .pulse-btn { animation: pulse 2s infinite; }
+
+  /* ─── GIF HELPERS ─── */
+  .gif-block {
+    display: flex; justify-content: center; margin: 10px 0 18px;
+  }
+  .gif-block img {
+    border-radius: 16px;
+    max-width: 180px; max-height: 140px;
+    object-fit: cover;
+    box-shadow: 0 4px 20px rgba(124,58,78,.15);
+    border: 2px solid var(--blush);
+  }
+  .gif-sm img {
+    max-width: 100px; max-height: 80px; border-radius: 12px;
+  }
+  .gif-inline {
+    display: inline-block; vertical-align: middle;
+    width: 48px; height: 48px; border-radius: 50%;
+    object-fit: cover; border: 2px solid var(--blush);
+    margin-bottom: 8px;
   }
 
   /* ─── SCREEN 0 (Intro) ─── */
-  #screen0 .intro-wrap { background: transparent; padding: 20px; }
+  #screen0 .intro-wrap {
+    background: rgba(255,255,255,.75);
+    backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(232,99,122,.15);
+    border-radius: 28px;
+    padding: 36px 32px;
+    box-shadow: 0 8px 40px rgba(124,58,78,.1);
+  }
   .intro-text {
-    font-size: 1.2rem; color: var(--plum); margin-bottom: 24px;
+    font-size: 1.15rem; color: var(--plum); margin-bottom: 16px;
     opacity: 0; transform: translateY(15px);
     transition: opacity 1.5s ease, transform 1.5s ease;
+    line-height: 1.7;
   }
   .intro-text.show { opacity: 1; transform: translateY(0); }
   #btnEnter {
@@ -104,7 +149,7 @@
     backdrop-filter: blur(16px);
     border: 1.5px solid rgba(232,99,122,.18);
     border-radius: 28px;
-    padding: 48px 40px 40px;
+    padding: 40px 36px 36px;
     box-shadow: 0 8px 40px rgba(124,58,78,.12), 0 2px 8px rgba(232,99,122,.08);
   }
   .card .emoji-top { font-size: 3.2rem; margin-bottom: 12px; display: block; animation: pulse 2s ease-in-out infinite; }
@@ -114,7 +159,7 @@
     font-size: clamp(1.7rem, 5vw, 2.2rem);
     color: var(--plum); line-height: 1.3; margin-bottom: 8px;
   }
-  .card .sub { font-size: .95rem; color: #a06070; margin-bottom: 36px; line-height: 1.6; }
+  .card .sub { font-size: .95rem; color: #a06070; margin-bottom: 24px; line-height: 1.6; }
 
   .btn-row {
     display: flex; gap: 16px; justify-content: center;
@@ -151,17 +196,17 @@
     80%{transform:rotate(6deg);}
   }
 
-  .hearts-divider { margin: 28px 0; color: var(--blush); font-size: 1.1rem; letter-spacing: 6px; }
+  .hearts-divider { margin: 20px 0; color: var(--blush); font-size: 1.1rem; letter-spacing: 6px; }
 
   /* ─── SCREEN 2 ─── */
   .screen2-card {
     background: rgba(255,255,255,.9); backdrop-filter: blur(16px);
     border: 1.5px solid rgba(232,99,122,.2); border-radius: 28px;
-    padding: 40px 36px; box-shadow: 0 8px 40px rgba(124,58,78,.12);
+    padding: 36px 32px; box-shadow: 0 8px 40px rgba(124,58,78,.12);
   }
   .screen2-card h2 { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: var(--plum); margin-bottom: 6px; }
   .screen2-card .yay { font-size: 2.8rem; margin-bottom: 8px; display: block; }
-  .screen2-card p { color: #a06070; margin-bottom: 28px; line-height: 1.6; font-size: .95rem; }
+  .screen2-card p { color: #a06070; margin-bottom: 20px; line-height: 1.6; font-size: .95rem; }
 
   .form-group { margin-bottom: 18px; text-align: left; }
   .form-group label { font-size: .85rem; font-weight: 600; color: var(--plum); display: block; margin-bottom: 6px; }
@@ -176,7 +221,7 @@
 
   .upload-area {
     border: 2px dashed var(--blush); border-radius: 18px;
-    padding: 28px; background: var(--petal); cursor: pointer;
+    padding: 24px; background: var(--petal); cursor: pointer;
     transition: border-color .2s, background .2s;
     text-align: center; position: relative; overflow: hidden;
   }
@@ -191,7 +236,7 @@
   }
 
   .btn-make {
-    margin-top: 24px; width: 100%;
+    margin-top: 20px; width: 100%;
     background: linear-gradient(135deg, var(--rose), #c0445e);
     color: #fff; border: none; border-radius: 50px;
     padding: 15px; font-size: 1.05rem; font-weight: 600;
@@ -204,10 +249,7 @@
   /* ─── SCREEN 3 — ID Card ─── */
   #screen3 { width: min(90vw, 420px); }
 
-  .card-tilt-wrapper {
-    perspective: 900px;
-    cursor: pointer;
-  }
+  .card-tilt-wrapper { perspective: 900px; cursor: pointer; }
 
   .id-card {
     background: linear-gradient(145deg, #fff8fa, #fce8ed);
@@ -229,23 +271,16 @@
       rgba(255,200,220,.18) 30%,
       rgba(200,180,255,.08) 60%,
       transparent 80%);
-    opacity: 0;
-    transition: opacity .2s;
-    mix-blend-mode: screen;
+    opacity: 0; transition: opacity .2s; mix-blend-mode: screen;
   }
   .id-card .holo-rainbow {
     position: absolute; inset: 0; border-radius: 20px;
     pointer-events: none; z-index: 9;
     background: linear-gradient(125deg,
-      rgba(255,100,130,.0) 0%,
-      rgba(255,200,100,.08) 20%,
-      rgba(100,255,180,.08) 40%,
-      rgba(100,180,255,.08) 60%,
-      rgba(200,100,255,.08) 80%,
-      rgba(255,100,130,.0) 100%);
-    opacity: 0;
-    transition: opacity .3s;
-    mix-blend-mode: color-dodge;
+      rgba(255,100,130,.0) 0%, rgba(255,200,100,.08) 20%,
+      rgba(100,255,180,.08) 40%, rgba(100,180,255,.08) 60%,
+      rgba(200,100,255,.08) 80%, rgba(255,100,130,.0) 100%);
+    opacity: 0; transition: opacity .3s; mix-blend-mode: color-dodge;
   }
   .card-tilt-wrapper:hover .holo-glare,
   .card-tilt-wrapper:hover .holo-rainbow { opacity: 1; }
@@ -275,7 +310,7 @@
     width: 96px; height: 96px; border-radius: 50%;
     object-fit: cover; border: 3.5px solid #fff;
     box-shadow: 0 4px 16px rgba(124,58,78,.25); display: block;
-    background-color: #fff; /* ป้องกันภาพพื้นใสแล้วแคปติดสีดำ */
+    background-color: #fff;
   }
   .id-photo-wrap::after {
     content: '💕'; position: absolute; bottom: -2px; right: -6px; font-size: 1.2rem;
@@ -328,8 +363,10 @@
     transform: rotate(-12deg);
   }
 
+  /* ─── SAVE BUTTON ─── */
+  .save-area { margin-top: 20px; }
   .btn-save {
-    margin-top: 20px; width: 100%;
+    width: 100%;
     background: #fff; color: var(--rose);
     border: 2px solid var(--rose); border-radius: 50px;
     padding: 13px; font-size: .95rem; font-weight: 600;
@@ -340,6 +377,13 @@
   .btn-save:hover { background: var(--rose); color: #fff; }
   .btn-save:disabled { opacity: .6; cursor: wait; }
 
+  .save-hint {
+    margin-top: 10px;
+    font-size: .8rem; color: #b07880;
+    line-height: 1.5;
+  }
+
+  /* ─── MUSIC BTN ─── */
   .music-btn {
     position: fixed; bottom: 24px; right: 24px; z-index: 500;
     width: 48px; height: 48px; border-radius: 50%;
@@ -365,24 +409,71 @@
     opacity: 0; white-space: nowrap;
   }
   .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* ─── DOWNLOAD OVERLAY ─── */
+  .dl-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.88); z-index: 10000;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 20px; animation: fadeIn .3s ease;
+  }
+  .dl-overlay-hint {
+    color: #fff; margin-bottom: 18px;
+    font-size: 1rem; font-family: 'Sarabun', sans-serif;
+    text-align: center; line-height: 1.6;
+  }
+  .dl-overlay-img {
+    max-width: 100%; max-height: 60vh;
+    border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,.5);
+  }
+  .dl-overlay-close {
+    margin-top: 20px; padding: 12px 30px;
+    border-radius: 50px; border: none;
+    background: #fff; color: var(--rose);
+    font-weight: 700; font-family: 'Sarabun', sans-serif;
+    cursor: pointer; font-size: 1rem;
+  }
+  .dl-overlay-dl {
+    margin-top: 12px; padding: 12px 30px;
+    border-radius: 50px; border: 2px solid #fff;
+    background: transparent; color: #fff;
+    font-weight: 600; font-family: 'Sarabun', sans-serif;
+    cursor: pointer; font-size: .95rem;
+    text-decoration: none; display: inline-block;
+  }
 </style>
 </head>
 <body>
 
 <audio id="bgMusic" src="Love.mp3" loop></audio>
 
+<!-- ══════════ TAP TO START ══════════ -->
 <div id="startOverlay">
+  <!-- GIF #1: ซองจดหมายน่ารัก / ใส่ GIF ที่ต้องการตรงนี้ -->
+  <img class="start-gif"
+       src="https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif"
+       alt="love gif"
+       onerror="this.style.display='none'" />
+  <p class="start-label">มีจดหมายถึงคุณ 💌</p>
   <button id="btnStartMagic" class="btn btn-yes pulse-btn">💌 แตะเพื่อเปิดดู</button>
 </div>
 
 <div class="hearts-bg" id="heartsBg"></div>
 <canvas id="confetti-canvas"></canvas>
 <div class="toast" id="toast"></div>
-
 <button class="music-btn" id="musicBtn" title="เปิด/ปิดเพลง">🎵</button>
 
+<!-- ══════════ SCREEN 0 — INTRO ══════════ -->
 <div class="screen active" id="screen0">
   <div class="intro-wrap">
+    <!-- GIF #2: ตัวละครน่ารัก / shyness GIF -->
+    <div class="gif-block" id="introGifBlock" style="opacity:0;transition:opacity 1.2s ease;">
+      <img src="https://media.giphy.com/media/3oEjHAufHqiXjWkvck/giphy.gif"
+           alt="shy gif"
+           style="max-width:150px;max-height:120px;border-radius:16px;border:2px solid var(--blush);box-shadow:0 4px 18px rgba(124,58,78,.15);"
+           onerror="this.parentElement.style.display='none'" />
+    </div>
     <p class="intro-text" id="text1">ขอบคุณนะที่เรามาชอบพี่อะ</p>
     <p class="intro-text" id="text2">เราก็คุยกันมาสักพักแล้วสินะะะ</p>
     <p class="intro-text" id="text3">ตอนนี้ก็คงถึงเวลาที่เราจะต้องชัดเจนกันมากขึ้นสักที</p>
@@ -391,9 +482,16 @@
   </div>
 </div>
 
+<!-- ══════════ SCREEN 1 — QUESTION ══════════ -->
 <div class="screen" id="screen1">
   <div class="card">
     <span class="emoji-top">💌</span>
+    <!-- GIF #3: cute couple / nervous asking -->
+    <div class="gif-block">
+      <img src="https://media.giphy.com/media/26BRuo6sLetdllPAQ/giphy.gif"
+           alt="love gif"
+           onerror="this.parentElement.style.display='none'" />
+    </div>
     <h1>เรามาเป็นแฟนกันมั้ยยยย</h1>
     <p class="sub">ได้เวลาเลื่อนสถานะกันแล้วววว<br>แล้วเราจะตอบว่าอะไรดีล่ะ?</p>
     <div class="hearts-divider">♡ ♡ ♡</div>
@@ -404,10 +502,17 @@
   </div>
 </div>
 
+<!-- ══════════ SCREEN 2 — FORM ══════════ -->
 <div class="screen" id="screen2">
   <div class="screen2-card">
     <span class="yay">🎉</span>
     <h2>คบกันไปนานๆนะ</h2>
+    <!-- GIF #4: celebration / happy -->
+    <div class="gif-block">
+      <img src="https://media.giphy.com/media/a0h7sAqON67nO/giphy.gif"
+           alt="celebrate gif"
+           onerror="this.parentElement.style.display='none'" />
+    </div>
     <p>ตอนนี้เราเป็นแฟนกันแล้วนะ 💖<br>มาทำบัตรประจำตัวแฟนคนโปรดกันดีกว่า</p>
     <div class="form-group">
       <label>ชื่อเล่นของคุณ</label>
@@ -426,6 +531,7 @@
   </div>
 </div>
 
+<!-- ══════════ SCREEN 3 — ID CARD ══════════ -->
 <div class="screen" id="screen3">
   <div class="card-tilt-wrapper" id="tiltWrapper">
     <div class="id-card" id="idCard">
@@ -465,24 +571,35 @@
     </div>
   </div>
 
-  <button class="btn-save" id="btnSave">📥 บันทึกบัตรเป็นรูปภาพ</button>
+  <!-- GIF #5: small cute animation below card -->
+  <div class="gif-block gif-sm" style="margin-top:16px;">
+    <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif"
+         alt="sparkle gif"
+         onerror="this.parentElement.style.display='none'" />
+  </div>
+
+  <div class="save-area">
+    <button class="btn-save" id="btnSave">📥 บันทึกบัตรเป็นรูปภาพ</button>
+    <p class="save-hint" id="saveHint"></p>
+  </div>
 </div>
 
 <script>
 /* ════════════════════════════════════════
-   0. START OVERLAY & INTRO LOGIC 
+   0. START OVERLAY & INTRO
 ════════════════════════════════════════ */
 document.getElementById('btnStartMagic').addEventListener('click', () => {
   document.getElementById('startOverlay').classList.add('hidden');
-  
   startMusic();
   document.getElementById('musicBtn').classList.add('visible');
-  
-  setTimeout(() => { document.getElementById('text1').classList.add('show'); }, 500);
-  setTimeout(() => { document.getElementById('text2').classList.add('show'); }, 1800);
-  setTimeout(() => { document.getElementById('text3').classList.add('show'); }, 3100);
-  setTimeout(() => { document.getElementById('text4').classList.add('show'); }, 4400);
-  setTimeout(() => { document.getElementById('btnEnter').classList.add('show'); }, 5700);
+
+  // Show intro GIF first
+  setTimeout(() => { document.getElementById('introGifBlock').style.opacity = '1'; }, 300);
+  setTimeout(() => { document.getElementById('text1').classList.add('show'); }, 800);
+  setTimeout(() => { document.getElementById('text2').classList.add('show'); }, 2100);
+  setTimeout(() => { document.getElementById('text3').classList.add('show'); }, 3400);
+  setTimeout(() => { document.getElementById('text4').classList.add('show'); }, 4700);
+  setTimeout(() => { document.getElementById('btnEnter').classList.add('show'); }, 5800);
 });
 
 document.getElementById('btnEnter').addEventListener('click', () => {
@@ -490,7 +607,7 @@ document.getElementById('btnEnter').addEventListener('click', () => {
 });
 
 /* ════════════════════════════════════════
-   1. FLOATING HEARTS BACKGROUND
+   1. FLOATING HEARTS BG
 ════════════════════════════════════════ */
 const hbContainer = document.getElementById('heartsBg');
 const emojis = ['💕','💖','🌸','💗','✿','♡','🍓','💝'];
@@ -506,45 +623,36 @@ for (let i = 0; i < 22; i++) {
 }
 
 /* ════════════════════════════════════════
-   2. BACKGROUND MUSIC (MP3)
+   2. BACKGROUND MUSIC
 ════════════════════════════════════════ */
 const bgMusic = document.getElementById('bgMusic');
 const musicBtn = document.getElementById('musicBtn');
 let musicPlaying = false;
 
 function startMusic() {
-  bgMusic.volume = 0.4; 
-  bgMusic.play().catch(e => console.log('Audio error:', e));
+  bgMusic.volume = 0.4;
+  bgMusic.play().catch(e => console.log('Audio blocked:', e));
   musicPlaying = true;
   musicBtn.textContent = '🎶';
   musicBtn.classList.add('playing');
 }
-
 function stopMusic() {
   bgMusic.pause();
   musicPlaying = false;
   musicBtn.textContent = '🎵';
   musicBtn.classList.remove('playing');
 }
-
-musicBtn.addEventListener('click', () => {
-  musicPlaying ? stopMusic() : startMusic();
-});
+musicBtn.addEventListener('click', () => { musicPlaying ? stopMusic() : startMusic(); });
 
 /* ════════════════════════════════════════
    3. ESCALATING NO-BUTTON
 ════════════════════════════════════════ */
 const NO_TEXTS = [
-  'ปฏิเสธ',
-  'แน่ใจหรอ? 🤔',
-  'คิดดูดีๆ น้า 🥺',
-  'กดตกลงเถอะพลีสส 😭',
-  'ได้โปรดดดด 🙏',
-  'หัวใจแตกแล้ว... 💔',
+  'ปฏิเสธ', 'แน่ใจหรอ? 🤔', 'คิดดูดีๆ น้า 🥺',
+  'กดตกลงเถอะพลีสส 😭', 'ได้โปรดดดด 🙏', 'หัวใจแตกแล้ว... 💔',
 ];
 let noCount = 0;
 const btnNo = document.getElementById('btnNo');
-const btnRow = document.getElementById('btnRow');
 let noEscaped = false;
 
 function escapeBtn(e) {
@@ -589,7 +697,7 @@ document.getElementById('btnYes').addEventListener('click', () => {
 });
 
 /* ════════════════════════════════════════
-   5. IMAGE UPLOAD (ย่อภาพอัตโนมัติป้องกันมือถือเมมเต็ม)
+   5. IMAGE UPLOAD (ย่ออัตโนมัติ)
 ════════════════════════════════════════ */
 const fileInput  = document.getElementById('fileInput');
 const previewImg = document.getElementById('previewImg');
@@ -598,32 +706,19 @@ let uploadedDataURL = null;
 fileInput.addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (!file) return;
-
   const reader = new FileReader();
   reader.onload = function(event) {
     const img = new Image();
     img.onload = function() {
-      // เอาไฟล์ภาพมาย่อขนาดให้เหลือไม่เกิน 400px (ป้องกันมือถือค้างตอนแคป)
       const canvas = document.createElement('canvas');
-      const MAX_WIDTH = 400;
-      const MAX_HEIGHT = 400;
-      let width = img.width;
-      let height = img.height;
-
-      if (width > height) {
-        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-      } else {
-        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
-      }
-      
-      canvas.width = width;
-      canvas.height = height;
+      const MAX = 400;
+      let w = img.width, h = img.height;
+      if (w > h) { if (w > MAX) { h *= MAX/w; w = MAX; } }
+      else        { if (h > MAX) { w *= MAX/h; h = MAX; } }
+      canvas.width = w; canvas.height = h;
       const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, width, height);
-
-      // แปลงรูปเป็น JPEG 80% ให้เบาที่สุด
+      ctx.drawImage(img, 0, 0, w, h);
       uploadedDataURL = canvas.toDataURL('image/jpeg', 0.8);
-      
       previewImg.src = uploadedDataURL;
       previewImg.style.display = 'block';
       document.getElementById('uploadIcon').style.display = 'none';
@@ -649,6 +744,12 @@ document.getElementById('btnMake').addEventListener('click', () => {
   document.getElementById('id-num').textContent = cardNum;
   document.getElementById('id-barnum').textContent = cardNum;
 
+  // Set save hint by device type
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  document.getElementById('saveHint').textContent = isMobile
+    ? '📱 มือถือ: แตะปุ่มแล้วกดค้างที่รูปเพื่อบันทึก'
+    : '💻 PC: ไฟล์จะดาวน์โหลดอัตโนมัติ';
+
   showScreen('screen3');
   launchConfetti(60);
 });
@@ -659,149 +760,127 @@ document.getElementById('btnMake').addEventListener('click', () => {
 const tiltWrapper = document.getElementById('tiltWrapper');
 const idCard      = document.getElementById('idCard');
 const holoGlare   = document.getElementById('holoGlare');
-
-const MAX_TILT = 14; 
+const MAX_TILT = 14;
 
 tiltWrapper.addEventListener('mousemove', e => {
   const rect = tiltWrapper.getBoundingClientRect();
-  const cx = rect.left + rect.width  / 2;
+  const cx = rect.left + rect.width / 2;
   const cy = rect.top  + rect.height / 2;
   const dx = (e.clientX - cx) / (rect.width  / 2);
   const dy = (e.clientY - cy) / (rect.height / 2);
-
-  const rotX = -dy * MAX_TILT;
-  const rotY =  dx * MAX_TILT;
-
+  const rotX = -dy * MAX_TILT, rotY = dx * MAX_TILT;
   idCard.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.03)`;
-  idCard.style.boxShadow =
-    `${-rotY * .8}px ${rotX * .8}px 40px rgba(124,58,78,.28),
-     0 2px 8px rgba(232,99,122,.1)`;
-
+  idCard.style.boxShadow = `${-rotY*.8}px ${rotX*.8}px 40px rgba(124,58,78,.28),0 2px 8px rgba(232,99,122,.1)`;
   const gx = ((dx + 1) / 2 * 100).toFixed(1);
   const gy = ((dy + 1) / 2 * 100).toFixed(1);
-  holoGlare.style.background =
-    `radial-gradient(ellipse 70% 55% at ${gx}% ${gy}%,
-      rgba(255,255,255,.6) 0%,
-      rgba(255,200,220,.2) 30%,
-      transparent 70%)`;
+  holoGlare.style.background = `radial-gradient(ellipse 70% 55% at ${gx}% ${gy}%,rgba(255,255,255,.6) 0%,rgba(255,200,220,.2) 30%,transparent 70%)`;
 });
-
 tiltWrapper.addEventListener('mouseleave', () => {
   idCard.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-  idCard.style.boxShadow = '0 12px 50px rgba(124,58,78,.2), 0 2px 8px rgba(232,99,122,.1)';
+  idCard.style.boxShadow = '0 12px 50px rgba(124,58,78,.2),0 2px 8px rgba(232,99,122,.1)';
 });
-
 tiltWrapper.addEventListener('touchmove', e => {
   const t = e.touches[0];
   const rect = tiltWrapper.getBoundingClientRect();
   const dx = ((t.clientX - rect.left) / rect.width  - .5) * 2;
   const dy = ((t.clientY - rect.top)  / rect.height - .5) * 2;
-  const rotX = -dy * (MAX_TILT * .7);
-  const rotY =  dx * (MAX_TILT * .7);
-  idCard.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
+  idCard.style.transform = `rotateX(${-dy * MAX_TILT * .7}deg) rotateY(${dx * MAX_TILT * .7}deg) scale(1.02)`;
 }, { passive: true });
 tiltWrapper.addEventListener('touchend', () => {
   idCard.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
 });
 
 /* ════════════════════════════════════════
-   8. SAVE CARD AS IMAGE (โค้ดคลีน ไม่มีตัวบล็อกการเซฟ)
+   8. SAVE CARD — Fixed & Working
 ════════════════════════════════════════ */
 document.getElementById('btnSave').addEventListener('click', async () => {
   const btn = document.getElementById('btnSave');
   const originalText = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = '⏳ กำลังสร้างภาพ... รอแป๊บนึงนะ';
+  btn.innerHTML = '⏳ กำลังสร้างภาพ...';
 
-  const card = document.getElementById('idCard');
-  const holoGlare = document.getElementById('holoGlare');
-  const holoRainbow = document.querySelector('.holo-rainbow');
+  const card      = document.getElementById('idCard');
+  const glare     = document.getElementById('holoGlare');
+  const rainbow   = document.querySelector('.holo-rainbow');
 
-  // ถอดเอฟเฟกต์ที่กวนการแคปภาพออก
-  card.style.transform = 'none';
+  // ซ่อน effects ที่กวน
+  card.style.transform  = 'none';
   card.style.transition = 'none';
-  card.style.boxShadow = 'none';
-  holoGlare.style.display = 'none';
-  holoRainbow.style.display = 'none';
+  card.style.boxShadow  = 'none';
+  glare.style.display   = 'none';
+  rainbow.style.display = 'none';
 
-  // ให้เวลาเบราว์เซอร์เตรียมตัว 0.5 วินาที
-  await new Promise(resolve => setTimeout(resolve, 500));
+  await new Promise(r => setTimeout(r, 400));
 
   try {
-    // เริ่มแคปรูปแบบไม่ติดเงื่อนไข
     const canvas = await html2canvas(card, {
-      scale: 2,
+      scale: 2.5,
       useCORS: true,
+      allowTaint: true,
       backgroundColor: '#fff8fa',
-      logging: false 
+      logging: false,
     });
 
-    const imgData = canvas.toDataURL('image/jpeg', 0.9);
-    showDownloadOverlay(imgData); 
-    showToast('สร้างรูปสำเร็จแล้ว! 🎉');
+    const imgData = canvas.toDataURL('image/jpeg', 0.92);
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // มือถือ → popup กดค้างบันทึก
+      showDownloadOverlay(imgData);
+    } else {
+      // PC/Desktop → ดาวน์โหลดอัตโนมัติ
+      const link = document.createElement('a');
+      link.href = imgData;
+      link.download = 'girlfriend-id-card.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('ดาวน์โหลดสำเร็จแล้ว! 💕');
+
+      // แสดง popup ด้วย เผื่อ browser บล็อก auto-download
+      setTimeout(() => showDownloadOverlay(imgData), 300);
+    }
 
   } catch (err) {
     console.error(err);
-    alert("ถ้ามีข้อความนี้แคปมาให้ดูหน่อยนะครับ: " + err.message); 
-    showToast('แคปหน้าจอด้วยตัวเองแทนได้เลยนะ 📸');
+    showToast('เกิดข้อผิดพลาด ลองแคปหน้าจอแทนได้เลยนะ 📸');
   } finally {
-    // เปิดเอฟเฟกต์กลับมาเหมือนเดิม
-    card.style.transform = '';
+    card.style.transform  = '';
     card.style.transition = '';
-    card.style.boxShadow = '';
-    holoGlare.style.display = 'block';
-    holoRainbow.style.display = 'block';
-    btn.disabled = false;
+    card.style.boxShadow  = '';
+    glare.style.display   = 'block';
+    rainbow.style.display = 'block';
+    btn.disabled  = false;
     btn.innerHTML = originalText;
   }
 });
 
-// ฟังก์ชัน Popup โชว์ภาพให้ผู้ใช้กดค้างเพื่อเซฟ
 function showDownloadOverlay(dataUrl) {
+  // ลบ overlay เก่าออกก่อน (กรณีกดซ้ำ)
+  const old = document.getElementById('dlOverlay');
+  if (old) old.remove();
+
   const overlay = document.createElement('div');
-  overlay.style.position = 'fixed';
-  overlay.style.inset = '0';
-  overlay.style.backgroundColor = 'rgba(0,0,0,0.85)';
-  overlay.style.zIndex = '10000';
-  overlay.style.display = 'flex';
-  overlay.style.flexDirection = 'column';
-  overlay.style.alignItems = 'center';
-  overlay.style.justifyContent = 'center';
-  overlay.style.padding = '20px';
-  overlay.style.animation = 'fadeIn 0.3s ease';
+  overlay.id = 'dlOverlay';
+  overlay.className = 'dl-overlay';
 
-  const hint = document.createElement('p');
-  hint.textContent = '👇 แตะค้างที่รูปภาพแล้วเลือก "บันทึกรูปภาพ" 👇';
-  hint.style.color = '#fff';
-  hint.style.marginBottom = '20px';
-  hint.style.fontSize = '1.1rem';
-  hint.style.fontFamily = "'Sarabun', sans-serif";
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  const img = document.createElement('img');
-  img.src = dataUrl;
-  img.style.maxWidth = '100%';
-  img.style.maxHeight = '65vh';
-  img.style.borderRadius = '16px';
-  img.style.boxShadow = '0 10px 40px rgba(0,0,0,0.5)';
+  overlay.innerHTML = `
+    <p class="dl-overlay-hint">
+      ${isMobile
+        ? '👇 กดค้างที่รูปภาพ แล้วเลือก <strong>"บันทึกรูปภาพ"</strong> 👇'
+        : '💾 รูปบัตรของคุณพร้อมแล้ว!<br>กด "ดาวน์โหลด" หรือคลิกขวาที่รูปเพื่อบันทึก'}
+    </p>
+    <img class="dl-overlay-img" src="${dataUrl}" alt="ID Card" />
+    <a class="dl-overlay-dl" href="${dataUrl}" download="girlfriend-id-card.jpg">
+      📥 ดาวน์โหลด
+    </a>
+    <button class="dl-overlay-close" id="dlClose">ปิด</button>
+  `;
 
-  const closeBtn = document.createElement('button');
-  closeBtn.textContent = 'ปิดหน้าต่างนี้';
-  closeBtn.style.marginTop = '24px';
-  closeBtn.style.padding = '12px 30px';
-  closeBtn.style.borderRadius = '50px';
-  closeBtn.style.border = 'none';
-  closeBtn.style.background = '#fff';
-  closeBtn.style.color = '#e8637a';
-  closeBtn.style.fontWeight = 'bold';
-  closeBtn.style.fontFamily = "'Sarabun', sans-serif";
-  closeBtn.style.cursor = 'pointer';
-
-  closeBtn.onclick = () => document.body.removeChild(overlay);
-
-  overlay.appendChild(hint);
-  overlay.appendChild(img);
-  overlay.appendChild(closeBtn);
   document.body.appendChild(overlay);
+  document.getElementById('dlClose').onclick = () => overlay.remove();
 }
 
 /* ════════════════════════════════════════
@@ -810,18 +889,15 @@ function showDownloadOverlay(dataUrl) {
 function formatDate(d) {
   return d.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
 }
-
 function generateCardNum() {
   const words = ['LOVE','MINE','BABE','CUTE','DEAR'];
   const w = words[Math.floor(Math.random() * words.length)];
   return String(Math.floor(1000 + Math.random() * 9000)) + '-' + w;
 }
-
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
-
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -837,23 +913,15 @@ function launchConfetti(count = 100) {
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-
   const COLORS = ['#e8637a','#f2a7b5','#d4a853','#c0445e','#fff','#fce8ed','#7c3a4e'];
   const shapes = ['rect','circle','heart'];
-
   const pieces = Array.from({ length: count }, () => ({
-    x: Math.random() * canvas.width,
-    y: -20 - Math.random() * 200,
-    r: 4 + Math.random() * 7,
-    color: COLORS[Math.floor(Math.random() * COLORS.length)],
-    vx: (Math.random() - .5) * 4,
-    vy: 2 + Math.random() * 4,
-    rot: Math.random() * Math.PI * 2,
-    rotV: (Math.random() - .5) * .15,
-    shape: shapes[Math.floor(Math.random() * shapes.length)],
-    alpha: 1
+    x: Math.random() * canvas.width, y: -20 - Math.random() * 200,
+    r: 4 + Math.random() * 7, color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    vx: (Math.random() - .5) * 4, vy: 2 + Math.random() * 4,
+    rot: Math.random() * Math.PI * 2, rotV: (Math.random() - .5) * .15,
+    shape: shapes[Math.floor(Math.random() * shapes.length)], alpha: 1
   }));
-
   let frame;
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -865,20 +933,13 @@ function launchConfetti(count = 100) {
       if (p.y > canvas.height * .75) p.alpha -= .018;
       ctx.save();
       ctx.globalAlpha = Math.max(0, p.alpha);
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rot);
-      ctx.fillStyle = p.color;
-      if (p.shape === 'rect') {
-        ctx.fillRect(-p.r, -p.r*.6, p.r*2, p.r*1.2);
-      } else if (p.shape === 'circle') {
-        ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill();
-      } else {
-        const s = p.r/8;
-        ctx.beginPath();
-        ctx.moveTo(0,-2*s);
-        ctx.bezierCurveTo(4*s,-6*s,10*s,2*s,0,7*s);
-        ctx.bezierCurveTo(-10*s,2*s,-4*s,-6*s,0,-2*s);
-        ctx.fill();
+      ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.color;
+      if (p.shape === 'rect') { ctx.fillRect(-p.r, -p.r*.6, p.r*2, p.r*1.2); }
+      else if (p.shape === 'circle') { ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); }
+      else {
+        const s = p.r/8; ctx.beginPath();
+        ctx.moveTo(0,-2*s); ctx.bezierCurveTo(4*s,-6*s,10*s,2*s,0,7*s);
+        ctx.bezierCurveTo(-10*s,2*s,-4*s,-6*s,0,-2*s); ctx.fill();
       }
       ctx.restore();
     });
