@@ -683,42 +683,95 @@ tiltWrapper.addEventListener('touchend', () => {
 });
 
 /* ════════════════════════════════════════
-   8. SAVE CARD AS IMAGE (html2canvas)
+   8. SAVE CARD AS IMAGE (รองรับมือถือ & LINE)
 ════════════════════════════════════════ */
 document.getElementById('btnSave').addEventListener('click', async () => {
   const btn = document.getElementById('btnSave');
+  const originalText = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = '⏳ กำลังสร้างภาพ...';
 
+  // ปิดเอฟเฟกต์ชั่วคราวเพื่อให้ภาพที่แคปออกมาแบนและชัดเจน
   idCard.style.transform = 'none';
   idCard.style.transition = 'none';
-
   holoGlare.style.opacity = '0';
   document.querySelector('.holo-rainbow').style.opacity = '0';
 
   try {
+    // ลดสเกลลงมานิดนึงเพื่อไม่ให้ไฟล์ใหญ่เกินไปจนมือถือค้าง
     const canvas = await html2canvas(document.getElementById('idCard'), {
-      scale: 3,
+      scale: 2, 
       useCORS: true,
       backgroundColor: null,
       logging: false,
     });
 
-    const link = document.createElement('a');
-    link.download = 'girlfriend-id-card.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-    showToast('บันทึกบัตรสำเร็จแล้ว! 🎉');
+    const imgData = canvas.toDataURL('image/png');
+
+    // สร้างหน้าต่าง Popup เพื่อโชว์รูปให้ผู้ใช้กดเซฟเอง (แก้ปัญหาเบราว์เซอร์มือถือบล็อกดาวน์โหลด)
+    showDownloadOverlay(imgData);
+    showToast('สร้างรูปสำเร็จ! 🎉');
+
   } catch (err) {
+    console.error(err);
     showToast('เกิดข้อผิดพลาด ลองแคปหน้าจอแทนนะ 📸');
   }
 
+  // คืนค่าเอฟเฟกต์กลับมาเหมือนเดิม
   idCard.style.transition = '';
   holoGlare.style.opacity = '';
   document.querySelector('.holo-rainbow').style.opacity = '';
   btn.disabled = false;
-  btn.innerHTML = '📥 บันทึกบัตรเป็นรูปภาพ';
+  btn.innerHTML = originalText;
 });
+
+// ฟังก์ชันสำหรับสร้างหน้าต่าง Popup โชว์รูปภาพ
+function showDownloadOverlay(dataUrl) {
+  const overlay = document.createElement('div');
+  overlay.style.position = 'fixed';
+  overlay.style.inset = '0';
+  overlay.style.backgroundColor = 'rgba(0,0,0,0.85)';
+  overlay.style.zIndex = '10000';
+  overlay.style.display = 'flex';
+  overlay.style.flexDirection = 'column';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
+  overlay.style.padding = '20px';
+  overlay.style.animation = 'fadeIn 0.3s ease';
+
+  const hint = document.createElement('p');
+  hint.textContent = '👇 แตะค้างที่รูปภาพแล้วเลือก "บันทึกรูปภาพ" 👇';
+  hint.style.color = '#fff';
+  hint.style.marginBottom = '20px';
+  hint.style.fontSize = '1.1rem';
+  hint.style.fontFamily = "'Sarabun', sans-serif";
+
+  const img = document.createElement('img');
+  img.src = dataUrl;
+  img.style.maxWidth = '100%';
+  img.style.maxHeight = '65vh';
+  img.style.borderRadius = '16px';
+  img.style.boxShadow = '0 10px 40px rgba(0,0,0,0.5)';
+
+  const closeBtn = document.createElement('button');
+  closeBtn.textContent = 'ปิดหน้าต่างนี้';
+  closeBtn.style.marginTop = '24px';
+  closeBtn.style.padding = '12px 30px';
+  closeBtn.style.borderRadius = '50px';
+  closeBtn.style.border = 'none';
+  closeBtn.style.background = '#fff';
+  closeBtn.style.color = '#e8637a';
+  closeBtn.style.fontWeight = 'bold';
+  closeBtn.style.fontFamily = "'Sarabun', sans-serif";
+  closeBtn.style.cursor = 'pointer';
+
+  closeBtn.onclick = () => document.body.removeChild(overlay);
+
+  overlay.appendChild(hint);
+  overlay.appendChild(img);
+  overlay.appendChild(closeBtn);
+  document.body.appendChild(overlay);
+}
 
 /* ════════════════════════════════════════
    HELPERS
