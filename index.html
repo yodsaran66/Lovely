@@ -275,6 +275,7 @@
     width: 96px; height: 96px; border-radius: 50%;
     object-fit: cover; border: 3.5px solid #fff;
     box-shadow: 0 4px 16px rgba(124,58,78,.25); display: block;
+    background-color: #fff; /* ป้องกันภาพพื้นใสแล้วแคปติดสีดำ */
   }
   .id-photo-wrap::after {
     content: '💕'; position: absolute; bottom: -2px; right: -6px; font-size: 1.2rem;
@@ -588,7 +589,7 @@ document.getElementById('btnYes').addEventListener('click', () => {
 });
 
 /* ════════════════════════════════════════
-   5. IMAGE UPLOAD (เพิ่มระบบย่อรูปอัตโนมัติ)
+   5. IMAGE UPLOAD (ย่อภาพอัตโนมัติป้องกันมือถือเมมเต็ม)
 ════════════════════════════════════════ */
 const fileInput  = document.getElementById('fileInput');
 const previewImg = document.getElementById('previewImg');
@@ -602,23 +603,17 @@ fileInput.addEventListener('change', (e) => {
   reader.onload = function(event) {
     const img = new Image();
     img.onload = function() {
-      // สร้าง Canvas เพื่อย่อขนาดรูปให้เล็กลง (ป้องกันมือถือค้างตอนแคปบัตร)
+      // เอาไฟล์ภาพมาย่อขนาดให้เหลือไม่เกิน 400px (ป้องกันมือถือค้างตอนแคป)
       const canvas = document.createElement('canvas');
-      const MAX_WIDTH = 400; // กำหนดขนาดสูงสุด
+      const MAX_WIDTH = 400;
       const MAX_HEIGHT = 400;
       let width = img.width;
       let height = img.height;
 
       if (width > height) {
-        if (width > MAX_WIDTH) {
-          height *= MAX_WIDTH / width;
-          width = MAX_WIDTH;
-        }
+        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
       } else {
-        if (height > MAX_HEIGHT) {
-          width *= MAX_HEIGHT / height;
-          height = MAX_HEIGHT;
-        }
+        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
       }
       
       canvas.width = width;
@@ -626,7 +621,7 @@ fileInput.addEventListener('change', (e) => {
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, width, height);
 
-      // แปลงรูปที่ย่อแล้วกลับไปใช้งาน
+      // แปลงรูปเป็น JPEG 80% ให้เบาที่สุด
       uploadedDataURL = canvas.toDataURL('image/jpeg', 0.8);
       
       previewImg.src = uploadedDataURL;
@@ -710,7 +705,7 @@ tiltWrapper.addEventListener('touchend', () => {
 });
 
 /* ════════════════════════════════════════
-   8. SAVE CARD AS IMAGE (หน่วงเวลาให้มือถือตั้งตัว)
+   8. SAVE CARD AS IMAGE (โค้ดคลีน ไม่มีตัวบล็อกการเซฟ)
 ════════════════════════════════════════ */
 document.getElementById('btnSave').addEventListener('click', async () => {
   const btn = document.getElementById('btnSave');
@@ -722,24 +717,23 @@ document.getElementById('btnSave').addEventListener('click', async () => {
   const holoGlare = document.getElementById('holoGlare');
   const holoRainbow = document.querySelector('.holo-rainbow');
 
-  // 1. ถอดเอฟเฟกต์ 3D ออกให้หมด
+  // ถอดเอฟเฟกต์ที่กวนการแคปภาพออก
   card.style.transform = 'none';
   card.style.transition = 'none';
   card.style.boxShadow = 'none';
   holoGlare.style.display = 'none';
   holoRainbow.style.display = 'none';
 
-  // 2. หยุดรอ 0.5 วินาที ให้หน้าจอมือถืออัปเดตเคลียร์กราฟิกให้เสร็จ
+  // ให้เวลาเบราว์เซอร์เตรียมตัว 0.5 วินาที
   await new Promise(resolve => setTimeout(resolve, 500));
 
   try {
-    // 3. เริ่มแคปรูป
+    // เริ่มแคปรูปแบบไม่ติดเงื่อนไข
     const canvas = await html2canvas(card, {
-      scale: 2, 
+      scale: 2,
       useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#fff8fa', 
-      logging: false
+      backgroundColor: '#fff8fa',
+      logging: false 
     });
 
     const imgData = canvas.toDataURL('image/jpeg', 0.9);
@@ -748,9 +742,10 @@ document.getElementById('btnSave').addEventListener('click', async () => {
 
   } catch (err) {
     console.error(err);
-    showToast('ระบบมือถือบล็อกไว้ แคปหน้าจอแทนได้เลยนะ 📸');
+    alert("ถ้ามีข้อความนี้แคปมาให้ดูหน่อยนะครับ: " + err.message); 
+    showToast('แคปหน้าจอด้วยตัวเองแทนได้เลยนะ 📸');
   } finally {
-    // 4. เปิดเอฟเฟกต์กลับมาเหมือนเดิม
+    // เปิดเอฟเฟกต์กลับมาเหมือนเดิม
     card.style.transform = '';
     card.style.transition = '';
     card.style.boxShadow = '';
@@ -761,7 +756,7 @@ document.getElementById('btnSave').addEventListener('click', async () => {
   }
 });
 
-// ฟังก์ชัน Popup ให้กดเซฟ
+// ฟังก์ชัน Popup โชว์ภาพให้ผู้ใช้กดค้างเพื่อเซฟ
 function showDownloadOverlay(dataUrl) {
   const overlay = document.createElement('div');
   overlay.style.position = 'fixed';
@@ -776,7 +771,7 @@ function showDownloadOverlay(dataUrl) {
   overlay.style.animation = 'fadeIn 0.3s ease';
 
   const hint = document.createElement('p');
-  hint.textContent = '👇 แตะค้างที่รูปภาพแล้วกด "บันทึก" ได้เลย 👇';
+  hint.textContent = '👇 แตะค้างที่รูปภาพแล้วเลือก "บันทึกรูปภาพ" 👇';
   hint.style.color = '#fff';
   hint.style.marginBottom = '20px';
   hint.style.fontSize = '1.1rem';
