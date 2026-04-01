@@ -41,7 +41,7 @@
     z-index: 0;
   }
 
-  .hearts-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .hearts-bg { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
   .hb {
     position: absolute; font-size: 1.2rem; opacity: 0.12;
     animation: floatUp linear infinite;
@@ -52,8 +52,20 @@
     100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
   }
 
+  /* ─── FIREWORKS & NIGHT SKY (NEW) ─── */
+  #nightSky {
+    position: fixed; inset: 0;
+    background: rgba(15, 10, 30, 0.9);
+    z-index: 5; opacity: 0;
+    pointer-events: none; transition: opacity 2.5s ease;
+  }
+  #fireworksCanvas {
+    position: fixed; inset: 0;
+    z-index: 6; pointer-events: none;
+  }
+
   .screen {
-    position: relative; z-index: 1;
+    position: relative; z-index: 10; /* ให้อยู่เหนือพลุ */
     width: min(90vw, 480px);
     text-align: center;
     display: none;
@@ -344,8 +356,13 @@
     background: linear-gradient(135deg, var(--rose), #c0445e);
     color: #fff; border-radius: 10px;
     padding: 8px 16px; font-size: .82rem; font-weight: 600;
-    letter-spacing: .5px; margin-bottom: 16px;
+    letter-spacing: .5px; margin-bottom: 12px;
   }
+  .id-owner-field {
+    font-size: 0.85rem; color: var(--plum); margin-bottom: 16px; font-weight: 600;
+  }
+  .id-owner-field span { color: var(--rose); }
+
   .id-barcode {
     font-family: 'Courier New', monospace;
     font-size: .65rem; color: var(--blush); letter-spacing: 3px; margin-bottom: 6px;
@@ -363,7 +380,7 @@
     transform: rotate(-12deg);
   }
 
-  /* ─── SAVE BUTTON ─── */
+  /* ─── SAVE BUTTON & SURPRISE BUTTON ─── */
   .save-area { margin-top: 20px; }
   .btn-save {
     width: 100%;
@@ -376,6 +393,18 @@
   }
   .btn-save:hover { background: var(--rose); color: #fff; }
   .btn-save:disabled { opacity: .6; cursor: wait; }
+
+  .btn-surprise {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold), #c4923e);
+    color: #fff; border: none; border-radius: 50px;
+    padding: 14px; font-size: 1rem; font-weight: bold;
+    cursor: pointer; font-family: 'Sarabun', sans-serif;
+    box-shadow: 0 4px 20px rgba(212,168,83,.4);
+    margin-top: 15px; transition: transform .2s, box-shadow .2s;
+    animation: pulse 2s infinite;
+  }
+  .btn-surprise:hover { transform: scale(1.05); }
 
   .save-hint {
     margin-top: 10px;
@@ -404,7 +433,7 @@
     position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(60px);
     background: var(--plum); color: #fff;
     padding: 12px 24px; border-radius: 50px;
-    font-size: .9rem; z-index: 1000;
+    font-size: .9rem; z-index: 10000;
     transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s;
     opacity: 0; white-space: nowrap;
   }
@@ -442,15 +471,39 @@
     cursor: pointer; font-size: .95rem;
     text-decoration: none; display: inline-block;
   }
+
+  /* ─── SCREEN 4 (SURPRISE MESSAGE & FIREWORKS) ─── */
+  .screen4-wrap {
+    padding: 30px 20px;
+    background: transparent;
+  }
+  .fw-message {
+    font-size: 1.2rem;
+    color: var(--plum);
+    line-height: 1.9;
+    margin-top: 20px;
+    transition: color 2s ease;
+    font-weight: 500;
+  }
+  .fw-btn {
+    background: linear-gradient(135deg, var(--rose), #c0445e);
+    color: #fff; border: none; border-radius: 50px;
+    padding: 16px 30px; font-size: 1.1rem; font-weight: bold;
+    cursor: pointer; font-family: 'Sarabun', sans-serif;
+    box-shadow: 0 8px 25px rgba(232,99,122,.5);
+    margin-top: 30px; transition: transform .2s;
+    animation: pulse 2s infinite;
+  }
 </style>
 </head>
 <body>
 
+<div id="nightSky"></div>
+<canvas id="fireworksCanvas"></canvas>
+
 <audio id="bgMusic" src="Love.mp3" loop></audio>
 
-<!-- ══════════ TAP TO START ══════════ -->
 <div id="startOverlay">
-  <!-- GIF #1: ซองจดหมายน่ารัก / ใส่ GIF ที่ต้องการตรงนี้ -->
   <img class="start-gif"
        src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXRndG15dzBvNWQ3YWF4MzA3a3FvZjBqemN2dXA1azBjbzBhaXM0NSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/wvYNSqBAMDVx8CEYkt/giphy.webp"
        alt="love gif"
@@ -464,10 +517,8 @@
 <div class="toast" id="toast"></div>
 <button class="music-btn" id="musicBtn" title="เปิด/ปิดเพลง">🎵</button>
 
-<!-- ══════════ SCREEN 0 — INTRO ══════════ -->
 <div class="screen active" id="screen0">
   <div class="intro-wrap">
-    <!-- GIF #2: ตัวละครน่ารัก / shyness GIF -->
     <div class="gif-block" id="introGifBlock" style="opacity:0;transition:opacity 1.2s ease;">
       <img src="https://media4.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bXUxbXh3MThldTI5eHp2ZGw3czJubXQ0anB6NHc3OWZhZHl2c29kcyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/mFwj2VdRlECyKmVFdQ/giphy.webp"
            alt="shy gif"
@@ -482,18 +533,16 @@
   </div>
 </div>
 
-<!-- ══════════ SCREEN 1 — QUESTION ══════════ -->
 <div class="screen" id="screen1">
   <div class="card">
     <span class="emoji-top">💌</span>
-    <!-- GIF #3: cute couple / nervous asking -->
     <div class="gif-block">
       <img src="https://media4.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YjN5bHEzcnZoNWhvMXZlcXJpdjVpeXNzNjE2NmdoYnRwYXhucnk3ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1hqb8LwPS2xCNCpWH8/200.webp"
            alt="love gif"
            onerror="this.parentElement.style.display='none'" />
     </div>
     <h1>เรามาเป็นแฟนกันมั้ยยยย</h1>
-    <p class="sub">ได้เวลาเลื่อนสถานะกันแล้วววว<br>แล้วเราจะตอบว่าอะไรดีล่ะ?</p>
+    <p class="sub">ได้เวลาเลื่อนสถานะกันแล้วววว</p>
     <div class="hearts-divider">♡ ♡ ♡</div>
     <div class="btn-row" id="btnRow">
       <button class="btn btn-yes" id="btnYes">💕 ตกลง!</button>
@@ -502,12 +551,10 @@
   </div>
 </div>
 
-<!-- ══════════ SCREEN 2 — FORM ══════════ -->
 <div class="screen" id="screen2">
   <div class="screen2-card">
     <span class="yay">🎉</span>
     <h2>คบกันไปนานๆนะ</h2>
-    <!-- GIF #4: celebration / happy -->
     <div class="gif-block">
       <img src="https://media0.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3aHU0Mm43bXVmNWU5Zmp5aTFjczdlc2FscHQ3aWxyaXIzcnNoODJtZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/xR5cPyPoL5HVXSphqA/giphy.webp"
            alt="celebrate gif"
@@ -531,7 +578,6 @@
   </div>
 </div>
 
-<!-- ══════════ SCREEN 3 — ID CARD ══════════ -->
 <div class="screen" id="screen3">
   <div class="card-tilt-wrapper" id="tiltWrapper">
     <div class="id-card" id="idCard">
@@ -550,14 +596,17 @@
         <div class="id-name" id="id-name">—</div>
         <div class="id-divider"></div>
         <div class="id-status">ตำแหน่ง: แฟนคนโปรดของยศสรัล 💕</div>
+        
+        <div class="id-owner-field">แฟนของ: <span>พี่ (ชื่อของคุณ)</span></div>
+
         <div class="id-fields">
           <div class="id-field">
             <label>วันที่ออกบัตร</label>
             <span id="id-date">—</span>
           </div>
           <div class="id-field">
-            <label>วันหมดอายุ</label>
-            <span>ไม่มีวันหมดอายุ</span>
+            <label>สถานะ</label>
+            <span>มีเจ้าของแล้ว</span>
           </div>
           <div class="id-field full">
             <label>หมายเลขบัตร</label>
@@ -571,7 +620,6 @@
     </div>
   </div>
 
-  <!-- GIF #5: small cute animation below card -->
   <div class="gif-block gif-sm" style="margin-top:16px;">
     <img src="https://media3.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NDVycW45emk1NGxmbm84d2o4c2t0ZzR0OTQ0aGoyYTlmZTZ0cTBvYiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/WsRwFFRikFeAMriR15/giphy.webp"
          alt="sparkle gif"
@@ -581,6 +629,26 @@
   <div class="save-area">
     <button class="btn-save" id="btnSave">📥 บันทึกบัตรเป็นรูปภาพ</button>
     <p class="save-hint" id="saveHint"></p>
+    
+    <button class="btn-surprise" onclick="goSurprise()">🎁 กดเพื่อเปิดอ่านข้อความ!</button>
+  </div>
+</div>
+
+<div class="screen" id="screen4">
+  <div class="screen4-wrap">
+    <span class="yay" style="font-size: 3.5rem; display: block; margin-bottom: 10px; animation: pulse 1.5s infinite;">💌</span>
+    <h2 id="fwTitle" style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--plum); margin-bottom: 10px; transition: color 2.5s ease;">
+      ถึง... แฟนคนโปรด
+    </h2>
+    
+    <div id="fwText" class="fw-message">
+      <p>ขอบคุณที่อนุญาตให้พี่เข้าไปอยู่ในโลกของหนูนะ</p>
+      <p>จากนี้ไป พี่จะดูแลความรู้สึกหนูให้ดีที่สุด</p>
+      <p>เรามาสร้างความทรงจำดีๆ ไปด้วยกันนะ</p>
+      <p style="font-size: 1.5rem; font-weight: bold; color: var(--rose); margin-top: 20px;">รักนะคะ 💕</p>
+    </div>
+
+    <button class="fw-btn" id="btnFireworks" onclick="triggerFireworks()">✨ กดเพื่อรับการเฉลิมฉลอง ✨</button>
   </div>
 </div>
 
@@ -647,10 +715,7 @@ musicBtn.addEventListener('click', () => { musicPlaying ? stopMusic() : startMus
 /* ════════════════════════════════════════
    3. ESCALATING NO-BUTTON
 ════════════════════════════════════════ */
-const NO_TEXTS = [
-  'ปฏิเสธ', 'แน่ใจหรอ? 🤔', 'คิดดูดีๆ น้า 🥺',
-  'กดตกลงเถอะพลีสส 😭', 'ได้โปรดดดด 🙏', 'หัวใจแตกแล้ว... 💔',
-];
+const NO_TEXTS = ['ปฏิเสธ', 'แน่ใจหรอ? 🤔', 'คิดดูดีๆ น้า 🥺', 'กดตกลงเถอะพลีสส 😭', 'ได้โปรดดดด 🙏', 'หัวใจแตกแล้ว... 💔'];
 let noCount = 0;
 const btnNo = document.getElementById('btnNo');
 let noEscaped = false;
@@ -674,9 +739,7 @@ function escapeBtn(e) {
     nx = 32 + Math.random() * (vw - btn.width - 64);
     ny = 32 + Math.random() * (vh - btn.height - 64);
     attempts++;
-  } while (attempts < 20 &&
-    Math.abs(nx - (e.clientX || vw/2)) < 180 &&
-    Math.abs(ny - (e.clientY || vh/2)) < 90);
+  } while (attempts < 20 && Math.abs(nx - (e.clientX || vw/2)) < 180 && Math.abs(ny - (e.clientY || vh/2)) < 90);
   btnNo.style.left = nx + 'px';
   btnNo.style.top  = ny + 'px';
   btnNo.classList.remove('jiggle');
@@ -770,14 +833,10 @@ tiltWrapper.addEventListener('mousemove', e => {
   const dy = (e.clientY - cy) / (rect.height / 2);
   const rotX = -dy * MAX_TILT, rotY = dx * MAX_TILT;
   idCard.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.03)`;
-  idCard.style.boxShadow = `${-rotY*.8}px ${rotX*.8}px 40px rgba(124,58,78,.28),0 2px 8px rgba(232,99,122,.1)`;
-  const gx = ((dx + 1) / 2 * 100).toFixed(1);
-  const gy = ((dy + 1) / 2 * 100).toFixed(1);
-  holoGlare.style.background = `radial-gradient(ellipse 70% 55% at ${gx}% ${gy}%,rgba(255,255,255,.6) 0%,rgba(255,200,220,.2) 30%,transparent 70%)`;
+  holoGlare.style.background = `radial-gradient(ellipse 70% 55% at ${((dx+1)/2*100).toFixed(1)}% ${((dy+1)/2*100).toFixed(1)}%,rgba(255,255,255,.6) 0%,rgba(255,200,220,.2) 30%,transparent 70%)`;
 });
 tiltWrapper.addEventListener('mouseleave', () => {
   idCard.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-  idCard.style.boxShadow = '0 12px 50px rgba(124,58,78,.2),0 2px 8px rgba(232,99,122,.1)';
 });
 tiltWrapper.addEventListener('touchmove', e => {
   const t = e.touches[0];
@@ -791,7 +850,7 @@ tiltWrapper.addEventListener('touchend', () => {
 });
 
 /* ════════════════════════════════════════
-   8. SAVE CARD — Fixed & Working
+   8. SAVE CARD
 ════════════════════════════════════════ */
 document.getElementById('btnSave').addEventListener('click', async () => {
   const btn = document.getElementById('btnSave');
@@ -825,10 +884,8 @@ document.getElementById('btnSave').addEventListener('click', async () => {
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
     if (isMobile) {
-      // มือถือ → popup กดค้างบันทึก
       showDownloadOverlay(imgData);
     } else {
-      // PC/Desktop → ดาวน์โหลดอัตโนมัติ
       const link = document.createElement('a');
       link.href = imgData;
       link.download = 'girlfriend-id-card.jpg';
@@ -836,8 +893,6 @@ document.getElementById('btnSave').addEventListener('click', async () => {
       link.click();
       document.body.removeChild(link);
       showToast('ดาวน์โหลดสำเร็จแล้ว! 💕');
-
-      // แสดง popup ด้วย เผื่อ browser บล็อก auto-download
       setTimeout(() => showDownloadOverlay(imgData), 300);
     }
 
@@ -856,7 +911,6 @@ document.getElementById('btnSave').addEventListener('click', async () => {
 });
 
 function showDownloadOverlay(dataUrl) {
-  // ลบ overlay เก่าออกก่อน (กรณีกดซ้ำ)
   const old = document.getElementById('dlOverlay');
   if (old) old.remove();
 
@@ -881,6 +935,114 @@ function showDownloadOverlay(dataUrl) {
 
   document.body.appendChild(overlay);
   document.getElementById('dlClose').onclick = () => overlay.remove();
+}
+
+/* ════════════════════════════════════════
+   9. SURPRISE FUNCTION & FIREWORKS (NEW)
+════════════════════════════════════════ */
+function goSurprise() {
+  showScreen('screen4');
+}
+
+const fwCanvas = document.getElementById('fireworksCanvas');
+const fwCtx = fwCanvas.getContext('2d');
+let fireworks = [];
+let particles = [];
+let fwInterval;
+
+function resizeFw() {
+  fwCanvas.width = window.innerWidth;
+  fwCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeFw);
+resizeFw();
+
+function triggerFireworks() {
+  // ซ่อนปุ่ม
+  document.getElementById('btnFireworks').style.display = 'none';
+  
+  // เปลี่ยนฉากหลังให้มืด
+  document.getElementById('nightSky').style.opacity = '1';
+  document.getElementById('heartsBg').style.opacity = '0.3';
+  
+  // เปลี่ยนข้อความให้สว่าง
+  document.getElementById('fwTitle').style.color = '#fff';
+  document.getElementById('fwText').style.color = '#fce8ed';
+  document.getElementById('fwText').style.textShadow = '0 0 10px rgba(255,255,255,0.3)';
+
+  requestAnimationFrame(updateFireworks);
+  
+  // เริ่มยิงพลุทุกๆ 0.6 วินาที
+  fwInterval = setInterval(launchFirework, 600);
+
+  // จุดพลุต่อเนื่อง 15 วินาที
+  setTimeout(() => clearInterval(fwInterval), 15000);
+}
+
+function launchFirework() {
+  fireworks.push({
+    x: Math.random() * fwCanvas.width,
+    y: fwCanvas.height,
+    vx: (Math.random() - 0.5) * 3,
+    vy: -(Math.random() * 5 + 12),
+    color: ['#e8637a','#f2a7b5','#d4a853','#ffffff','#ff9a9e'][Math.floor(Math.random()*5)]
+  });
+}
+
+function createParticles(x, y, color) {
+  for (let i = 0; i < 60; i++) {
+    particles.push({
+      x: x, y: y,
+      vx: (Math.random() - 0.5) * 12,
+      vy: (Math.random() - 0.5) * 12,
+      alpha: 1,
+      color: color
+    });
+  }
+}
+
+function updateFireworks() {
+  fwCtx.globalCompositeOperation = 'destination-out';
+  fwCtx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+  fwCtx.fillRect(0, 0, fwCanvas.width, fwCanvas.height);
+  fwCtx.globalCompositeOperation = 'lighter';
+
+  for (let i = fireworks.length - 1; i >= 0; i--) {
+    let f = fireworks[i];
+    f.x += f.vx;
+    f.y += f.vy;
+    f.vy += 0.2; // Gravity
+    
+    fwCtx.fillStyle = f.color;
+    fwCtx.beginPath();
+    fwCtx.arc(f.x, f.y, 3, 0, Math.PI * 2);
+    fwCtx.fill();
+
+    // ระเบิดเมื่อขึ้นสูงสุด
+    if (f.vy >= -1 || f.y < 100) {
+      createParticles(f.x, f.y, f.color);
+      fireworks.splice(i, 1);
+    }
+  }
+
+  for (let i = particles.length - 1; i >= 0; i--) {
+    let p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.1;
+    p.alpha -= 0.015;
+
+    fwCtx.globalAlpha = Math.max(0, p.alpha);
+    fwCtx.fillStyle = p.color;
+    fwCtx.beginPath();
+    fwCtx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+    fwCtx.fill();
+
+    if (p.alpha <= 0) particles.splice(i, 1);
+  }
+  fwCtx.globalAlpha = 1;
+
+  requestAnimationFrame(updateFireworks);
 }
 
 /* ════════════════════════════════════════
