@@ -41,7 +41,7 @@
     z-index: 0;
   }
 
-  .hearts-bg { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+  .hearts-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
   .hb {
     position: absolute; font-size: 1.2rem; opacity: 0.12;
     animation: floatUp linear infinite;
@@ -52,20 +52,8 @@
     100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
   }
 
-  /* ─── FIREWORKS & NIGHT SKY (NEW) ─── */
-  #nightSky {
-    position: fixed; inset: 0;
-    background: rgba(15, 10, 30, 0.9);
-    z-index: 5; opacity: 0;
-    pointer-events: none; transition: opacity 2.5s ease;
-  }
-  #fireworksCanvas {
-    position: fixed; inset: 0;
-    z-index: 6; pointer-events: none;
-  }
-
   .screen {
-    position: relative; z-index: 10; /* ให้อยู่เหนือพลุ */
+    position: relative; z-index: 1;
     width: min(90vw, 480px);
     text-align: center;
     display: none;
@@ -90,143 +78,383 @@
   #startOverlay.hidden { opacity: 0; visibility: hidden; }
 
   .start-gif {
-    width: 140px; height: 140px; border-radius: 50%; object-fit: cover;
-    border: 3px solid var(--blush); box-shadow: 0 6px 24px rgba(232,99,122,.25);
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--blush);
+    box-shadow: 0 6px 24px rgba(232,99,122,.25);
     animation: floatBob 3s ease-in-out infinite;
   }
-  @keyframes floatBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @keyframes floatBob {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
 
-  .start-label { font-size: 1rem; color: var(--plum); font-weight: 600; margin-top: -8px; }
+  .start-label {
+    font-size: 1rem; color: var(--plum);
+    font-weight: 600; margin-top: -8px;
+  }
+
   .pulse-btn { animation: pulse 2s infinite; }
 
   /* ─── GIF HELPERS ─── */
-  .gif-block { display: flex; justify-content: center; margin: 10px 0 18px; }
-  .gif-block img { border-radius: 16px; max-width: 180px; max-height: 140px; object-fit: cover; box-shadow: 0 4px 20px rgba(124,58,78,.15); border: 2px solid var(--blush); }
-  .gif-sm img { max-width: 100px; max-height: 80px; border-radius: 12px; }
+  .gif-block {
+    display: flex; justify-content: center; margin: 10px 0 18px;
+  }
+  .gif-block img {
+    border-radius: 16px;
+    max-width: 180px; max-height: 140px;
+    object-fit: cover;
+    box-shadow: 0 4px 20px rgba(124,58,78,.15);
+    border: 2px solid var(--blush);
+  }
+  .gif-sm img {
+    max-width: 100px; max-height: 80px; border-radius: 12px;
+  }
+  .gif-inline {
+    display: inline-block; vertical-align: middle;
+    width: 48px; height: 48px; border-radius: 50%;
+    object-fit: cover; border: 2px solid var(--blush);
+    margin-bottom: 8px;
+  }
 
   /* ─── SCREEN 0 (Intro) ─── */
-  #screen0 .intro-wrap { background: rgba(255,255,255,.75); backdrop-filter: blur(12px); border: 1.5px solid rgba(232,99,122,.15); border-radius: 28px; padding: 36px 32px; box-shadow: 0 8px 40px rgba(124,58,78,.1); }
-  .intro-text { font-size: 1.15rem; color: var(--plum); margin-bottom: 16px; opacity: 0; transform: translateY(15px); transition: opacity 1.5s ease, transform 1.5s ease; line-height: 1.7; }
+  #screen0 .intro-wrap {
+    background: rgba(255,255,255,.75);
+    backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(232,99,122,.15);
+    border-radius: 28px;
+    padding: 36px 32px;
+    box-shadow: 0 8px 40px rgba(124,58,78,.1);
+  }
+  .intro-text {
+    font-size: 1.15rem; color: var(--plum); margin-bottom: 16px;
+    opacity: 0; transform: translateY(15px);
+    transition: opacity 1.5s ease, transform 1.5s ease;
+    line-height: 1.7;
+  }
   .intro-text.show { opacity: 1; transform: translateY(0); }
-  #btnEnter { opacity: 0; visibility: hidden; transition: opacity 1s ease; margin-top: 20px; background: linear-gradient(135deg, var(--rose), #c0445e); color: #fff; padding: 14px 36px; border-radius: 50px; border: none; cursor: pointer; font-family: 'Sarabun', sans-serif; font-size: 1rem; font-weight: 600; box-shadow: 0 4px 20px rgba(232,99,122,.4); }
+  #btnEnter {
+    opacity: 0; visibility: hidden; transition: opacity 1s ease;
+    margin-top: 20px; background: linear-gradient(135deg, var(--rose), #c0445e);
+    color: #fff; padding: 14px 36px; border-radius: 50px;
+    border: none; cursor: pointer; font-family: 'Sarabun', sans-serif;
+    font-size: 1rem; font-weight: 600; box-shadow: 0 4px 20px rgba(232,99,122,.4);
+  }
   #btnEnter.show { opacity: 1; visibility: visible; }
 
   /* ─── SCREEN 1 ─── */
-  .card { background: rgba(255,255,255,.88); backdrop-filter: blur(16px); border: 1.5px solid rgba(232,99,122,.18); border-radius: 28px; padding: 40px 36px 36px; box-shadow: 0 8px 40px rgba(124,58,78,.12), 0 2px 8px rgba(232,99,122,.08); }
+  .card {
+    background: rgba(255,255,255,.88);
+    backdrop-filter: blur(16px);
+    border: 1.5px solid rgba(232,99,122,.18);
+    border-radius: 28px;
+    padding: 40px 36px 36px;
+    box-shadow: 0 8px 40px rgba(124,58,78,.12), 0 2px 8px rgba(232,99,122,.08);
+  }
   .card .emoji-top { font-size: 3.2rem; margin-bottom: 12px; display: block; animation: pulse 2s ease-in-out infinite; }
   @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.12);} }
-  .card h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.7rem, 5vw, 2.2rem); color: var(--plum); line-height: 1.3; margin-bottom: 8px; }
+  .card h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.7rem, 5vw, 2.2rem);
+    color: var(--plum); line-height: 1.3; margin-bottom: 8px;
+  }
   .card .sub { font-size: .95rem; color: #a06070; margin-bottom: 24px; line-height: 1.6; }
-  .btn-row { display: flex; gap: 16px; justify-content: center; flex-wrap: nowrap; position: relative; min-height: 52px; }
-  .btn { font-family: 'Sarabun', sans-serif; font-size: 1rem; font-weight: 600; padding: 14px 36px; border-radius: 50px; border: none; cursor: pointer; transition: transform .2s, box-shadow .2s; white-space: nowrap; }
-  .btn-yes { background: linear-gradient(135deg, var(--rose), #c0445e); color: #fff; box-shadow: 0 4px 20px rgba(232,99,122,.4); }
+
+  .btn-row {
+    display: flex; gap: 16px; justify-content: center;
+    flex-wrap: nowrap; position: relative; min-height: 52px;
+  }
+  .btn {
+    font-family: 'Sarabun', sans-serif;
+    font-size: 1rem; font-weight: 600;
+    padding: 14px 36px; border-radius: 50px;
+    border: none; cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    white-space: nowrap;
+  }
+  .btn-yes {
+    background: linear-gradient(135deg, var(--rose), #c0445e);
+    color: #fff; box-shadow: 0 4px 20px rgba(232,99,122,.4);
+  }
   .btn-yes:hover { transform: scale(1.06); box-shadow: 0 6px 28px rgba(232,99,122,.5); }
-  .btn-no { background: #fff0f3; color: var(--rose); border: 1.5px solid var(--blush); transition: color .15s, background .15s; }
-  @media (max-width: 480px) { .btn-no { position: relative !important; left: auto !important; top: auto !important; } }
+
+  .btn-no {
+    background: #fff0f3; color: var(--rose);
+    border: 1.5px solid var(--blush);
+    transition: color .15s, background .15s;
+  }
+  @media (max-width: 480px) {
+    .btn-no { position: relative !important; left: auto !important; top: auto !important; }
+  }
   .btn-no.jiggle { animation: jiggle .4s ease; }
-  @keyframes jiggle { 0%,100%{transform:rotate(0);} 20%{transform:rotate(-9deg);} 40%{transform:rotate(9deg);} 60%{transform:rotate(-6deg);} 80%{transform:rotate(6deg);} }
+  @keyframes jiggle {
+    0%,100%{transform:rotate(0);}
+    20%{transform:rotate(-9deg);}
+    40%{transform:rotate(9deg);}
+    60%{transform:rotate(-6deg);}
+    80%{transform:rotate(6deg);}
+  }
+
   .hearts-divider { margin: 20px 0; color: var(--blush); font-size: 1.1rem; letter-spacing: 6px; }
 
   /* ─── SCREEN 2 ─── */
-  .screen2-card { background: rgba(255,255,255,.9); backdrop-filter: blur(16px); border: 1.5px solid rgba(232,99,122,.2); border-radius: 28px; padding: 36px 32px; box-shadow: 0 8px 40px rgba(124,58,78,.12); }
-  .screen2-card h2 { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: var(--plum); margin-bottom: 6px; transition: color 1.5s; }
+  .screen2-card {
+    background: rgba(255,255,255,.9); backdrop-filter: blur(16px);
+    border: 1.5px solid rgba(232,99,122,.2); border-radius: 28px;
+    padding: 36px 32px; box-shadow: 0 8px 40px rgba(124,58,78,.12);
+  }
+  .screen2-card h2 { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: var(--plum); margin-bottom: 6px; }
   .screen2-card .yay { font-size: 2.8rem; margin-bottom: 8px; display: block; }
-  .screen2-card p { color: #a06070; margin-bottom: 20px; line-height: 1.6; font-size: .95rem; transition: color 1.5s; }
+  .screen2-card p { color: #a06070; margin-bottom: 20px; line-height: 1.6; font-size: .95rem; }
+
   .form-group { margin-bottom: 18px; text-align: left; }
   .form-group label { font-size: .85rem; font-weight: 600; color: var(--plum); display: block; margin-bottom: 6px; }
-  .form-group input[type="text"] { width: 100%; padding: 12px 16px; border: 1.5px solid var(--blush); border-radius: 14px; font-family: 'Sarabun', sans-serif; font-size: 1rem; color: var(--plum); background: var(--petal); outline: none; transition: border-color .2s; }
+  .form-group input[type="text"] {
+    width: 100%; padding: 12px 16px;
+    border: 1.5px solid var(--blush); border-radius: 14px;
+    font-family: 'Sarabun', sans-serif; font-size: 1rem;
+    color: var(--plum); background: var(--petal); outline: none;
+    transition: border-color .2s;
+  }
   .form-group input[type="text"]:focus { border-color: var(--rose); }
-  .upload-area { border: 2px dashed var(--blush); border-radius: 18px; padding: 24px; background: var(--petal); cursor: pointer; text-align: center; position: relative; overflow: hidden; }
+
+  .upload-area {
+    border: 2px dashed var(--blush); border-radius: 18px;
+    padding: 24px; background: var(--petal); cursor: pointer;
+    transition: border-color .2s, background .2s;
+    text-align: center; position: relative; overflow: hidden;
+  }
   .upload-area:hover { border-color: var(--rose); background: #fce0e7; }
   .upload-area input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
   .upload-area .upload-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
   .upload-area p { font-size: .88rem; color: #b07880; margin: 0; }
-  .upload-area .preview-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--rose); display: none; margin: 0 auto 8px; }
-  .btn-make { margin-top: 20px; width: 100%; background: linear-gradient(135deg, var(--rose), #c0445e); color: #fff; border: none; border-radius: 50px; padding: 15px; font-size: 1.05rem; font-weight: 600; cursor: pointer; font-family: 'Sarabun', sans-serif; box-shadow: 0 4px 20px rgba(232,99,122,.35); transition: transform .2s, box-shadow .2s; }
+  .upload-area .preview-img {
+    width: 80px; height: 80px; border-radius: 50%;
+    object-fit: cover; border: 3px solid var(--rose);
+    display: none; margin: 0 auto 8px;
+  }
+
+  .btn-make {
+    margin-top: 20px; width: 100%;
+    background: linear-gradient(135deg, var(--rose), #c0445e);
+    color: #fff; border: none; border-radius: 50px;
+    padding: 15px; font-size: 1.05rem; font-weight: 600;
+    cursor: pointer; font-family: 'Sarabun', sans-serif;
+    box-shadow: 0 4px 20px rgba(232,99,122,.35);
+    transition: transform .2s, box-shadow .2s;
+  }
   .btn-make:hover { transform: scale(1.03); box-shadow: 0 6px 28px rgba(232,99,122,.45); }
 
   /* ─── SCREEN 3 — ID Card ─── */
   #screen3 { width: min(90vw, 420px); }
+
   .card-tilt-wrapper { perspective: 900px; cursor: pointer; }
-  .id-card { background: linear-gradient(145deg, #fff8fa, #fce8ed); border: 2.5px solid var(--rose); border-radius: 22px; padding: 0; overflow: hidden; box-shadow: 0 12px 50px rgba(124,58,78,.2), 0 2px 8px rgba(232,99,122,.1); position: relative; transform-style: preserve-3d; transition: transform .12s ease, box-shadow .12s ease; will-change: transform; }
-  .id-card .holo-glare { position: absolute; inset: 0; border-radius: 20px; pointer-events: none; z-index: 10; background: radial-gradient(ellipse 80% 60% at 30% 30%, rgba(255,255,255,.55) 0%, rgba(255,200,220,.18) 30%, rgba(200,180,255,.08) 60%, transparent 80%); opacity: 0; transition: opacity .2s; mix-blend-mode: screen; }
-  .id-card .holo-rainbow { position: absolute; inset: 0; border-radius: 20px; pointer-events: none; z-index: 9; background: linear-gradient(125deg, rgba(255,100,130,.0) 0%, rgba(255,200,100,.08) 20%, rgba(100,255,180,.08) 40%, rgba(100,180,255,.08) 60%, rgba(200,100,255,.08) 80%, rgba(255,100,130,.0) 100%); opacity: 0; transition: opacity .3s; mix-blend-mode: color-dodge; }
-  .card-tilt-wrapper:hover .holo-glare, .card-tilt-wrapper:hover .holo-rainbow { opacity: 1; }
-  .id-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 110px; background: linear-gradient(135deg, var(--rose) 0%, #c0445e 60%, #a83354 100%); }
-  .id-card-header { position: relative; z-index: 1; padding: 18px 24px 0; display: flex; align-items: center; justify-content: space-between; }
-  .id-card-header .org { color: rgba(255,255,255,.9); font-size: .7rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; }
+
+  .id-card {
+    background: linear-gradient(145deg, #fff8fa, #fce8ed);
+    border: 2.5px solid var(--rose);
+    border-radius: 22px;
+    padding: 0; overflow: hidden;
+    box-shadow: 0 12px 50px rgba(124,58,78,.2), 0 2px 8px rgba(232,99,122,.1);
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform .12s ease, box-shadow .12s ease;
+    will-change: transform;
+  }
+
+  .id-card .holo-glare {
+    position: absolute; inset: 0; border-radius: 20px;
+    pointer-events: none; z-index: 10;
+    background: radial-gradient(ellipse 80% 60% at 30% 30%,
+      rgba(255,255,255,.55) 0%,
+      rgba(255,200,220,.18) 30%,
+      rgba(200,180,255,.08) 60%,
+      transparent 80%);
+    opacity: 0; transition: opacity .2s; mix-blend-mode: screen;
+  }
+  .id-card .holo-rainbow {
+    position: absolute; inset: 0; border-radius: 20px;
+    pointer-events: none; z-index: 9;
+    background: linear-gradient(125deg,
+      rgba(255,100,130,.0) 0%, rgba(255,200,100,.08) 20%,
+      rgba(100,255,180,.08) 40%, rgba(100,180,255,.08) 60%,
+      rgba(200,100,255,.08) 80%, rgba(255,100,130,.0) 100%);
+    opacity: 0; transition: opacity .3s; mix-blend-mode: color-dodge;
+  }
+  .card-tilt-wrapper:hover .holo-glare,
+  .card-tilt-wrapper:hover .holo-rainbow { opacity: 1; }
+
+  .id-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 110px;
+    background: linear-gradient(135deg, var(--rose) 0%, #c0445e 60%, #a83354 100%);
+  }
+
+  .id-card-header {
+    position: relative; z-index: 1;
+    padding: 18px 24px 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .id-card-header .org {
+    color: rgba(255,255,255,.9);
+    font-size: .7rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+  }
   .id-card-header .heart-badge { font-size: 1.5rem; }
-  .id-photo-wrap { position: relative; z-index: 2; margin: 12px auto 0; width: 96px; height: 96px; }
-  #id-photo { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 3.5px solid #fff; box-shadow: 0 4px 16px rgba(124,58,78,.25); display: block; background-color: #fff; }
-  .id-photo-wrap::after { content: '💕'; position: absolute; bottom: -2px; right: -6px; font-size: 1.2rem; }
+
+  .id-photo-wrap {
+    position: relative; z-index: 2;
+    margin: 12px auto 0; width: 96px; height: 96px;
+  }
+  #id-photo {
+    width: 96px; height: 96px; border-radius: 50%;
+    object-fit: cover; border: 3.5px solid #fff;
+    box-shadow: 0 4px 16px rgba(124,58,78,.25); display: block;
+    background-color: #fff;
+  }
+  .id-photo-wrap::after {
+    content: '💕'; position: absolute; bottom: -2px; right: -6px; font-size: 1.2rem;
+  }
+
   .id-body { padding: 20px 28px 26px; text-align: center; }
-  .id-title { font-family: 'Dancing Script', cursive; font-size: 1.1rem; color: var(--rose); letter-spacing: 1px; margin-bottom: 4px; }
-  .id-name { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: var(--plum); font-weight: 700; margin-bottom: 16px; }
-  .id-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--blush), transparent); margin-bottom: 16px; }
-  .id-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; text-align: left; }
-  .id-field label { font-size: .68rem; font-weight: 600; color: #b07880; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 2px; }
+  .id-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.1rem; color: var(--rose); letter-spacing: 1px; margin-bottom: 4px;
+  }
+  .id-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; color: var(--plum); font-weight: 700; margin-bottom: 16px;
+  }
+  .id-divider {
+    height: 1px; background: linear-gradient(90deg, transparent, var(--blush), transparent);
+    margin-bottom: 16px;
+  }
+  .id-fields {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-bottom: 16px; text-align: left;
+  }
+  .id-field label {
+    font-size: .68rem; font-weight: 600; color: #b07880;
+    text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 2px;
+  }
   .id-field span { font-size: .9rem; color: var(--plum); font-weight: 600; }
   .id-field.full { grid-column: 1/-1; }
-  .id-status { background: linear-gradient(135deg, var(--rose), #c0445e); color: #fff; border-radius: 10px; padding: 8px 16px; font-size: .82rem; font-weight: 600; letter-spacing: .5px; margin-bottom: 12px; }
-  .id-owner-field { font-size: 0.85rem; color: var(--plum); margin-bottom: 16px; font-weight: 600; }
-  .id-owner-field span { color: var(--rose); }
-  .id-barcode { font-family: 'Courier New', monospace; font-size: .65rem; color: var(--blush); letter-spacing: 3px; margin-bottom: 6px; }
-  .id-cardnum { font-size: .78rem; font-weight: 700; color: var(--rose); letter-spacing: 2px; }
-  .id-stamp { position: absolute; right: 18px; bottom: 22px; font-size: .6rem; font-weight: 700; color: rgba(232,99,122,.25); border: 2px solid rgba(232,99,122,.2); border-radius: 6px; padding: 3px 7px; letter-spacing: 1px; text-transform: uppercase; transform: rotate(-12deg); }
 
-  /* ─── BUTTONS & UTILS ─── */
+  .id-status {
+    background: linear-gradient(135deg, var(--rose), #c0445e);
+    color: #fff; border-radius: 10px;
+    padding: 8px 16px; font-size: .82rem; font-weight: 600;
+    letter-spacing: .5px; margin-bottom: 16px;
+  }
+  .id-barcode {
+    font-family: 'Courier New', monospace;
+    font-size: .65rem; color: var(--blush); letter-spacing: 3px; margin-bottom: 6px;
+  }
+  .id-cardnum {
+    font-size: .78rem; font-weight: 700;
+    color: var(--rose); letter-spacing: 2px;
+  }
+  .id-stamp {
+    position: absolute; right: 18px; bottom: 22px;
+    font-size: .6rem; font-weight: 700;
+    color: rgba(232,99,122,.25); border: 2px solid rgba(232,99,122,.2);
+    border-radius: 6px; padding: 3px 7px;
+    letter-spacing: 1px; text-transform: uppercase;
+    transform: rotate(-12deg);
+  }
+
+  /* ─── SAVE BUTTON ─── */
   .save-area { margin-top: 20px; }
-  .btn-save { width: 100%; background: #fff; color: var(--rose); border: 2px solid var(--rose); border-radius: 50px; padding: 13px; font-size: .95rem; font-weight: 600; cursor: pointer; font-family: 'Sarabun', sans-serif; transition: background .2s, color .2s, opacity .2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-save {
+    width: 100%;
+    background: #fff; color: var(--rose);
+    border: 2px solid var(--rose); border-radius: 50px;
+    padding: 13px; font-size: .95rem; font-weight: 600;
+    cursor: pointer; font-family: 'Sarabun', sans-serif;
+    transition: background .2s, color .2s, opacity .2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
   .btn-save:hover { background: var(--rose); color: #fff; }
   .btn-save:disabled { opacity: .6; cursor: wait; }
-  .save-hint { margin-top: 10px; font-size: .8rem; color: #b07880; line-height: 1.5; }
 
-  .btn-surprise { width: 100%; background: linear-gradient(135deg, var(--gold), #c4923e); color: #fff; border: none; border-radius: 50px; padding: 14px; font-size: 1rem; font-weight: bold; cursor: pointer; font-family: 'Sarabun', sans-serif; box-shadow: 0 4px 20px rgba(212,168,83,.4); margin-top: 15px; transition: transform .2s, box-shadow .2s; animation: pulse 2s infinite; }
-  .btn-surprise:hover { transform: scale(1.05); }
+  .save-hint {
+    margin-top: 10px;
+    font-size: .8rem; color: #b07880;
+    line-height: 1.5;
+  }
 
-  .music-btn { position: fixed; bottom: 24px; right: 24px; z-index: 500; width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,.85); backdrop-filter: blur(8px); border: 2px solid var(--blush); cursor: pointer; font-size: 1.3rem; display: none; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(124,58,78,.15); transition: transform .2s, box-shadow .2s; }
+  /* ─── MUSIC BTN ─── */
+  .music-btn {
+    position: fixed; bottom: 24px; right: 24px; z-index: 500;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(255,255,255,.85); backdrop-filter: blur(8px);
+    border: 2px solid var(--blush); cursor: pointer;
+    font-size: 1.3rem; display: none; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(124,58,78,.15);
+    transition: transform .2s, box-shadow .2s;
+  }
   .music-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(124,58,78,.2); }
   .music-btn.visible { display: flex; }
   .music-btn.playing { animation: musicPulse 1.4s ease-in-out infinite; }
   @keyframes musicPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
 
-  #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
-  .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--plum); color: #fff; padding: 12px 24px; border-radius: 50px; font-size: .9rem; z-index: 10000; transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s; opacity: 0; white-space: nowrap; }
+  #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+
+  .toast {
+    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(60px);
+    background: var(--plum); color: #fff;
+    padding: 12px 24px; border-radius: 50px;
+    font-size: .9rem; z-index: 1000;
+    transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+    opacity: 0; white-space: nowrap;
+  }
   .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-  /* ─── SCREEN 4 (NO BACKGROUND, PURE MAGIC) ─── */
-  .screen4-wrap {
-    padding: 30px 20px;
-    background: transparent;
+  /* ─── DOWNLOAD OVERLAY ─── */
+  .dl-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.88); z-index: 10000;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 20px; animation: fadeIn .3s ease;
   }
-  .fw-message {
-    font-size: 1.2rem;
-    color: var(--plum);
-    line-height: 1.9;
-    margin-top: 20px;
-    transition: color 2s ease;
-    font-weight: 500;
+  .dl-overlay-hint {
+    color: #fff; margin-bottom: 18px;
+    font-size: 1rem; font-family: 'Sarabun', sans-serif;
+    text-align: center; line-height: 1.6;
   }
-  .fw-btn {
-    background: linear-gradient(135deg, var(--rose), #c0445e);
-    color: #fff; border: none; border-radius: 50px;
-    padding: 16px 30px; font-size: 1.1rem; font-weight: bold;
-    cursor: pointer; font-family: 'Sarabun', sans-serif;
-    box-shadow: 0 8px 25px rgba(232,99,122,.5);
-    margin-top: 30px; transition: transform .2s;
-    animation: pulse 2s infinite;
+  .dl-overlay-img {
+    max-width: 100%; max-height: 60vh;
+    border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,.5);
+  }
+  .dl-overlay-close {
+    margin-top: 20px; padding: 12px 30px;
+    border-radius: 50px; border: none;
+    background: #fff; color: var(--rose);
+    font-weight: 700; font-family: 'Sarabun', sans-serif;
+    cursor: pointer; font-size: 1rem;
+  }
+  .dl-overlay-dl {
+    margin-top: 12px; padding: 12px 30px;
+    border-radius: 50px; border: 2px solid #fff;
+    background: transparent; color: #fff;
+    font-weight: 600; font-family: 'Sarabun', sans-serif;
+    cursor: pointer; font-size: .95rem;
+    text-decoration: none; display: inline-block;
   }
 </style>
 </head>
 <body>
 
-<div id="nightSky"></div>
-<canvas id="fireworksCanvas"></canvas>
-
 <audio id="bgMusic" src="Love.mp3" loop></audio>
 
+<!-- ══════════ TAP TO START ══════════ -->
 <div id="startOverlay">
-  <img class="start-gif" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXRndG15dzBvNWQ3YWF4MzA3a3FvZjBqemN2dXA1azBjbzBhaXM0NSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/wvYNSqBAMDVx8CEYkt/giphy.webp" alt="love gif" onerror="this.style.display='none'" />
+  <!-- GIF #1: ซองจดหมายน่ารัก / ใส่ GIF ที่ต้องการตรงนี้ -->
+  <img class="start-gif"
+       src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXRndG15dzBvNWQ3YWF4MzA3a3FvZjBqemN2dXA1azBjbzBhaXM0NSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/wvYNSqBAMDVx8CEYkt/giphy.webp"
+       alt="love gif"
+       onerror="this.style.display='none'" />
   <p class="start-label">มีจดหมายถึงคุณ 💌</p>
   <button id="btnStartMagic" class="btn btn-yes pulse-btn">💌 แตะเพื่อเปิดดู</button>
 </div>
@@ -236,10 +464,15 @@
 <div class="toast" id="toast"></div>
 <button class="music-btn" id="musicBtn" title="เปิด/ปิดเพลง">🎵</button>
 
+<!-- ══════════ SCREEN 0 — INTRO ══════════ -->
 <div class="screen active" id="screen0">
   <div class="intro-wrap">
+    <!-- GIF #2: ตัวละครน่ารัก / shyness GIF -->
     <div class="gif-block" id="introGifBlock" style="opacity:0;transition:opacity 1.2s ease;">
-      <img src="https://media4.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bXUxbXh3MThldTI5eHp2ZGw3czJubXQ0anB6NHc3OWZhZHl2c29kcyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/mFwj2VdRlECyKmVFdQ/giphy.webp" alt="shy gif" style="max-width:150px;max-height:120px;border-radius:16px;border:2px solid var(--blush);box-shadow:0 4px 18px rgba(124,58,78,.15);" onerror="this.parentElement.style.display='none'" />
+      <img src="https://media4.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bXUxbXh3MThldTI5eHp2ZGw3czJubXQ0anB6NHc3OWZhZHl2c29kcyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/mFwj2VdRlECyKmVFdQ/giphy.webp"
+           alt="shy gif"
+           style="max-width:150px;max-height:120px;border-radius:16px;border:2px solid var(--blush);box-shadow:0 4px 18px rgba(124,58,78,.15);"
+           onerror="this.parentElement.style.display='none'" />
     </div>
     <p class="intro-text" id="text1">ขอบคุณนะที่เรามาชอบพี่อะ😊</p>
     <p class="intro-text" id="text2">เราก็คุยกันมาสักพักแล้วสินะะะ✨</p>
@@ -249,14 +482,18 @@
   </div>
 </div>
 
+<!-- ══════════ SCREEN 1 — QUESTION ══════════ -->
 <div class="screen" id="screen1">
   <div class="card">
     <span class="emoji-top">💌</span>
+    <!-- GIF #3: cute couple / nervous asking -->
     <div class="gif-block">
-      <img src="https://media4.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YjN5bHEzcnZoNWhvMXZlcXJpdjVpeXNzNjE2NmdoYnRwYXhucnk3ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1hqb8LwPS2xCNCpWH8/200.webp" alt="love gif" onerror="this.parentElement.style.display='none'" />
+      <img src="https://media4.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YjN5bHEzcnZoNWhvMXZlcXJpdjVpeXNzNjE2NmdoYnRwYXhucnk3ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1hqb8LwPS2xCNCpWH8/200.webp"
+           alt="love gif"
+           onerror="this.parentElement.style.display='none'" />
     </div>
     <h1>เรามาเป็นแฟนกันมั้ยยยย</h1>
-    <p class="sub">ได้เวลาเลื่อนสถานะกันแล้วววว</p>
+    <p class="sub">ได้เวลาเลื่อนสถานะกันแล้วววว<br>แล้วเราจะตอบว่าอะไรดีล่ะ?</p>
     <div class="hearts-divider">♡ ♡ ♡</div>
     <div class="btn-row" id="btnRow">
       <button class="btn btn-yes" id="btnYes">💕 ตกลง!</button>
@@ -265,12 +502,16 @@
   </div>
 </div>
 
+<!-- ══════════ SCREEN 2 — FORM ══════════ -->
 <div class="screen" id="screen2">
   <div class="screen2-card">
     <span class="yay">🎉</span>
     <h2>คบกันไปนานๆนะ</h2>
+    <!-- GIF #4: celebration / happy -->
     <div class="gif-block">
-      <img src="https://media0.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3aHU0Mm43bXVmNWU5Zmp5aTFjczdlc2FscHQ3aWxyaXIzcnNoODJtZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/xR5cPyPoL5HVXSphqA/giphy.webp" alt="celebrate gif" onerror="this.parentElement.style.display='none'" />
+      <img src="https://media0.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3aHU0Mm43bXVmNWU5Zmp5aTFjczdlc2FscHQ3aWxyaXIzcnNoODJtZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/xR5cPyPoL5HVXSphqA/giphy.webp"
+           alt="celebrate gif"
+           onerror="this.parentElement.style.display='none'" />
     </div>
     <p>ตอนนี้เราเป็นแฟนกันแล้วนะ 💖<br>มาทำบัตรประจำตัวแฟนคนโปรดกันดีกว่า</p>
     <div class="form-group">
@@ -290,6 +531,7 @@
   </div>
 </div>
 
+<!-- ══════════ SCREEN 3 — ID CARD ══════════ -->
 <div class="screen" id="screen3">
   <div class="card-tilt-wrapper" id="tiltWrapper">
     <div class="id-card" id="idCard">
@@ -308,17 +550,14 @@
         <div class="id-name" id="id-name">—</div>
         <div class="id-divider"></div>
         <div class="id-status">ตำแหน่ง: แฟนคนโปรดของยศสรัล 💕</div>
-        
-        <div class="id-owner-field">แฟนของ: <span>พี่ (ชื่อของคุณ)</span></div>
-
         <div class="id-fields">
           <div class="id-field">
             <label>วันที่ออกบัตร</label>
             <span id="id-date">—</span>
           </div>
           <div class="id-field">
-            <label>สถานะ</label>
-            <span>มีเจ้าของแล้ว</span>
+            <label>วันหมดอายุ</label>
+            <span>ไม่มีวันหมดอายุ</span>
           </div>
           <div class="id-field full">
             <label>หมายเลขบัตร</label>
@@ -332,33 +571,16 @@
     </div>
   </div>
 
+  <!-- GIF #5: small cute animation below card -->
   <div class="gif-block gif-sm" style="margin-top:16px;">
-    <img src="https://media3.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NDVycW45emk1NGxmbm84d2o4c2t0ZzR0OTQ0aGoyYTlmZTZ0cTBvYiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/WsRwFFRikFeAMriR15/giphy.webp" alt="sparkle gif" onerror="this.parentElement.style.display='none'" />
+    <img src="https://media3.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NDVycW45emk1NGxmbm84d2o4c2t0ZzR0OTQ0aGoyYTlmZTZ0cTBvYiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/WsRwFFRikFeAMriR15/giphy.webp"
+         alt="sparkle gif"
+         onerror="this.parentElement.style.display='none'" />
   </div>
 
   <div class="save-area">
     <button class="btn-save" id="btnSave">📥 บันทึกบัตรเป็นรูปภาพ</button>
     <p class="save-hint" id="saveHint"></p>
-    
-    <button class="btn-surprise" onclick="goSurprise()">🎁 กดรับเซอร์ไพรส์ต้อนรับแฟนใหม่!</button>
-  </div>
-</div>
-
-<div class="screen" id="screen4">
-  <div class="screen4-wrap">
-    <span class="yay" style="font-size: 3.5rem; display: block; margin-bottom: 10px; animation: pulse 1.5s infinite;">💌</span>
-    <h2 id="fwTitle" style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--plum); margin-bottom: 10px; transition: color 2.5s ease;">
-      ถึง... แฟนคนโปรด
-    </h2>
-    
-    <div id="fwText" class="fw-message">
-      <p>ขอบคุณที่อนุญาตให้พี่เข้าไปอยู่ในโลกของหนูนะ</p>
-      <p>จากนี้ไป พี่จะดูแลความรู้สึกหนูให้ดีที่สุด</p>
-      <p>เรามาสร้างความทรงจำดีๆ ไปด้วยกันนะ</p>
-      <p style="font-size: 1.5rem; font-weight: bold; color: var(--rose); margin-top: 20px;">รักนะคะ 💕</p>
-    </div>
-
-    <button class="fw-btn" id="btnFireworks" onclick="triggerFireworks()">✨ กดเพื่อรับการเฉลิมฉลอง ✨</button>
   </div>
 </div>
 
@@ -371,6 +593,7 @@ document.getElementById('btnStartMagic').addEventListener('click', () => {
   startMusic();
   document.getElementById('musicBtn').classList.add('visible');
 
+  // Show intro GIF first
   setTimeout(() => { document.getElementById('introGifBlock').style.opacity = '1'; }, 300);
   setTimeout(() => { document.getElementById('text1').classList.add('show'); }, 800);
   setTimeout(() => { document.getElementById('text2').classList.add('show'); }, 2100);
@@ -424,7 +647,10 @@ musicBtn.addEventListener('click', () => { musicPlaying ? stopMusic() : startMus
 /* ════════════════════════════════════════
    3. ESCALATING NO-BUTTON
 ════════════════════════════════════════ */
-const NO_TEXTS = ['ปฏิเสธ', 'แน่ใจหรอ? 🤔', 'คิดดูดีๆ น้า 🥺', 'กดตกลงเถอะพลีสส 😭', 'ได้โปรดดดด 🙏', 'หัวใจแตกแล้ว... 💔'];
+const NO_TEXTS = [
+  'ปฏิเสธ', 'แน่ใจหรอ? 🤔', 'คิดดูดีๆ น้า 🥺',
+  'กดตกลงเถอะพลีสส 😭', 'ได้โปรดดดด 🙏', 'หัวใจแตกแล้ว... 💔',
+];
 let noCount = 0;
 const btnNo = document.getElementById('btnNo');
 let noEscaped = false;
@@ -432,9 +658,12 @@ let noEscaped = false;
 function escapeBtn(e) {
   noCount = Math.min(noCount + 1, NO_TEXTS.length - 1);
   btnNo.textContent = NO_TEXTS[noCount];
+
   const isMobile = window.innerWidth <= 480;
   if (isMobile) {
-    btnNo.classList.remove('jiggle'); void btnNo.offsetWidth; btnNo.classList.add('jiggle');
+    btnNo.classList.remove('jiggle');
+    void btnNo.offsetWidth;
+    btnNo.classList.add('jiggle');
     return;
   }
   if (!noEscaped) { btnNo.style.position = 'fixed'; noEscaped = true; }
@@ -445,10 +674,16 @@ function escapeBtn(e) {
     nx = 32 + Math.random() * (vw - btn.width - 64);
     ny = 32 + Math.random() * (vh - btn.height - 64);
     attempts++;
-  } while (attempts < 20 && Math.abs(nx - (e.clientX || vw/2)) < 180 && Math.abs(ny - (e.clientY || vh/2)) < 90);
-  btnNo.style.left = nx + 'px'; btnNo.style.top  = ny + 'px';
-  btnNo.classList.remove('jiggle'); void btnNo.offsetWidth; btnNo.classList.add('jiggle');
+  } while (attempts < 20 &&
+    Math.abs(nx - (e.clientX || vw/2)) < 180 &&
+    Math.abs(ny - (e.clientY || vh/2)) < 90);
+  btnNo.style.left = nx + 'px';
+  btnNo.style.top  = ny + 'px';
+  btnNo.classList.remove('jiggle');
+  void btnNo.offsetWidth;
+  btnNo.classList.add('jiggle');
 }
+
 btnNo.addEventListener('mouseover', escapeBtn);
 btnNo.addEventListener('touchstart', e => { e.preventDefault(); escapeBtn(e); }, { passive: false });
 btnNo.addEventListener('click', escapeBtn);
@@ -462,7 +697,7 @@ document.getElementById('btnYes').addEventListener('click', () => {
 });
 
 /* ════════════════════════════════════════
-   5. IMAGE UPLOAD
+   5. IMAGE UPLOAD (ย่ออัตโนมัติ)
 ════════════════════════════════════════ */
 const fileInput  = document.getElementById('fileInput');
 const previewImg = document.getElementById('previewImg');
@@ -476,7 +711,8 @@ fileInput.addEventListener('change', (e) => {
     const img = new Image();
     img.onload = function() {
       const canvas = document.createElement('canvas');
-      const MAX = 400; let w = img.width, h = img.height;
+      const MAX = 400;
+      let w = img.width, h = img.height;
       if (w > h) { if (w > MAX) { h *= MAX/w; w = MAX; } }
       else        { if (h > MAX) { w *= MAX/h; h = MAX; } }
       canvas.width = w; canvas.height = h;
@@ -508,6 +744,12 @@ document.getElementById('btnMake').addEventListener('click', () => {
   document.getElementById('id-num').textContent = cardNum;
   document.getElementById('id-barnum').textContent = cardNum;
 
+  // Set save hint by device type
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  document.getElementById('saveHint').textContent = isMobile
+    ? '📱 มือถือ: แตะปุ่มแล้วกดค้างที่รูปเพื่อบันทึก'
+    : '💻 PC: ไฟล์จะดาวน์โหลดอัตโนมัติ';
+
   showScreen('screen3');
   launchConfetti(60);
 });
@@ -528,10 +770,14 @@ tiltWrapper.addEventListener('mousemove', e => {
   const dy = (e.clientY - cy) / (rect.height / 2);
   const rotX = -dy * MAX_TILT, rotY = dx * MAX_TILT;
   idCard.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.03)`;
-  holoGlare.style.background = `radial-gradient(ellipse 70% 55% at ${((dx+1)/2*100).toFixed(1)}% ${((dy+1)/2*100).toFixed(1)}%,rgba(255,255,255,.6) 0%,rgba(255,200,220,.2) 30%,transparent 70%)`;
+  idCard.style.boxShadow = `${-rotY*.8}px ${rotX*.8}px 40px rgba(124,58,78,.28),0 2px 8px rgba(232,99,122,.1)`;
+  const gx = ((dx + 1) / 2 * 100).toFixed(1);
+  const gy = ((dy + 1) / 2 * 100).toFixed(1);
+  holoGlare.style.background = `radial-gradient(ellipse 70% 55% at ${gx}% ${gy}%,rgba(255,255,255,.6) 0%,rgba(255,200,220,.2) 30%,transparent 70%)`;
 });
 tiltWrapper.addEventListener('mouseleave', () => {
   idCard.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+  idCard.style.boxShadow = '0 12px 50px rgba(124,58,78,.2),0 2px 8px rgba(232,99,122,.1)';
 });
 tiltWrapper.addEventListener('touchmove', e => {
   const t = e.touches[0];
@@ -545,202 +791,169 @@ tiltWrapper.addEventListener('touchend', () => {
 });
 
 /* ════════════════════════════════════════
-   8. SAVE CARD
+   8. SAVE CARD — Fixed & Working
 ════════════════════════════════════════ */
 document.getElementById('btnSave').addEventListener('click', async () => {
   const btn = document.getElementById('btnSave');
   const originalText = btn.innerHTML;
-  btn.disabled = true; btn.innerHTML = '⏳ กำลังสร้างภาพ...';
-  const card = document.getElementById('idCard');
-  const glare = document.getElementById('holoGlare');
-  const rainbow = document.querySelector('.holo-rainbow');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ กำลังสร้างภาพ...';
 
-  card.style.transform = 'none'; card.style.transition = 'none'; card.style.boxShadow = 'none';
-  glare.style.display = 'none'; rainbow.style.display = 'none';
+  const card      = document.getElementById('idCard');
+  const glare     = document.getElementById('holoGlare');
+  const rainbow   = document.querySelector('.holo-rainbow');
+
+  // ซ่อน effects ที่กวน
+  card.style.transform  = 'none';
+  card.style.transition = 'none';
+  card.style.boxShadow  = 'none';
+  glare.style.display   = 'none';
+  rainbow.style.display = 'none';
 
   await new Promise(r => setTimeout(r, 400));
+
   try {
-    const canvas = await html2canvas(card, { scale: 2.5, useCORS: true, allowTaint: true, backgroundColor: '#fff8fa', logging: false });
+    const canvas = await html2canvas(card, {
+      scale: 2.5,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#fff8fa',
+      logging: false,
+    });
+
     const imgData = canvas.toDataURL('image/jpeg', 0.92);
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
     if (isMobile) {
+      // มือถือ → popup กดค้างบันทึก
       showDownloadOverlay(imgData);
     } else {
-      const link = document.createElement('a'); link.href = imgData; link.download = 'girlfriend-id-card.jpg';
-      document.body.appendChild(link); link.click(); document.body.removeChild(link);
+      // PC/Desktop → ดาวน์โหลดอัตโนมัติ
+      const link = document.createElement('a');
+      link.href = imgData;
+      link.download = 'girlfriend-id-card.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
       showToast('ดาวน์โหลดสำเร็จแล้ว! 💕');
+
+      // แสดง popup ด้วย เผื่อ browser บล็อก auto-download
       setTimeout(() => showDownloadOverlay(imgData), 300);
     }
-  } catch (err) { showToast('เกิดข้อผิดพลาด ลองแคปหน้าจอแทนได้เลยนะ 📸'); }
-  finally {
-    card.style.transform = ''; card.style.transition = ''; card.style.boxShadow = '';
-    glare.style.display = 'block'; rainbow.style.display = 'block';
-    btn.disabled = false; btn.innerHTML = originalText;
+
+  } catch (err) {
+    console.error(err);
+    showToast('เกิดข้อผิดพลาด ลองแคปหน้าจอแทนได้เลยนะ 📸');
+  } finally {
+    card.style.transform  = '';
+    card.style.transition = '';
+    card.style.boxShadow  = '';
+    glare.style.display   = 'block';
+    rainbow.style.display = 'block';
+    btn.disabled  = false;
+    btn.innerHTML = originalText;
   }
 });
 
 function showDownloadOverlay(dataUrl) {
-  const old = document.getElementById('dlOverlay'); if (old) old.remove();
-  const overlay = document.createElement('div'); overlay.id = 'dlOverlay'; overlay.className = 'dl-overlay';
+  // ลบ overlay เก่าออกก่อน (กรณีกดซ้ำ)
+  const old = document.getElementById('dlOverlay');
+  if (old) old.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'dlOverlay';
+  overlay.className = 'dl-overlay';
+
   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
   overlay.innerHTML = `
-    <p class="dl-overlay-hint">${isMobile ? '👇 กดค้างที่รูปภาพ แล้วเลือก <strong>"บันทึกรูปภาพ"</strong> 👇' : '💾 รูปบัตรของคุณพร้อมแล้ว!'}</p>
-    <img class="dl-overlay-img" src="${dataUrl}" />
-    <a class="dl-overlay-dl" href="${dataUrl}" download="girlfriend-id-card.jpg">📥 ดาวน์โหลด</a>
+    <p class="dl-overlay-hint">
+      ${isMobile
+        ? '👇 กดค้างที่รูปภาพ แล้วเลือก <strong>"บันทึกรูปภาพ"</strong> 👇'
+        : '💾 รูปบัตรของคุณพร้อมแล้ว!<br>กด "ดาวน์โหลด" หรือคลิกขวาที่รูปเพื่อบันทึก'}
+    </p>
+    <img class="dl-overlay-img" src="${dataUrl}" alt="ID Card" />
+    <a class="dl-overlay-dl" href="${dataUrl}" download="girlfriend-id-card.jpg">
+      📥 ดาวน์โหลด
+    </a>
     <button class="dl-overlay-close" id="dlClose">ปิด</button>
   `;
+
   document.body.appendChild(overlay);
   document.getElementById('dlClose').onclick = () => overlay.remove();
 }
 
 /* ════════════════════════════════════════
-   9. GO SURPRISE SCREEN
+   HELPERS
 ════════════════════════════════════════ */
-function goSurprise() {
-  showScreen('screen4');
+function formatDate(d) {
+  return d.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+function generateCardNum() {
+  const words = ['LOVE','MINE','BABE','CUTE','DEAR'];
+  const w = words[Math.floor(Math.random() * words.length)];
+  return String(Math.floor(1000 + Math.random() * 9000)) + '-' + w;
+}
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
 /* ════════════════════════════════════════
-   10. FIREWORKS ANIMATION LOGIC (NEW)
+   CONFETTI
 ════════════════════════════════════════ */
-const fwCanvas = document.getElementById('fireworksCanvas');
-const fwCtx = fwCanvas.getContext('2d');
-let fireworks = [];
-let particles = [];
-let fwInterval;
-
-function resizeFw() {
-  fwCanvas.width = window.innerWidth;
-  fwCanvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeFw);
-resizeFw();
-
-function triggerFireworks() {
-  // ซ่อนปุ่ม
-  document.getElementById('btnFireworks').style.display = 'none';
-  
-  // เปลี่ยนพื้นหลังให้มืดลงเพื่อให้พลุเด่นขึ้น
-  document.getElementById('nightSky').style.opacity = '1';
-  document.getElementById('heartsBg').style.opacity = '0.3';
-  
-  // เปลี่ยนสีตัวอักษรให้เข้ากับตอนกลางคืน
-  document.getElementById('fwTitle').style.color = '#fff';
-  document.getElementById('fwText').style.color = '#fce8ed';
-  document.getElementById('fwText').style.textShadow = '0 0 10px rgba(255,255,255,0.3)';
-
-  // เริ่ม Loop ของพลุ
-  requestAnimationFrame(updateFireworks);
-  
-  // ยิงพลุต่อเนื่อง
-  fwInterval = setInterval(launchFirework, 600);
-
-  // หยุดยิงพลุหลังจาก 15 วินาที
-  setTimeout(() => clearInterval(fwInterval), 15000);
-}
-
-function launchFirework() {
-  fireworks.push({
-    x: Math.random() * fwCanvas.width,
-    y: fwCanvas.height,
-    vx: (Math.random() - 0.5) * 3,
-    vy: -(Math.random() * 5 + 12),
-    color: ['#e8637a','#f2a7b5','#d4a853','#ffffff','#ff9a9e'][Math.floor(Math.random()*5)]
-  });
-}
-
-function createParticles(x, y, color) {
-  for (let i = 0; i < 60; i++) {
-    particles.push({
-      x: x, y: y,
-      vx: (Math.random() - 0.5) * 12,
-      vy: (Math.random() - 0.5) * 12,
-      alpha: 1,
-      color: color
-    });
-  }
-}
-
-function updateFireworks() {
-  // สร้างเงาตามทางของพลุ
-  fwCtx.globalCompositeOperation = 'destination-out';
-  fwCtx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-  fwCtx.fillRect(0, 0, fwCanvas.width, fwCanvas.height);
-  fwCtx.globalCompositeOperation = 'lighter';
-
-  // อัปเดตลูกพลุที่ยิงขึ้น
-  for (let i = fireworks.length - 1; i >= 0; i--) {
-    let f = fireworks[i];
-    f.x += f.vx;
-    f.y += f.vy;
-    f.vy += 0.2; // แรงโน้มถ่วง
-    
-    fwCtx.fillStyle = f.color;
-    fwCtx.beginPath();
-    fwCtx.arc(f.x, f.y, 3, 0, Math.PI * 2);
-    fwCtx.fill();
-
-    // ระเบิดเมื่อถึงจุดสูงสุด
-    if (f.vy >= -1 || f.y < 100) {
-      createParticles(f.x, f.y, f.color);
-      fireworks.splice(i, 1);
-    }
-  }
-
-  // อัปเดตประกายพลุที่ระเบิดแล้ว
-  for (let i = particles.length - 1; i >= 0; i--) {
-    let p = particles[i];
-    p.x += p.vx;
-    p.y += p.vy;
-    p.vy += 0.1; // แรงโน้มถ่วง
-    p.alpha -= 0.015; // ค่อยๆ จางหายไป
-
-    fwCtx.globalAlpha = Math.max(0, p.alpha);
-    fwCtx.fillStyle = p.color;
-    fwCtx.beginPath();
-    fwCtx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-    fwCtx.fill();
-
-    if (p.alpha <= 0) particles.splice(i, 1);
-  }
-  fwCtx.globalAlpha = 1;
-
-  requestAnimationFrame(updateFireworks);
-}
-
-/* ════════════════════════════════════════
-   HELPERS & CONFETTI
-════════════════════════════════════════ */
-function formatDate(d) { return d.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' }); }
-function generateCardNum() { const words = ['LOVE','MINE','BABE','CUTE','DEAR']; return String(Math.floor(1000+Math.random()*9000)) + '-' + words[Math.floor(Math.random()*5)]; }
-function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
-function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
-
 function launchConfetti(count = 100) {
   const canvas = document.getElementById('confetti-canvas');
   const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
   const COLORS = ['#e8637a','#f2a7b5','#d4a853','#c0445e','#fff','#fce8ed','#7c3a4e'];
+  const shapes = ['rect','circle','heart'];
   const pieces = Array.from({ length: count }, () => ({
     x: Math.random() * canvas.width, y: -20 - Math.random() * 200,
     r: 4 + Math.random() * 7, color: COLORS[Math.floor(Math.random() * COLORS.length)],
     vx: (Math.random() - .5) * 4, vy: 2 + Math.random() * 4,
-    rot: Math.random() * Math.PI * 2, rotV: (Math.random() - .5) * .15, alpha: 1
+    rot: Math.random() * Math.PI * 2, rotV: (Math.random() - .5) * .15,
+    shape: shapes[Math.floor(Math.random() * shapes.length)], alpha: 1
   }));
   let frame;
   function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); let alive = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
     pieces.forEach(p => {
-      if (p.alpha <= 0) return; alive = true; p.x += p.vx; p.y += p.vy; p.rot += p.rotV;
+      if (p.alpha <= 0) return;
+      alive = true;
+      p.x += p.vx; p.y += p.vy; p.rot += p.rotV;
       if (p.y > canvas.height * .75) p.alpha -= .018;
-      ctx.save(); ctx.globalAlpha = Math.max(0, p.alpha); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.color;
-      ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.alpha);
+      ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.color;
+      if (p.shape === 'rect') { ctx.fillRect(-p.r, -p.r*.6, p.r*2, p.r*1.2); }
+      else if (p.shape === 'circle') { ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); }
+      else {
+        const s = p.r/8; ctx.beginPath();
+        ctx.moveTo(0,-2*s); ctx.bezierCurveTo(4*s,-6*s,10*s,2*s,0,7*s);
+        ctx.bezierCurveTo(-10*s,2*s,-4*s,-6*s,0,-2*s); ctx.fill();
+      }
+      ctx.restore();
     });
-    if (alive) frame = requestAnimationFrame(draw); else ctx.clearRect(0,0,canvas.width,canvas.height);
+    if (alive) frame = requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
   }
-  cancelAnimationFrame(frame); draw();
+  cancelAnimationFrame(frame);
+  draw();
 }
-window.addEventListener('resize', () => { const c = document.getElementById('confetti-canvas'); c.width = window.innerWidth; c.height = window.innerHeight; });
+
+window.addEventListener('resize', () => {
+  const c = document.getElementById('confetti-canvas');
+  c.width = window.innerWidth; c.height = window.innerHeight;
+});
 </script>
 </body>
 </html>
