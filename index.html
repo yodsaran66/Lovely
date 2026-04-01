@@ -24,10 +24,11 @@
     background: var(--cream);
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* ปรับจาก center เป็น flex-start เพื่อให้เริ่มจากด้านบน */
     justify-content: center;
-    overflow: hidden;
+    overflow-x: hidden; /* ล็อกแค่แนวนอน ให้เลื่อนแนวตั้งได้ */
     position: relative;
+    padding: 40px 20px; /* เพิ่มพื้นที่ว่างด้านบน-ล่าง เพื่อไม่ให้เนื้อหาชนขอบจอ */
   }
 
   body::before {
@@ -66,10 +67,11 @@
 
   .screen {
     position: relative; z-index: 10; 
-    width: min(90vw, 480px);
+    width: min(100%, 480px); /* ปรับความกว้างให้ยืดหยุ่นบนมือถือ */
     text-align: center;
     display: none;
     animation: fadeIn 1.5s ease; /* เฟดเปลี่ยนหน้าช้าลงมาก */
+    margin: auto; /* จัดให้อยู่กึ่งกลาง */
   }
   .screen.active { display: block; }
   @keyframes fadeIn {
@@ -168,12 +170,13 @@
   /* ─── ALL BUTTONS UPGRADE ─── */
   .btn-row {
     display: flex; gap: 16px; justify-content: center;
-    flex-wrap: nowrap; position: relative; min-height: 52px;
+    flex-wrap: wrap; /* เผื่อปุ่มยาวไปบนจอมือถือเล็ก */
+    position: relative; min-height: 52px;
   }
 
   .btn, #btnEnter, .btn-yes, .btn-make, .fw-btn, .btn-save, .btn-surprise {
     font-family: 'Sarabun', sans-serif;
-    font-size: 1rem; font-weight: 700;
+    font-size: 1.05rem; font-weight: 700;
     padding: 14px 36px; border-radius: 50px;
     border: none; cursor: pointer;
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* เอฟเฟกต์ปุ่มช้าลง นุ่มขึ้น */
@@ -254,9 +257,9 @@
   .btn-make { margin-top: 20px; width: 100%; }
 
   /* ─── SCREEN 3 — ID Card ─── */
-  #screen3 { width: min(90vw, 420px); }
+  #screen3 { width: min(100%, 420px); }
 
-  .card-tilt-wrapper { perspective: 900px; cursor: pointer; }
+  .card-tilt-wrapper { perspective: 900px; cursor: pointer; margin-bottom: 10px; }
 
   .id-card {
     background: linear-gradient(145deg, #fff8fa, #fce8ed);
@@ -268,6 +271,7 @@
     transform-style: preserve-3d;
     transition: transform .2s ease, box-shadow .2s ease;
     will-change: transform;
+    margin: 0 auto; /* จัดกึ่งกลาง */
   }
 
   .id-card .holo-glare {
@@ -375,7 +379,7 @@
     transform: rotate(-12deg);
   }
 
-  /* ─── SAVE & SURPRISE BUTTON AREA ─── */
+  /* ─── SAVE BUTTON & SURPRISE BUTTON AREA ─── */
   .save-area { margin-top: 20px; position: relative; }
   
   .btn-save {
