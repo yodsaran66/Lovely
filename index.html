@@ -15,7 +15,7 @@
     --petal: #fce8ed;
     --cream: #fff9f5;
     --plum: #7c3a4e;
-    --gold: #d4a853;
+    --gold: #f3a638; /* ปรับสีทองให้ละมุนขึ้น */
     --soft: #f7d6df;
   }
 
@@ -146,14 +146,6 @@
     line-height: 1.7;
   }
   .intro-text.show { opacity: 1; transform: translateY(0); }
-  #btnEnter {
-    opacity: 0; visibility: hidden; transition: opacity 1s ease;
-    margin-top: 20px; background: linear-gradient(135deg, var(--rose), #c0445e);
-    color: #fff; padding: 14px 36px; border-radius: 50px;
-    border: none; cursor: pointer; font-family: 'Sarabun', sans-serif;
-    font-size: 1rem; font-weight: 600; box-shadow: 0 4px 20px rgba(232,99,122,.4);
-  }
-  #btnEnter.show { opacity: 1; visibility: visible; }
 
   /* ─── SCREEN 1 ─── */
   .card {
@@ -173,40 +165,53 @@
   }
   .card .sub { font-size: .95rem; color: #a06070; margin-bottom: 24px; line-height: 1.6; }
 
+  /* ─── ALL BUTTONS UPGRADE ─── */
   .btn-row {
     display: flex; gap: 16px; justify-content: center;
     flex-wrap: nowrap; position: relative; min-height: 52px;
   }
-  .btn {
+
+  .btn, #btnEnter, .btn-yes, .btn-make, .fw-btn, .btn-save, .btn-surprise {
     font-family: 'Sarabun', sans-serif;
-    font-size: 1rem; font-weight: 600;
+    font-size: 1rem; font-weight: 700;
     padding: 14px 36px; border-radius: 50px;
     border: none; cursor: pointer;
-    transition: transform .2s, box-shadow .2s;
-    white-space: nowrap;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* นุ่มนวลขึ้น */
+    position: relative; overflow: hidden;
   }
-  .btn-yes {
-    background: linear-gradient(135deg, var(--rose), #c0445e);
-    color: #fff; box-shadow: 0 4px 20px rgba(232,99,122,.4);
-  }
-  .btn-yes:hover { transform: scale(1.06); box-shadow: 0 6px 28px rgba(232,99,122,.5); }
 
+  /* ปุ่มกดหลัก (ตกลง, สร้างบัตร ฯลฯ) */
+  #btnEnter, .btn-yes, .btn-make, .fw-btn {
+    background: linear-gradient(135deg, var(--rose) 0%, #d83f5e 100%);
+    color: #fff; 
+    box-shadow: 0 6px 20px rgba(232,99,122,.4), inset 0 -3px 0 rgba(0,0,0,0.1);
+    letter-spacing: 0.5px;
+  }
+  #btnEnter { opacity: 0; visibility: hidden; transition: opacity 1s ease; margin-top: 20px; }
+  #btnEnter.show { opacity: 1; visibility: visible; }
+
+  /* เอฟเฟกต์ตอนชี้เมาส์ปุ่มหลัก */
+  #btnEnter:hover, .btn-yes:hover, .btn-make:hover, .fw-btn:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 10px 25px rgba(232,99,122,.5), inset 0 -3px 0 rgba(0,0,0,0.1); 
+  }
+  #btnEnter:active, .btn-yes:active, .btn-make:active, .fw-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(232,99,122,.3), inset 0 -1px 0 rgba(0,0,0,0.1);
+  }
+
+  /* ปุ่มปฏิเสธ (วิ่งหนี) */
   .btn-no {
     background: #fff0f3; color: var(--rose);
-    border: 1.5px solid var(--blush);
-    transition: color .15s, background .15s;
+    border: 2px solid var(--blush);
+    padding: 14px 36px; font-weight: 700; font-family: 'Sarabun', sans-serif; border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(242,167,181,.2);
+    transition: background 0.2s, color 0.2s;
   }
-  @media (max-width: 480px) {
-    .btn-no { position: relative !important; left: auto !important; top: auto !important; }
-  }
+  .btn-no:hover { background: #fce8ed; }
+  @media (max-width: 480px) { .btn-no { position: relative !important; left: auto !important; top: auto !important; } }
   .btn-no.jiggle { animation: jiggle .4s ease; }
-  @keyframes jiggle {
-    0%,100%{transform:rotate(0);}
-    20%{transform:rotate(-9deg);}
-    40%{transform:rotate(9deg);}
-    60%{transform:rotate(-6deg);}
-    80%{transform:rotate(6deg);}
-  }
+  @keyframes jiggle { 0%,100%{transform:rotate(0);} 20%{transform:rotate(-9deg);} 40%{transform:rotate(9deg);} 60%{transform:rotate(-6deg);} 80%{transform:rotate(6deg);} }
 
   .hearts-divider { margin: 20px 0; color: var(--blush); font-size: 1.1rem; letter-spacing: 6px; }
 
@@ -247,16 +252,7 @@
     display: none; margin: 0 auto 8px;
   }
 
-  .btn-make {
-    margin-top: 20px; width: 100%;
-    background: linear-gradient(135deg, var(--rose), #c0445e);
-    color: #fff; border: none; border-radius: 50px;
-    padding: 15px; font-size: 1.05rem; font-weight: 600;
-    cursor: pointer; font-family: 'Sarabun', sans-serif;
-    box-shadow: 0 4px 20px rgba(232,99,122,.35);
-    transition: transform .2s, box-shadow .2s;
-  }
-  .btn-make:hover { transform: scale(1.03); box-shadow: 0 6px 28px rgba(232,99,122,.45); }
+  .btn-make { margin-top: 20px; width: 100%; }
 
   /* ─── SCREEN 3 — ID Card ─── */
   #screen3 { width: min(90vw, 420px); }
@@ -380,37 +376,60 @@
     transform: rotate(-12deg);
   }
 
-  /* ─── SAVE BUTTON & SURPRISE BUTTON ─── */
+  /* ─── SAVE & SURPRISE BUTTON AREA ─── */
   .save-area { margin-top: 20px; }
+  
   .btn-save {
     width: 100%;
     background: #fff; color: var(--rose);
-    border: 2px solid var(--rose); border-radius: 50px;
-    padding: 13px; font-size: .95rem; font-weight: 600;
-    cursor: pointer; font-family: 'Sarabun', sans-serif;
-    transition: background .2s, color .2s, opacity .2s;
+    border: 2px solid var(--rose);
+    box-shadow: 0 4px 15px rgba(232,99,122,.15);
     display: flex; align-items: center; justify-content: center; gap: 8px;
   }
-  .btn-save:hover { background: var(--rose); color: #fff; }
-  .btn-save:disabled { opacity: .6; cursor: wait; }
-
-  .btn-surprise {
-    width: 100%;
-    background: linear-gradient(135deg, var(--gold), #c4923e);
-    color: #fff; border: none; border-radius: 50px;
-    padding: 14px; font-size: 1rem; font-weight: bold;
-    cursor: pointer; font-family: 'Sarabun', sans-serif;
-    box-shadow: 0 4px 20px rgba(212,168,83,.4);
-    margin-top: 15px; transition: transform .2s, box-shadow .2s;
-    animation: pulse 2s infinite;
-  }
-  .btn-surprise:hover { transform: scale(1.05); }
+  .btn-save:hover { background: var(--rose); color: #fff; transform: translateY(-2px); }
+  .btn-save:disabled { opacity: .6; cursor: wait; transform: none; }
 
   .save-hint {
     margin-top: 10px;
     font-size: .8rem; color: #b07880;
     line-height: 1.5;
   }
+
+  /* ปุ่มซ่อน (Surprise Button) */
+  .btn-surprise {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold) 0%, #ff8c00 100%);
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    border: 2px solid #fff;
+    box-shadow: 0 6px 25px rgba(255,140,0,.4), inset 0 -3px 0 rgba(0,0,0,0.15);
+    margin-top: 15px; 
+    display: none; /* ซ่อนตอนเริ่มต้น */
+    opacity: 0;
+  }
+  
+  .btn-surprise:hover { transform: scale(1.03) translateY(-2px); box-shadow: 0 10px 30px rgba(255,140,0,.5); }
+  
+  /* Class ที่จะถูกเพิ่มเพื่อโชว์ปุ่มอย่างนุ่มนวล */
+  .show-surprise {
+    display: block;
+    animation: popAndFloat 3s infinite ease-in-out;
+  }
+
+  @keyframes popAndFloat {
+    0% { opacity: 0; transform: translateY(15px) scale(0.9); }
+    10% { opacity: 1; transform: translateY(0) scale(1); }
+    50% { opacity: 1; transform: translateY(-4px) scale(1); box-shadow: 0 10px 30px rgba(255,140,0,.5); }
+    100% { opacity: 1; transform: translateY(0) scale(1); box-shadow: 0 6px 25px rgba(255,140,0,.4); }
+  }
+
+  /* แสงวิ่งบนปุ่ม (Gleam effect) */
+  .btn-yes::after, #btnEnter::after, .btn-make::after, .fw-btn::after, .btn-surprise::after {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(transparent, rgba(255,255,255,0.25), transparent);
+    transform: rotate(45deg); animation: shine 3s infinite; pointer-events: none;
+  }
+  @keyframes shine { 0% { left: -100%; } 20%, 100% { left: 100%; } }
 
   /* ─── MUSIC BTN ─── */
   .music-btn {
@@ -484,15 +503,6 @@
     margin-top: 20px;
     transition: color 2s ease;
     font-weight: 500;
-  }
-  .fw-btn {
-    background: linear-gradient(135deg, var(--rose), #c0445e);
-    color: #fff; border: none; border-radius: 50px;
-    padding: 16px 30px; font-size: 1.1rem; font-weight: bold;
-    cursor: pointer; font-family: 'Sarabun', sans-serif;
-    box-shadow: 0 8px 25px rgba(232,99,122,.5);
-    margin-top: 30px; transition: transform .2s;
-    animation: pulse 2s infinite;
   }
 </style>
 </head>
@@ -630,7 +640,7 @@
     <button class="btn-save" id="btnSave">📥 บันทึกบัตรเป็นรูปภาพ</button>
     <p class="save-hint" id="saveHint"></p>
     
-    <button class="btn-surprise" onclick="goSurprise()">🎁 กดเพื่อเปิดอ่านข้อความ!</button>
+    <button class="btn-surprise" id="btnSurprise" onclick="goSurprise()">🎁 กดเพื่อเปิดอ่านข้อความ!</button>
   </div>
 </div>
 
@@ -726,9 +736,7 @@ function escapeBtn(e) {
 
   const isMobile = window.innerWidth <= 480;
   if (isMobile) {
-    btnNo.classList.remove('jiggle');
-    void btnNo.offsetWidth;
-    btnNo.classList.add('jiggle');
+    btnNo.classList.remove('jiggle'); void btnNo.offsetWidth; btnNo.classList.add('jiggle');
     return;
   }
   if (!noEscaped) { btnNo.style.position = 'fixed'; noEscaped = true; }
@@ -740,13 +748,9 @@ function escapeBtn(e) {
     ny = 32 + Math.random() * (vh - btn.height - 64);
     attempts++;
   } while (attempts < 20 && Math.abs(nx - (e.clientX || vw/2)) < 180 && Math.abs(ny - (e.clientY || vh/2)) < 90);
-  btnNo.style.left = nx + 'px';
-  btnNo.style.top  = ny + 'px';
-  btnNo.classList.remove('jiggle');
-  void btnNo.offsetWidth;
-  btnNo.classList.add('jiggle');
+  btnNo.style.left = nx + 'px'; btnNo.style.top  = ny + 'px';
+  btnNo.classList.remove('jiggle'); void btnNo.offsetWidth; btnNo.classList.add('jiggle');
 }
-
 btnNo.addEventListener('mouseover', escapeBtn);
 btnNo.addEventListener('touchstart', e => { e.preventDefault(); escapeBtn(e); }, { passive: false });
 btnNo.addEventListener('click', escapeBtn);
@@ -760,7 +764,7 @@ document.getElementById('btnYes').addEventListener('click', () => {
 });
 
 /* ════════════════════════════════════════
-   5. IMAGE UPLOAD (ย่ออัตโนมัติ)
+   5. IMAGE UPLOAD
 ════════════════════════════════════════ */
 const fileInput  = document.getElementById('fileInput');
 const previewImg = document.getElementById('previewImg');
@@ -774,8 +778,7 @@ fileInput.addEventListener('change', (e) => {
     const img = new Image();
     img.onload = function() {
       const canvas = document.createElement('canvas');
-      const MAX = 400;
-      let w = img.width, h = img.height;
+      const MAX = 400; let w = img.width, h = img.height;
       if (w > h) { if (w > MAX) { h *= MAX/w; w = MAX; } }
       else        { if (h > MAX) { w *= MAX/h; h = MAX; } }
       canvas.width = w; canvas.height = h;
@@ -807,14 +810,16 @@ document.getElementById('btnMake').addEventListener('click', () => {
   document.getElementById('id-num').textContent = cardNum;
   document.getElementById('id-barnum').textContent = cardNum;
 
-  // Set save hint by device type
   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  document.getElementById('saveHint').textContent = isMobile
-    ? '📱 มือถือ: แตะปุ่มแล้วกดค้างที่รูปเพื่อบันทึก'
-    : '💻 PC: ไฟล์จะดาวน์โหลดอัตโนมัติ';
+  document.getElementById('saveHint').textContent = isMobile ? '📱 มือถือ: แตะปุ่มแล้วกดค้างที่รูปเพื่อบันทึก' : '💻 PC: ไฟล์จะดาวน์โหลดอัตโนมัติ';
 
   showScreen('screen3');
   launchConfetti(60);
+
+  // หน่วงเวลาซ่อนปุ่มเซอร์ไพรส์ไว้ 3 วินาที
+  setTimeout(() => {
+    document.getElementById('btnSurprise').classList.add('show-surprise');
+  }, 3000);
 });
 
 /* ════════════════════════════════════════
@@ -862,7 +867,6 @@ document.getElementById('btnSave').addEventListener('click', async () => {
   const glare     = document.getElementById('holoGlare');
   const rainbow   = document.querySelector('.holo-rainbow');
 
-  // ซ่อน effects ที่กวน
   card.style.transform  = 'none';
   card.style.transition = 'none';
   card.style.boxShadow  = 'none';
@@ -913,13 +917,10 @@ document.getElementById('btnSave').addEventListener('click', async () => {
 function showDownloadOverlay(dataUrl) {
   const old = document.getElementById('dlOverlay');
   if (old) old.remove();
-
   const overlay = document.createElement('div');
   overlay.id = 'dlOverlay';
   overlay.className = 'dl-overlay';
-
   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
   overlay.innerHTML = `
     <p class="dl-overlay-hint">
       ${isMobile
@@ -932,13 +933,12 @@ function showDownloadOverlay(dataUrl) {
     </a>
     <button class="dl-overlay-close" id="dlClose">ปิด</button>
   `;
-
   document.body.appendChild(overlay);
   document.getElementById('dlClose').onclick = () => overlay.remove();
 }
 
 /* ════════════════════════════════════════
-   9. SURPRISE FUNCTION & FIREWORKS (NEW)
+   9. SURPRISE FUNCTION & FIREWORKS
 ════════════════════════════════════════ */
 function goSurprise() {
   showScreen('screen4');
@@ -958,24 +958,15 @@ window.addEventListener('resize', resizeFw);
 resizeFw();
 
 function triggerFireworks() {
-  // ซ่อนปุ่ม
   document.getElementById('btnFireworks').style.display = 'none';
-  
-  // เปลี่ยนฉากหลังให้มืด
   document.getElementById('nightSky').style.opacity = '1';
   document.getElementById('heartsBg').style.opacity = '0.3';
-  
-  // เปลี่ยนข้อความให้สว่าง
   document.getElementById('fwTitle').style.color = '#fff';
   document.getElementById('fwText').style.color = '#fce8ed';
   document.getElementById('fwText').style.textShadow = '0 0 10px rgba(255,255,255,0.3)';
 
   requestAnimationFrame(updateFireworks);
-  
-  // เริ่มยิงพลุทุกๆ 0.6 วินาที
   fwInterval = setInterval(launchFirework, 600);
-
-  // จุดพลุต่อเนื่อง 15 วินาที
   setTimeout(() => clearInterval(fwInterval), 15000);
 }
 
@@ -1011,14 +1002,13 @@ function updateFireworks() {
     let f = fireworks[i];
     f.x += f.vx;
     f.y += f.vy;
-    f.vy += 0.2; // Gravity
+    f.vy += 0.2; 
     
     fwCtx.fillStyle = f.color;
     fwCtx.beginPath();
     fwCtx.arc(f.x, f.y, 3, 0, Math.PI * 2);
     fwCtx.fill();
 
-    // ระเบิดเมื่อขึ้นสูงสุด
     if (f.vy >= -1 || f.y < 100) {
       createParticles(f.x, f.y, f.color);
       fireworks.splice(i, 1);
