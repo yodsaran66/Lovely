@@ -15,7 +15,7 @@
     --petal: #fce8ed;
     --cream: #fff9f5;
     --plum: #7c3a4e;
-    --gold: #f3a638; /* ปรับสีทองให้ละมุนขึ้น */
+    --gold: #f3a638; 
     --soft: #f7d6df;
   }
 
@@ -57,7 +57,7 @@
     position: fixed; inset: 0;
     background: rgba(15, 10, 30, 0.9);
     z-index: 5; opacity: 0;
-    pointer-events: none; transition: opacity 2.5s ease;
+    pointer-events: none; transition: opacity 3.5s ease; /* เฟดเป็นกลางคืนช้าลง */
   }
   #fireworksCanvas {
     position: fixed; inset: 0;
@@ -65,11 +65,11 @@
   }
 
   .screen {
-    position: relative; z-index: 10; /* ให้อยู่เหนือพลุ */
+    position: relative; z-index: 10; 
     width: min(90vw, 480px);
     text-align: center;
     display: none;
-    animation: fadeIn .6s ease;
+    animation: fadeIn 1.5s ease; /* เฟดเปลี่ยนหน้าช้าลงมาก */
   }
   .screen.active { display: block; }
   @keyframes fadeIn {
@@ -85,7 +85,7 @@
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     gap: 20px;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
+    transition: opacity 1.5s ease, visibility 1.5s ease; /* ปิดหน้าเริ่มช้าลง */
   }
   #startOverlay.hidden { opacity: 0; visibility: hidden; }
 
@@ -95,7 +95,7 @@
     object-fit: cover;
     border: 3px solid var(--blush);
     box-shadow: 0 6px 24px rgba(232,99,122,.25);
-    animation: floatBob 3s ease-in-out infinite;
+    animation: floatBob 4s ease-in-out infinite; /* เด้งช้าลง */
   }
   @keyframes floatBob {
     0%,100% { transform: translateY(0); }
@@ -107,7 +107,7 @@
     font-weight: 600; margin-top: -8px;
   }
 
-  .pulse-btn { animation: pulse 2s infinite; }
+  .pulse-btn { animation: pulse 3s infinite; } /* กระพริบช้าลง */
 
   /* ─── GIF HELPERS ─── */
   .gif-block {
@@ -142,7 +142,7 @@
   .intro-text {
     font-size: 1.15rem; color: var(--plum); margin-bottom: 16px;
     opacity: 0; transform: translateY(15px);
-    transition: opacity 1.5s ease, transform 1.5s ease;
+    transition: opacity 2.5s ease, transform 2.5s ease; /* เฟดข้อความช้าลงมากๆ */
     line-height: 1.7;
   }
   .intro-text.show { opacity: 1; transform: translateY(0); }
@@ -156,8 +156,8 @@
     padding: 40px 36px 36px;
     box-shadow: 0 8px 40px rgba(124,58,78,.12), 0 2px 8px rgba(232,99,122,.08);
   }
-  .card .emoji-top { font-size: 3.2rem; margin-bottom: 12px; display: block; animation: pulse 2s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.12);} }
+  .card .emoji-top { font-size: 3.2rem; margin-bottom: 12px; display: block; animation: pulse 3s ease-in-out infinite; } /* หัวใจเด้งช้าลง */
+  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.08);} }
   .card h1 {
     font-family: 'Playfair Display', serif;
     font-size: clamp(1.7rem, 5vw, 2.2rem);
@@ -176,21 +176,20 @@
     font-size: 1rem; font-weight: 700;
     padding: 14px 36px; border-radius: 50px;
     border: none; cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* นุ่มนวลขึ้น */
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* เอฟเฟกต์ปุ่มช้าลง นุ่มขึ้น */
     position: relative; overflow: hidden;
+    letter-spacing: 0.5px;
   }
 
-  /* ปุ่มกดหลัก (ตกลง, สร้างบัตร ฯลฯ) */
+  /* ปุ่มกดหลัก */
   #btnEnter, .btn-yes, .btn-make, .fw-btn {
     background: linear-gradient(135deg, var(--rose) 0%, #d83f5e 100%);
     color: #fff; 
     box-shadow: 0 6px 20px rgba(232,99,122,.4), inset 0 -3px 0 rgba(0,0,0,0.1);
-    letter-spacing: 0.5px;
   }
-  #btnEnter { opacity: 0; visibility: hidden; transition: opacity 1s ease; margin-top: 20px; }
+  #btnEnter { opacity: 0; visibility: hidden; transition: opacity 1.5s ease; margin-top: 20px; } /* ปุ่มไปต่อเฟดมาช้าลง */
   #btnEnter.show { opacity: 1; visibility: visible; }
 
-  /* เอฟเฟกต์ตอนชี้เมาส์ปุ่มหลัก */
   #btnEnter:hover, .btn-yes:hover, .btn-make:hover, .fw-btn:hover { 
     transform: translateY(-3px); 
     box-shadow: 0 10px 25px rgba(232,99,122,.5), inset 0 -3px 0 rgba(0,0,0,0.1); 
@@ -200,17 +199,17 @@
     box-shadow: 0 2px 10px rgba(232,99,122,.3), inset 0 -1px 0 rgba(0,0,0,0.1);
   }
 
-  /* ปุ่มปฏิเสธ (วิ่งหนี) */
+  /* ปุ่มปฏิเสธ */
   .btn-no {
     background: #fff0f3; color: var(--rose);
     border: 2px solid var(--blush);
     padding: 14px 36px; font-weight: 700; font-family: 'Sarabun', sans-serif; border-radius: 50px;
     box-shadow: 0 4px 15px rgba(242,167,181,.2);
-    transition: background 0.2s, color 0.2s;
+    transition: background 0.3s, color 0.3s;
   }
   .btn-no:hover { background: #fce8ed; }
   @media (max-width: 480px) { .btn-no { position: relative !important; left: auto !important; top: auto !important; } }
-  .btn-no.jiggle { animation: jiggle .4s ease; }
+  .btn-no.jiggle { animation: jiggle .5s ease; }
   @keyframes jiggle { 0%,100%{transform:rotate(0);} 20%{transform:rotate(-9deg);} 40%{transform:rotate(9deg);} 60%{transform:rotate(-6deg);} 80%{transform:rotate(6deg);} }
 
   .hearts-divider { margin: 20px 0; color: var(--blush); font-size: 1.1rem; letter-spacing: 6px; }
@@ -228,18 +227,18 @@
   .form-group { margin-bottom: 18px; text-align: left; }
   .form-group label { font-size: .85rem; font-weight: 600; color: var(--plum); display: block; margin-bottom: 6px; }
   .form-group input[type="text"] {
-    width: 100%; padding: 12px 16px;
-    border: 1.5px solid var(--blush); border-radius: 14px;
+    width: 100%; padding: 14px 16px;
+    border: 2px solid var(--petal); border-radius: 14px;
     font-family: 'Sarabun', sans-serif; font-size: 1rem;
-    color: var(--plum); background: var(--petal); outline: none;
-    transition: border-color .2s;
+    color: var(--plum); background: #fff; outline: none;
+    transition: border-color .3s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
   }
   .form-group input[type="text"]:focus { border-color: var(--rose); }
 
   .upload-area {
     border: 2px dashed var(--blush); border-radius: 18px;
     padding: 24px; background: var(--petal); cursor: pointer;
-    transition: border-color .2s, background .2s;
+    transition: border-color .3s, background .3s;
     text-align: center; position: relative; overflow: hidden;
   }
   .upload-area:hover { border-color: var(--rose); background: #fce0e7; }
@@ -267,7 +266,7 @@
     box-shadow: 0 12px 50px rgba(124,58,78,.2), 0 2px 8px rgba(232,99,122,.1);
     position: relative;
     transform-style: preserve-3d;
-    transition: transform .12s ease, box-shadow .12s ease;
+    transition: transform .2s ease, box-shadow .2s ease;
     will-change: transform;
   }
 
@@ -279,7 +278,7 @@
       rgba(255,200,220,.18) 30%,
       rgba(200,180,255,.08) 60%,
       transparent 80%);
-    opacity: 0; transition: opacity .2s; mix-blend-mode: screen;
+    opacity: 0; transition: opacity .4s; mix-blend-mode: screen;
   }
   .id-card .holo-rainbow {
     position: absolute; inset: 0; border-radius: 20px;
@@ -288,7 +287,7 @@
       rgba(255,100,130,.0) 0%, rgba(255,200,100,.08) 20%,
       rgba(100,255,180,.08) 40%, rgba(100,180,255,.08) 60%,
       rgba(200,100,255,.08) 80%, rgba(255,100,130,.0) 100%);
-    opacity: 0; transition: opacity .3s; mix-blend-mode: color-dodge;
+    opacity: 0; transition: opacity .4s; mix-blend-mode: color-dodge;
   }
   .card-tilt-wrapper:hover .holo-glare,
   .card-tilt-wrapper:hover .holo-rainbow { opacity: 1; }
@@ -377,7 +376,7 @@
   }
 
   /* ─── SAVE & SURPRISE BUTTON AREA ─── */
-  .save-area { margin-top: 20px; }
+  .save-area { margin-top: 20px; position: relative; }
   
   .btn-save {
     width: 100%;
@@ -389,11 +388,7 @@
   .btn-save:hover { background: var(--rose); color: #fff; transform: translateY(-2px); }
   .btn-save:disabled { opacity: .6; cursor: wait; transform: none; }
 
-  .save-hint {
-    margin-top: 10px;
-    font-size: .8rem; color: #b07880;
-    line-height: 1.5;
-  }
+  .save-hint { margin-top: 10px; font-size: .8rem; color: #b07880; line-height: 1.5; margin-bottom: 5px;}
 
   /* ปุ่มซ่อน (Surprise Button) */
   .btn-surprise {
@@ -410,10 +405,10 @@
   
   .btn-surprise:hover { transform: scale(1.03) translateY(-2px); box-shadow: 0 10px 30px rgba(255,140,0,.5); }
   
-  /* Class ที่จะถูกเพิ่มเพื่อโชว์ปุ่มอย่างนุ่มนวล */
+  /* Class ที่จะถูกเพิ่มเพื่อโชว์ปุ่มอย่างนุ่มนวลและช้าๆ */
   .show-surprise {
     display: block;
-    animation: popAndFloat 3s infinite ease-in-out;
+    animation: popAndFloat 4s infinite ease-in-out; /* เปลี่ยนจังหวะขยับให้ช้าลง */
   }
 
   @keyframes popAndFloat {
@@ -423,11 +418,11 @@
     100% { opacity: 1; transform: translateY(0) scale(1); box-shadow: 0 6px 25px rgba(255,140,0,.4); }
   }
 
-  /* แสงวิ่งบนปุ่ม (Gleam effect) */
+  /* แสงวิ่งบนปุ่ม (Gleam effect) วิ่งช้าลง */
   .btn-yes::after, #btnEnter::after, .btn-make::after, .fw-btn::after, .btn-surprise::after {
     content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
     background: linear-gradient(transparent, rgba(255,255,255,0.25), transparent);
-    transform: rotate(45deg); animation: shine 3s infinite; pointer-events: none;
+    transform: rotate(45deg); animation: shine 4s infinite; pointer-events: none; /* เพิ่มเวลาเป็น 4s */
   }
   @keyframes shine { 0% { left: -100%; } 20%, 100% { left: 100%; } }
 
@@ -439,11 +434,11 @@
     border: 2px solid var(--blush); cursor: pointer;
     font-size: 1.3rem; display: none; align-items: center; justify-content: center;
     box-shadow: 0 4px 16px rgba(124,58,78,.15);
-    transition: transform .2s, box-shadow .2s;
+    transition: transform .3s, box-shadow .3s;
   }
   .music-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(124,58,78,.2); }
   .music-btn.visible { display: flex; }
-  .music-btn.playing { animation: musicPulse 1.4s ease-in-out infinite; }
+  .music-btn.playing { animation: musicPulse 2s ease-in-out infinite; } /* หัวใจเพลงเต้นช้าลง */
   @keyframes musicPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
 
   #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
@@ -453,8 +448,8 @@
     background: var(--plum); color: #fff;
     padding: 12px 24px; border-radius: 50px;
     font-size: .9rem; z-index: 10000;
-    transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s;
-    opacity: 0; white-space: nowrap;
+    transition: transform .5s cubic-bezier(.34,1.56,.64,1), opacity .5s; /* โทสต์หายช้าลง */
+    opacity: 0; white-space: nowrap; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   }
   .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
@@ -464,7 +459,7 @@
     background: rgba(0,0,0,.88); z-index: 10000;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    padding: 20px; animation: fadeIn .3s ease;
+    padding: 20px; animation: fadeIn .5s ease; /* เฟดเข้าช้าลง */
   }
   .dl-overlay-hint {
     color: #fff; margin-bottom: 18px;
@@ -480,18 +475,20 @@
     border-radius: 50px; border: none;
     background: #fff; color: var(--rose);
     font-weight: 700; font-family: 'Sarabun', sans-serif;
-    cursor: pointer; font-size: 1rem;
+    cursor: pointer; font-size: 1rem; transition: transform 0.3s;
   }
+  .dl-overlay-close:hover { transform: scale(1.05); }
   .dl-overlay-dl {
     margin-top: 12px; padding: 12px 30px;
     border-radius: 50px; border: 2px solid #fff;
     background: transparent; color: #fff;
     font-weight: 600; font-family: 'Sarabun', sans-serif;
     cursor: pointer; font-size: .95rem;
-    text-decoration: none; display: inline-block;
+    text-decoration: none; display: inline-block; transition: background 0.3s;
   }
+  .dl-overlay-dl:hover { background: rgba(255,255,255,0.1); }
 
-  /* ─── SCREEN 4 (SURPRISE MESSAGE & FIREWORKS) ─── */
+  /* ─── SCREEN 4 (SURPRISE MESSAGE) ─── */
   .screen4-wrap {
     padding: 30px 20px;
     background: transparent;
@@ -501,12 +498,17 @@
     color: var(--plum);
     line-height: 1.9;
     margin-top: 20px;
-    transition: color 2s ease;
+    transition: color 3.5s ease; /* เปลี่ยนสีตัวอักษรช้าลงมาากๆ */
     font-weight: 500;
   }
+
+  /* ป้องกัน effect กวนตอนแคปรูป */
+  .capturing .id-card { transform: none !important; box-shadow: none !important; transition: none !important; }
+  .capturing .holo-glare, .capturing .holo-rainbow { display: none !important; }
+
 </style>
 </head>
-<body>
+<body id="mainBody">
 
 <div id="nightSky"></div>
 <canvas id="fireworksCanvas"></canvas>
@@ -514,10 +516,7 @@
 <audio id="bgMusic" src="Love.mp3" loop></audio>
 
 <div id="startOverlay">
-  <img class="start-gif"
-       src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXRndG15dzBvNWQ3YWF4MzA3a3FvZjBqemN2dXA1azBjbzBhaXM0NSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/wvYNSqBAMDVx8CEYkt/giphy.webp"
-       alt="love gif"
-       onerror="this.style.display='none'" />
+  <img class="start-gif" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXRndG15dzBvNWQ3YWF4MzA3a3FvZjBqemN2dXA1azBjbzBhaXM0NSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/wvYNSqBAMDVx8CEYkt/giphy.webp" alt="love gif" onerror="this.style.display='none'" />
   <p class="start-label">มีจดหมายถึงคุณ 💌</p>
   <button id="btnStartMagic" class="btn btn-yes pulse-btn">💌 แตะเพื่อเปิดดู</button>
 </div>
@@ -529,17 +528,14 @@
 
 <div class="screen active" id="screen0">
   <div class="intro-wrap">
-    <div class="gif-block" id="introGifBlock" style="opacity:0;transition:opacity 1.2s ease;">
-      <img src="https://media4.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bXUxbXh3MThldTI5eHp2ZGw3czJubXQ0anB6NHc3OWZhZHl2c29kcyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/mFwj2VdRlECyKmVFdQ/giphy.webp"
-           alt="shy gif"
-           style="max-width:150px;max-height:120px;border-radius:16px;border:2px solid var(--blush);box-shadow:0 4px 18px rgba(124,58,78,.15);"
-           onerror="this.parentElement.style.display='none'" />
+    <div class="gif-block" id="introGifBlock" style="opacity:0;transition:opacity 2.5s ease;">
+      <img src="https://media4.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bXUxbXh3MThldTI5eHp2ZGw3czJubXQ0anB6NHc3OWZhZHl2c29kcyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/mFwj2VdRlECyKmVFdQ/giphy.webp" alt="shy gif" style="max-width:150px;max-height:120px;border-radius:16px;border:2px solid var(--blush);box-shadow:0 4px 18px rgba(124,58,78,.15);" onerror="this.parentElement.style.display='none'" />
     </div>
     <p class="intro-text" id="text1">อะแห่มๆๆๆๆๆๆ😊</p>
     <p class="intro-text" id="text2">ว่าไงจ๊ะน้องฟ้าาาา✨</p>
     <p class="intro-text" id="text3">มีอะไรจะบอกด้วยล่ะ🥰</p>
     <p class="intro-text" id="text4">ลองกดปุ่มข้างล่างสิอุอิ🤭</p>
-    <button id="btnEnter">ไปต่ออออออ</button>
+    <button id="btnEnter" class="btn">ไปต่ออออออ</button>
   </div>
 </div>
 
@@ -547,9 +543,7 @@
   <div class="card">
     <span class="emoji-top">💌</span>
     <div class="gif-block">
-      <img src="https://media4.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YjN5bHEzcnZoNWhvMXZlcXJpdjVpeXNzNjE2NmdoYnRwYXhucnk3ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1hqb8LwPS2xCNCpWH8/200.webp"
-           alt="love gif"
-           onerror="this.parentElement.style.display='none'" />
+      <img src="https://media4.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YjN5bHEzcnZoNWhvMXZlcXJpdjVpeXNzNjE2NmdoYnRwYXhucnk3ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1hqb8LwPS2xCNCpWH8/200.webp" alt="love gif" onerror="this.parentElement.style.display='none'" />
     </div>
     <h1>เรามาเป็นแฟนกันมั้ยยยย</h1>
     <p class="sub">ได้เวลาอันสมควรแล้ว</p>
@@ -566,9 +560,7 @@
     <span class="yay">🎉</span>
     <h2>คบกันไปนานๆนะ</h2>
     <div class="gif-block">
-      <img src="https://media0.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3aHU0Mm43bXVmNWU5Zmp5aTFjczdlc2FscHQ3aWxyaXIzcnNoODJtZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/xR5cPyPoL5HVXSphqA/giphy.webp"
-           alt="celebrate gif"
-           onerror="this.parentElement.style.display='none'" />
+      <img src="https://media0.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3aHU0Mm43bXVmNWU5Zmp5aTFjczdlc2FscHQ3aWxyaXIzcnNoODJtZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/xR5cPyPoL5HVXSphqA/giphy.webp" alt="celebrate gif" onerror="this.parentElement.style.display='none'" />
     </div>
     <p>ตอนนี้เราเป็นแฟนกันแล้วนะ 💖<br>มาทำบัตรประจำตัวแฟนคนโปรดกันดีกว่า</p>
     <div class="form-group">
@@ -584,7 +576,7 @@
         <p id="uploadText">แตะเพื่อเลือกรูปภาพ</p>
       </div>
     </div>
-    <button class="btn-make" id="btnMake">✨ สร้างบัตร</button>
+    <button class="btn btn-make" id="btnMake">✨ สร้างบัตร</button>
   </div>
 </div>
 
@@ -631,23 +623,21 @@
   </div>
 
   <div class="gif-block gif-sm" style="margin-top:16px;">
-    <img src="https://media3.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NDVycW45emk1NGxmbm84d2o4c2t0ZzR0OTQ0aGoyYTlmZTZ0cTBvYiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/WsRwFFRikFeAMriR15/giphy.webp"
-         alt="sparkle gif"
-         onerror="this.parentElement.style.display='none'" />
+    <img src="https://media3.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NDVycW45emk1NGxmbm84d2o4c2t0ZzR0OTQ0aGoyYTlmZTZ0cTBvYiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/WsRwFFRikFeAMriR15/giphy.webp" alt="sparkle gif" onerror="this.parentElement.style.display='none'" />
   </div>
 
   <div class="save-area">
-    <button class="btn-save" id="btnSave">📥 บันทึกบัตรเป็นรูปภาพ</button>
+    <button class="btn btn-save" id="btnSave">📥 บันทึกบัตรเป็นรูปภาพ</button>
     <p class="save-hint" id="saveHint"></p>
     
-    <button class="btn-surprise" id="btnSurprise" onclick="goSurprise()">🎁 กดเพื่อเปิดอ่านข้อความ!</button>
+    <button class="btn btn-surprise" id="btnSurprise" onclick="goSurprise()">🎁 กดเพื่อเปิดอ่านข้อความ!</button>
   </div>
 </div>
 
 <div class="screen" id="screen4">
   <div class="screen4-wrap">
-    <span class="yay" style="font-size: 3.5rem; display: block; margin-bottom: 10px; animation: pulse 1.5s infinite;">💌</span>
-    <h2 id="fwTitle" style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--plum); margin-bottom: 10px; transition: color 2.5s ease;">
+    <span class="yay" style="font-size: 3.5rem; display: block; margin-bottom: 10px; animation: pulse 2.5s infinite;">💌</span>
+    <h2 id="fwTitle" style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--plum); margin-bottom: 10px; transition: color 3.5s ease;">
       ถึงแฟนคนโปรด
     </h2>
     
@@ -658,26 +648,26 @@
       <p style="font-size: 1.5rem; font-weight: bold; color: var(--rose); margin-top: 20px;">💕</p>
     </div>
 
-    <button class="fw-btn" id="btnFireworks" onclick="triggerFireworks()">✨ กดเพื่อรับการเฉลิมฉลอง ✨</button>
+    <button class="btn fw-btn" id="btnFireworks" onclick="triggerFireworks()">✨ กดเพื่อรับการเฉลิมฉลอง ✨</button>
   </div>
 </div>
 
 <script>
 /* ════════════════════════════════════════
-   0. START OVERLAY & INTRO
+   0. START OVERLAY & INTRO (หน่วงเวลาให้ช้าลง)
 ════════════════════════════════════════ */
 document.getElementById('btnStartMagic').addEventListener('click', () => {
   document.getElementById('startOverlay').classList.add('hidden');
   startMusic();
   document.getElementById('musicBtn').classList.add('visible');
 
-  // Show intro GIF first
-  setTimeout(() => { document.getElementById('introGifBlock').style.opacity = '1'; }, 300);
-  setTimeout(() => { document.getElementById('text1').classList.add('show'); }, 800);
-  setTimeout(() => { document.getElementById('text2').classList.add('show'); }, 2100);
-  setTimeout(() => { document.getElementById('text3').classList.add('show'); }, 3400);
-  setTimeout(() => { document.getElementById('text4').classList.add('show'); }, 4700);
-  setTimeout(() => { document.getElementById('btnEnter').classList.add('show'); }, 5800);
+  // หน่วงเวลาข้อความให้ปรากฏช้าลง เพื่อความโรแมนติก
+  setTimeout(() => { document.getElementById('introGifBlock').style.opacity = '1'; }, 800);
+  setTimeout(() => { document.getElementById('text1').classList.add('show'); }, 2200);
+  setTimeout(() => { document.getElementById('text2').classList.add('show'); }, 4200);
+  setTimeout(() => { document.getElementById('text3').classList.add('show'); }, 6200);
+  setTimeout(() => { document.getElementById('text4').classList.add('show'); }, 8200);
+  setTimeout(() => { document.getElementById('btnEnter').classList.add('show'); }, 10500); // ปุ่มมาตอนวิที่ 10.5
 });
 
 document.getElementById('btnEnter').addEventListener('click', () => {
@@ -685,7 +675,7 @@ document.getElementById('btnEnter').addEventListener('click', () => {
 });
 
 /* ════════════════════════════════════════
-   1. FLOATING HEARTS BG
+   1. FLOATING HEARTS BG (ลอยช้าลง)
 ════════════════════════════════════════ */
 const hbContainer = document.getElementById('heartsBg');
 const emojis = ['💕','💖','🌸','💗','✿','♡','🍓','💝'];
@@ -695,7 +685,8 @@ for (let i = 0; i < 22; i++) {
   el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
   el.style.left = Math.random() * 100 + 'vw';
   el.style.fontSize = (.7 + Math.random() * 1.2) + 'rem';
-  el.style.animationDuration = (8 + Math.random() * 14) + 's';
+  // ทำให้หัวใจลอยช้าลงมากๆ ให้ดูเพลินๆ
+  el.style.animationDuration = (15 + Math.random() * 20) + 's';
   el.style.animationDelay = (Math.random() * -20) + 's';
   hbContainer.appendChild(el);
 }
@@ -796,7 +787,7 @@ fileInput.addEventListener('change', (e) => {
 });
 
 /* ════════════════════════════════════════
-   6. MAKE CARD
+   6. MAKE CARD & SHOW SURPRISE BUTTON
 ════════════════════════════════════════ */
 document.getElementById('btnMake').addEventListener('click', () => {
   const nick = document.getElementById('nickInput').value.trim();
@@ -816,10 +807,10 @@ document.getElementById('btnMake').addEventListener('click', () => {
   showScreen('screen3');
   launchConfetti(60);
 
-  // หน่วงเวลาซ่อนปุ่มเซอร์ไพรส์ไว้ 3 วินาที
+  // หน่วงเวลาให้ดูบัตรก่อน 5 วินาที เต็มๆ แล้วปุ่มเซอร์ไพรส์ถึงจะเด้งขึ้นมา
   setTimeout(() => {
     document.getElementById('btnSurprise').classList.add('show-surprise');
-  }, 3000);
+  }, 5000); 
 });
 
 /* ════════════════════════════════════════
@@ -831,6 +822,7 @@ const holoGlare   = document.getElementById('holoGlare');
 const MAX_TILT = 14;
 
 tiltWrapper.addEventListener('mousemove', e => {
+  if (document.getElementById('mainBody').classList.contains('capturing')) return;
   const rect = tiltWrapper.getBoundingClientRect();
   const cx = rect.left + rect.width / 2;
   const cy = rect.top  + rect.height / 2;
@@ -841,9 +833,11 @@ tiltWrapper.addEventListener('mousemove', e => {
   holoGlare.style.background = `radial-gradient(ellipse 70% 55% at ${((dx+1)/2*100).toFixed(1)}% ${((dy+1)/2*100).toFixed(1)}%,rgba(255,255,255,.6) 0%,rgba(255,200,220,.2) 30%,transparent 70%)`;
 });
 tiltWrapper.addEventListener('mouseleave', () => {
+  if (document.getElementById('mainBody').classList.contains('capturing')) return;
   idCard.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
 });
 tiltWrapper.addEventListener('touchmove', e => {
+  if (document.getElementById('mainBody').classList.contains('capturing')) return;
   const t = e.touches[0];
   const rect = tiltWrapper.getBoundingClientRect();
   const dx = ((t.clientX - rect.left) / rect.width  - .5) * 2;
@@ -860,90 +854,55 @@ tiltWrapper.addEventListener('touchend', () => {
 document.getElementById('btnSave').addEventListener('click', async () => {
   const btn = document.getElementById('btnSave');
   const originalText = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '⏳ กำลังสร้างภาพ...';
-
-  const card      = document.getElementById('idCard');
-  const glare     = document.getElementById('holoGlare');
-  const rainbow   = document.querySelector('.holo-rainbow');
-
-  card.style.transform  = 'none';
-  card.style.transition = 'none';
-  card.style.boxShadow  = 'none';
-  glare.style.display   = 'none';
-  rainbow.style.display = 'none';
+  btn.disabled = true; btn.innerHTML = '⏳ กำลังสร้างภาพ...';
+  const card = document.getElementById('idCard');
+  
+  document.getElementById('mainBody').classList.add('capturing');
 
   await new Promise(r => setTimeout(r, 400));
-
   try {
-    const canvas = await html2canvas(card, {
-      scale: 2.5,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#fff8fa',
-      logging: false,
-    });
-
+    const canvas = await html2canvas(card, { scale: 2.5, useCORS: true, allowTaint: true, backgroundColor: '#fff8fa', logging: false });
     const imgData = canvas.toDataURL('image/jpeg', 0.92);
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
     if (isMobile) {
       showDownloadOverlay(imgData);
     } else {
-      const link = document.createElement('a');
-      link.href = imgData;
-      link.download = 'girlfriend-id-card.jpg';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const link = document.createElement('a'); link.href = imgData; link.download = 'girlfriend-id-card.jpg';
+      document.body.appendChild(link); link.click(); document.body.removeChild(link);
       showToast('ดาวน์โหลดสำเร็จแล้ว! 💕');
       setTimeout(() => showDownloadOverlay(imgData), 300);
     }
-
-  } catch (err) {
-    console.error(err);
-    showToast('เกิดข้อผิดพลาด ลองแคปหน้าจอแทนได้เลยนะ 📸');
-  } finally {
-    card.style.transform  = '';
-    card.style.transition = '';
-    card.style.boxShadow  = '';
-    glare.style.display   = 'block';
-    rainbow.style.display = 'block';
-    btn.disabled  = false;
-    btn.innerHTML = originalText;
+  } catch (err) { showToast('เกิดข้อผิดพลาด ลองแคปหน้าจอแทนได้เลยนะ 📸'); }
+  finally {
+    document.getElementById('mainBody').classList.remove('capturing');
+    btn.disabled = false; btn.innerHTML = originalText;
   }
 });
 
 function showDownloadOverlay(dataUrl) {
-  const old = document.getElementById('dlOverlay');
-  if (old) old.remove();
-  const overlay = document.createElement('div');
-  overlay.id = 'dlOverlay';
-  overlay.className = 'dl-overlay';
+  const old = document.getElementById('dlOverlay'); if (old) old.remove();
+  const overlay = document.createElement('div'); overlay.id = 'dlOverlay'; overlay.className = 'dl-overlay';
   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   overlay.innerHTML = `
-    <p class="dl-overlay-hint">
-      ${isMobile
-        ? '👇 กดค้างที่รูปภาพ แล้วเลือก <strong>"บันทึกรูปภาพ"</strong> 👇'
-        : '💾 รูปบัตรของคุณพร้อมแล้ว!<br>กด "ดาวน์โหลด" หรือคลิกขวาที่รูปเพื่อบันทึก'}
-    </p>
-    <img class="dl-overlay-img" src="${dataUrl}" alt="ID Card" />
-    <a class="dl-overlay-dl" href="${dataUrl}" download="girlfriend-id-card.jpg">
-      📥 ดาวน์โหลด
-    </a>
-    <button class="dl-overlay-close" id="dlClose">ปิด</button>
+    <p class="dl-overlay-hint">${isMobile ? '👇 กดค้างที่รูปภาพ แล้วเลือก <strong>"บันทึกรูปภาพ"</strong> 👇' : '💾 รูปบัตรของคุณพร้อมแล้ว!'}</p>
+    <img class="dl-overlay-img" src="${dataUrl}" />
+    <a class="dl-overlay-dl" href="${dataUrl}" download="girlfriend-id-card.jpg">📥 ดาวน์โหลด</a>
+    <button class="dl-overlay-close" id="dlClose">ปิดหน้าต่างนี้</button>
   `;
   document.body.appendChild(overlay);
   document.getElementById('dlClose').onclick = () => overlay.remove();
 }
 
 /* ════════════════════════════════════════
-   9. SURPRISE FUNCTION & FIREWORKS
+   9. GO SURPRISE SCREEN
 ════════════════════════════════════════ */
 function goSurprise() {
   showScreen('screen4');
 }
 
+/* ════════════════════════════════════════
+   10. FIREWORKS ANIMATION LOGIC (ช้าลงและสมูทขึ้น)
+════════════════════════════════════════ */
 const fwCanvas = document.getElementById('fireworksCanvas');
 const fwCtx = fwCanvas.getContext('2d');
 let fireworks = [];
@@ -966,26 +925,26 @@ function triggerFireworks() {
   document.getElementById('fwText').style.textShadow = '0 0 10px rgba(255,255,255,0.3)';
 
   requestAnimationFrame(updateFireworks);
-  fwInterval = setInterval(launchFirework, 600);
-  setTimeout(() => clearInterval(fwInterval), 15000);
+  fwInterval = setInterval(launchFirework, 1200); // พลุลูกใหม่มาเว้นจังหวะนานขึ้นมากๆ
+  setTimeout(() => clearInterval(fwInterval), 20000);
 }
 
 function launchFirework() {
   fireworks.push({
     x: Math.random() * fwCanvas.width,
     y: fwCanvas.height,
-    vx: (Math.random() - 0.5) * 3,
-    vy: -(Math.random() * 5 + 12),
+    vx: (Math.random() - 0.5) * 2, // สายพลุพริ้วขึ้น
+    vy: -(Math.random() * 4 + 9), // ยิงขึ้นช้าลงอีก
     color: ['#e8637a','#f2a7b5','#d4a853','#ffffff','#ff9a9e'][Math.floor(Math.random()*5)]
   });
 }
 
 function createParticles(x, y, color) {
-  for (let i = 0; i < 60; i++) {
+  for (let i = 0; i < 50; i++) {
     particles.push({
       x: x, y: y,
-      vx: (Math.random() - 0.5) * 12,
-      vy: (Math.random() - 0.5) * 12,
+      vx: (Math.random() - 0.5) * 6, // ระเบิดกระจายช้าลง
+      vy: (Math.random() - 0.5) * 6,
       alpha: 1,
       color: color
     });
@@ -994,118 +953,66 @@ function createParticles(x, y, color) {
 
 function updateFireworks() {
   fwCtx.globalCompositeOperation = 'destination-out';
-  fwCtx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+  fwCtx.fillStyle = 'rgba(0, 0, 0, 0.15)'; // หางพลุยาวขึ้น
   fwCtx.fillRect(0, 0, fwCanvas.width, fwCanvas.height);
   fwCtx.globalCompositeOperation = 'lighter';
 
   for (let i = fireworks.length - 1; i >= 0; i--) {
     let f = fireworks[i];
-    f.x += f.vx;
-    f.y += f.vy;
-    f.vy += 0.2; 
+    f.x += f.vx; f.y += f.vy; 
+    f.vy += 0.08; // แรงดึงดูดของลูกพลุน้อยลงมากๆ (ลอยขึ้นนุ่มสุดๆ)
     
-    fwCtx.fillStyle = f.color;
-    fwCtx.beginPath();
-    fwCtx.arc(f.x, f.y, 3, 0, Math.PI * 2);
-    fwCtx.fill();
-
-    if (f.vy >= -1 || f.y < 100) {
-      createParticles(f.x, f.y, f.color);
-      fireworks.splice(i, 1);
-    }
+    fwCtx.fillStyle = f.color; fwCtx.beginPath(); fwCtx.arc(f.x, f.y, 3, 0, Math.PI * 2); fwCtx.fill();
+    if (f.vy >= -1 || f.y < 100) { createParticles(f.x, f.y, f.color); fireworks.splice(i, 1); }
   }
 
   for (let i = particles.length - 1; i >= 0; i--) {
     let p = particles[i];
-    p.x += p.vx;
-    p.y += p.vy;
-    p.vy += 0.1;
-    p.alpha -= 0.015;
+    p.x += p.vx; p.y += p.vy; 
+    p.vy += 0.03; // เศษพลุตกลงมาช้ามากๆๆๆ
+    p.alpha -= 0.005; // เศษพลุค้างบนฟ้านานขึ้นจางช้าลงมากๆๆ
 
-    fwCtx.globalAlpha = Math.max(0, p.alpha);
-    fwCtx.fillStyle = p.color;
-    fwCtx.beginPath();
-    fwCtx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-    fwCtx.fill();
-
+    fwCtx.globalAlpha = Math.max(0, p.alpha); fwCtx.fillStyle = p.color; fwCtx.beginPath(); fwCtx.arc(p.x, p.y, 2, 0, Math.PI * 2); fwCtx.fill();
     if (p.alpha <= 0) particles.splice(i, 1);
   }
   fwCtx.globalAlpha = 1;
-
   requestAnimationFrame(updateFireworks);
 }
 
 /* ════════════════════════════════════════
-   HELPERS
+   HELPERS & CONFETTI (ตกช้าลง)
 ════════════════════════════════════════ */
-function formatDate(d) {
-  return d.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
-}
-function generateCardNum() {
-  const words = ['LOVE','MINE','BABE','CUTE','DEAR'];
-  const w = words[Math.floor(Math.random() * words.length)];
-  return String(Math.floor(1000 + Math.random() * 9000)) + '-' + w;
-}
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
+function formatDate(d) { return d.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' }); }
+function generateCardNum() { const words = ['LOVE','MINE','BABE','CUTE','DEAR']; return String(Math.floor(1000+Math.random()*9000)) + '-' + words[Math.floor(Math.random()*5)]; }
+function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
 
-/* ════════════════════════════════════════
-   CONFETTI
-════════════════════════════════════════ */
-function launchConfetti(count = 100) {
+function launchConfetti(count = 80) {
   const canvas = document.getElementById('confetti-canvas');
   const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
   const COLORS = ['#e8637a','#f2a7b5','#d4a853','#c0445e','#fff','#fce8ed','#7c3a4e'];
-  const shapes = ['rect','circle','heart'];
   const pieces = Array.from({ length: count }, () => ({
     x: Math.random() * canvas.width, y: -20 - Math.random() * 200,
     r: 4 + Math.random() * 7, color: COLORS[Math.floor(Math.random() * COLORS.length)],
-    vx: (Math.random() - .5) * 4, vy: 2 + Math.random() * 4,
-    rot: Math.random() * Math.PI * 2, rotV: (Math.random() - .5) * .15,
-    shape: shapes[Math.floor(Math.random() * shapes.length)], alpha: 1
+    vx: (Math.random() - .5) * 1.5, 
+    vy: 0.8 + Math.random() * 1.5, // กระดาษตกช้าลงมากๆ
+    rot: Math.random() * Math.PI * 2, rotV: (Math.random() - .5) * .08, alpha: 1
   }));
   let frame;
   function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    let alive = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height); let alive = false;
     pieces.forEach(p => {
-      if (p.alpha <= 0) return;
-      alive = true;
-      p.x += p.vx; p.y += p.vy; p.rot += p.rotV;
-      if (p.y > canvas.height * .75) p.alpha -= .018;
-      ctx.save();
-      ctx.globalAlpha = Math.max(0, p.alpha);
-      ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.color;
-      if (p.shape === 'rect') { ctx.fillRect(-p.r, -p.r*.6, p.r*2, p.r*1.2); }
-      else if (p.shape === 'circle') { ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); }
-      else {
-        const s = p.r/8; ctx.beginPath();
-        ctx.moveTo(0,-2*s); ctx.bezierCurveTo(4*s,-6*s,10*s,2*s,0,7*s);
-        ctx.bezierCurveTo(-10*s,2*s,-4*s,-6*s,0,-2*s); ctx.fill();
-      }
-      ctx.restore();
+      if (p.alpha <= 0) return; alive = true; p.x += p.vx; p.y += p.vy; p.rot += p.rotV;
+      if (p.y > canvas.height * .75) p.alpha -= .008; // เฟดกระดาษออกช้าลงมาก
+      ctx.save(); ctx.globalAlpha = Math.max(0, p.alpha); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.color;
+      ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); ctx.restore();
     });
-    if (alive) frame = requestAnimationFrame(draw);
-    else ctx.clearRect(0,0,canvas.width,canvas.height);
+    if (alive) frame = requestAnimationFrame(draw); else ctx.clearRect(0,0,canvas.width,canvas.height);
   }
-  cancelAnimationFrame(frame);
-  draw();
+  cancelAnimationFrame(frame); draw();
 }
-
-window.addEventListener('resize', () => {
-  const c = document.getElementById('confetti-canvas');
-  c.width = window.innerWidth; c.height = window.innerHeight;
-});
+window.addEventListener('resize', () => { const c = document.getElementById('confetti-canvas'); c.width = window.innerWidth; c.height = window.innerHeight; });
 </script>
 </body>
 </html>
